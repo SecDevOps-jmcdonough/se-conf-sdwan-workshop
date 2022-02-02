@@ -1,9 +1,9 @@
-azsubscriptionid = "cc0d730a-9395-4c66-8a74-efdfc1b05670"
+azsubscriptionid = "put your own"
 
 project = "mremini-workshop"
 TAG     = "sdwan"
 username = "mremini"
-password = "Fortinet20217!"
+password = "put your own"
 
 hubrglocation= "westeurope"
 
