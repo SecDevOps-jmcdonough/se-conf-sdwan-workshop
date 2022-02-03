@@ -111,9 +111,8 @@ resource "azurerm_lb" "branchlb" {
 resource "azurerm_lb_backend_address_pool" "brlbbackend" {
   for_each = var.branchlbpools
 
-#  resource_group_name = azurerm_resource_group.hubrg.name
-  loadbalancer_id     = azurerm_lb.branchlb[each.value.lb].id
-  name                = each.value.pool
+  loadbalancer_id = azurerm_lb.branchlb[each.value.lb].id
+  name            = each.value.pool
 }
 
 resource "azurerm_lb_probe" "brilbprobe" {
@@ -138,7 +137,6 @@ resource "azurerm_lb_rule" "brilbrules" {
 
   frontend_ip_configuration_name = each.value.frontendipname
   probe_id                       = azurerm_lb_probe.brilbprobe[each.value.probe].id
-  #backend_address_pool_id        = azurerm_lb_backend_address_pool.brlbbackend[each.value.pool].id
   disable_outbound_snat          = true
 }
 

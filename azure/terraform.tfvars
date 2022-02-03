@@ -1,9 +1,9 @@
 azsubscriptionid = ""
 
-project  = "-workshop"
+project  = "sdwan-workshop"
 TAG      = "sdwan"
-username = ""
-password = "Fortinet20217!"
+username = "put your own"
+password = "put your own"
 
 hubrglocation = "eastus"
 
