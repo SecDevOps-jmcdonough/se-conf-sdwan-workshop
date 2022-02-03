@@ -90,8 +90,8 @@ hubextlbnat = {
 //####################################Spoke Vnets#############################
 
 az_spokevnet = {
-  "spoke11" = { name = "spoke11", cidr = "10.11.0.0/16", location = "westeurope", peerto = "hub1" },
-  "spoke12" = { name = "spoke12", cidr = "10.12.0.0/16", location = "northeurope", peerto = "hub1" }
+  "spoke11" = { name = "spoke11", cidr = "10.11.0.0/16", location = "eastus", peerto = "hub1" },
+  "spoke12" = { name = "spoke12", cidr = "10.12.0.0/16", location = "centralus", peerto = "hub1" }
 }
 
 az_spokevnetsubnet = {
