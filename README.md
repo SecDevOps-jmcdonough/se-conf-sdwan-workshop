@@ -5,10 +5,10 @@
 * Configure Azure components such as Azure Load Balancer, Azure VNET peering, Azure Route Server and Azure vWAN
 * Understand the diffrent architecture options available
 
-
+***
+***
 ## Setting up the environment [Deployment exercise] [estimated duration 40min]
-***
-***
+
 ### Task 1 - Setup your AzureCloud Shell 
 
 ### Task 2 - Run the Terraform Code
@@ -26,7 +26,8 @@
 * How do we access the FortiGate
 * Why are the VPN down ?
 
-
+***
+***
 ## Section 2 - Hub and Branch VPN Connectivity [Configuration exercise] [estimated duration 20min]
 
 ### Task 1 - Add the FortiGates to the Hub Load Balancer Backend Pool
