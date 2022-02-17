@@ -7,7 +7,8 @@
 
 ***
 ***
-## Setting up the environment [Deployment exercise] [estimated duration 40min]
+## Section1 - Setting up the environment
+_[Deployment exercise] [estimated duration 40min]_
 
 ### Task 1 - Setup your AzureCloud Shell 
 
@@ -28,7 +29,7 @@
 
 ***
 ***
-## Section 2 - Hub and Branch VPN Connectivity [Configuration exercise] [estimated duration 20min]
+## Section2 - Hub and Branch VPN Connectivity [Configuration exercise] [estimated duration 20min]
 
 ### Task 1 - Add the FortiGates to the Hub Load Balancer Backend Pool
 * Go to the Hub External Load Balancer **sdwan-student01-workshop-hub1-elb1**
