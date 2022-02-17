@@ -20,16 +20,17 @@ _[Deployment exercise] [estimated duration 40min]_
 
 ### Task 3 - Verifications
 * Using the Terraform output verify that you have access to the FortiGates
-* on the Branch FortiGates check the VPN status 
+* Connect to the Branch sites FortiGates and check the VPN status 
 
 
 ### Task 4 - QUIZ
-* How do we access the FortiGate
-* Why are the VPN down ?
+* FortiGates do not have public IP attached to them, how are we accessing them then?
+* Why the VPN are down ?
 
 ***
 ***
-## Section2 - Hub and Branch VPN Connectivity [Configuration exercise] [estimated duration 20min]
+## Section2 - Hub and Branch VPN Connectivity 
+_[Configuration exercise] [estimated duration 20min]_
 
 ### Task 1 - Add the FortiGates to the Hub Load Balancer Backend Pool
 * Go to the Hub External Load Balancer **sdwan-student01-workshop-hub1-elb1**
@@ -47,22 +48,28 @@ _[Deployment exercise] [estimated duration 40min]_
 
         
 ### Task 3 - Verifications
-* Verify that the FortiGate are responding to Azure Load Balancer Health Checks: click on the Hub external Load balance and then go to Insights 
+* Verify that the FortiGate are responding to Azure Load Balancer Health Checks: click on the Hub external Load balance and then go to Insights
+
+    ![hub-lb-insights](images/externallbinsights.jpg)
+
 * Verify that the VPN to the Hub are UP  (please reboot the Branch FortiGate once if the VPN does not come up)
-* Verify that the BGP peering with the hub is UP
-* Verify that the Branch FortiGate learn the Hub and other Branches CIDRs
+
+    ![vpn](images/vpnup.jpg)
+
+* Verify that the BGP peering with the hub is UP and that the Branch FortiGate learn the Hub and other Branches CIDRs
 
 
 ### Task 4 - QUIZ
 * Why to access the FortiGates we used NAT rules, and for IPSEC VPN traffic we used Load balancing rules ?
 * Why only one FortiGate is answering Azure LB Health Checks
-* What are the  CIDRs FortiGate at the Branch have learnt from the Hub?
+* In the routing table do you see Spoke11 and Spoke12 CIDRs ?
 * Why the FortiGates in the Branch don't see the Spoke11 VNET and Spoke12 VNET CIDRs (10.11.0.0/16 and 10.12.0.0/16)
 
 
 [Slides to explain Azure Route Server, VNET peering , SDN connector]
 
-## Section 3 - Hub and Spoke VNET Connectivity [Configuration and troubleshooting exercise] [estimated duration 40min]
+## Section 3 - Hub and Spoke VNET Connectivity 
+_[Configuration and troubleshooting exercise] [estimated duration 40min]_
 
 ### Task 1 - Create the VNET peering
 * Create a VNET peering between the Spoke11 VNET and the Hub VNET. Go to the Spoke VNET, studentxx-workshop-sdwan-spoke11 and then click on Peerings.
