@@ -6,7 +6,9 @@
 * Understand the diffrent architecture options available
 
 
-## ```diff - text in red Section 1 - Setting up the environment [Deployment exercise] [estimated duration 40min] ```
+## Setting up the environment [Deployment exercise] [estimated duration 40min]
+***
+***
 ### Task 1 - Setup your AzureCloud Shell 
 
 ### Task 2 - Run the Terraform Code
