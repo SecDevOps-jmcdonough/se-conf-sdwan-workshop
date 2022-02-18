@@ -36,6 +36,8 @@ _[Deployment exercise - estimated duration 40min]_
 ## Chapter2 - Hub and Branch VPN Connectivity (20min)
 _[Configuration exercise - estimated duration 20min]_
 
+<details>
+
 ### Task 1 - Add the FortiGates to the Hub Load Balancer Backend Pool
 * Go to the Hub External Load Balancer **sdwan-student01-workshop-hub1-elb1**
 * Click on Backend pools
@@ -69,6 +71,7 @@ _[Configuration exercise - estimated duration 20min]_
 * In the routing table do you see Spoke11 and Spoke12 CIDRs ?
 * Why the FortiGates in the Branch don't see the Spoke11 VNET and Spoke12 VNET CIDRs (10.11.0.0/16 and 10.12.0.0/16)
 
+</details>
 
 [Slides to explain Azure Route Server, VNET peering , SDN connector]
 
@@ -77,6 +80,7 @@ _[Configuration exercise - estimated duration 20min]_
 ## Chapter3 - Hub and Spoke VNET Connectivity (40min)
 _[Configuration and troubleshooting exercise - estimated duration 40min]_
 
+<details>
 ### Task 1 - Create the VNET peering
 * Create a VNET peering between the Spoke11 VNET and the Hub VNET. Go to the Spoke VNET, studentxx-workshop-sdwan-spoke11 and then click on Peerings.
 * Repeat the above between Spoke12 VNET and the Hub VNET
@@ -139,6 +143,8 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
 * What was missing to allow the FortiGates to retreive SDN connector filters 
 * Why the FortiGate is able to ONLY see filters and objects ONLY in its resource groupe
 * FortiGate at the Branch1 and Branch2 are both behind Azure Load Balancer (behind NAT). Branch1 to Branch2 traffic will succesfully establish an ADVPN shortcut?
+
+</details>
 
 ***
 ***
