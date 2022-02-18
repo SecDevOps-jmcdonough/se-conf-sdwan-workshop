@@ -10,6 +10,8 @@
 ## Chapter1 - Setting up the environment (40min)
 _[Deployment exercise - estimated duration 40min]_
 
+<details>
+
 ### Task 1 - Setup your AzureCloud Shell 
 
 ### Task 2 - Run the Terraform Code
@@ -26,6 +28,8 @@ _[Deployment exercise - estimated duration 40min]_
 ### Task 4 - QUIZ
 * FortiGates do not have public IP attached to them, how are we accessing them then?
 * Why the VPN are down ?
+
+</details>
 
 ***
 ***
@@ -168,29 +172,30 @@ _[Configuration exercise - estimated duration 20min]_
 * Check if an ADVPN shortcut has been created
 
 ### Task 3 - QUIZ
-* We are able to How is the Spoke VNET VM able to respond to ping requests from the Branch site without any routing configuration
-* The Load balancer has two front end ip addresses, How do we ensure that traffic egress Branch1 on port1 (isp1)  has always the same public ip 
+* How is the Spoke VNET Linux VM is able to respond to ping requests from the Branch site without any routing configuration while we had to confiure a route for the Branch Linux VM.
+
+* The Load balancer has two front end ip public addresses, How do we ensure that traffic egressing Branch1 on port1 (isp1)  has always the same public ip applied ? Same for traffic egressing Branch1 on port3 (isp2)
 
 
-## Chapter5 - Redundancy 
+## Chapter5 - Redundancy (20min)
 _[estimated duration 20min]_
-### Task 1 - Generate UDP traffic
+### Task 1 - Generate ICMP traffic
 * Access the serial console by clicking on the VM studentXX-sdwan-workshop-br1lnx1 and then Serial Console
-* Ping a resource in the Hub as well as in a remote branch site `fping -c 1000 10.11.1.4`
+* Ping a resource in the Hub as well as in a remote branch site `ping 10.11.1.4`
 ### Task 2 - Initiate a failover
 * Connect to the Branch1 Primary FortiGate . Initiate a failover by rebooting the primary FortiGate
-* Monitor the stream of the generated UDP traffic
-* Did you lose the UDP connexion ?
+* Monitor the number of lost Ping and the failover time
+* How long did it take ?
 
 ### Task 3 - Generate TCP traffic
-* Ensure that both units of Branch1 FGT are up and running 
+* Ensure that both units of Branch1 FGT in the cluster is up and running
 * Access the serial console of Branch1 Linux VM by clicking on the VM studentXX-sdwan-workshop-br1lnx1 and then click on Serial Console
-* Generate an SSH session to Branch2 Linux VM `ssh studentxx@172.17.2.6`
+* Generate an SSH session to Branch2 Linux VM `ssh studentxx@10.11.1.4`
 * From Branch2 Linux VM SSH session generate a continous stream of connections to track the failover event 
 `while true; date; do curl -I -sw '%{http_code}'  https://www.lemonde.fr/ ; echo -e "\n================="; sleep 1 ; done `
 * Connect to the Branch1 Primary FortiGate . Initiate a failover by rebooting the primary FortiGate
 * Monitor the SSH connexion to Branch2 Linux VM
-* Did you lose the UDP connexion ?
+* Did you lose the TCP connexion ?
 ### Task 6 - QUIZ
 * Why did we lose the SSH (TCP) session and we did not lose the UDP connection ? 
 
