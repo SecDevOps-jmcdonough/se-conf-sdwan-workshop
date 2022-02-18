@@ -227,6 +227,7 @@ _[failover exercise - estimated duration 20min]_
 ### Task 6 - QUIZ
 * Why did we lose the SSH (TCP) session with a "short" failover time ? 
 
+</details>
 
 ***
 ***
