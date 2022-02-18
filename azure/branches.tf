@@ -361,7 +361,7 @@ resource "azurerm_network_interface_security_group_association" "br3fgt1nsg" {
 
 //////////////////////////BR1 FGT1//////////////////////////
 data "template_file" "br1fgt1_customdata" {
-  template = file ("./assets/fgt-br-ap-userdata.tpl")
+  template = file ("./assets/fgt-br-userdata.tpl")
   vars = {
     fgt_id              = "br1fgt1"
     fgt_license_file    = ""
@@ -382,14 +382,17 @@ data "template_file" "br1fgt1_customdata" {
     Port5Alias          = var.branch1fgt1["nic5"].alias 
         
 
-    port1subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_public"].cidr )
+    port1subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_public1"].cidr )
     port2subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_private"].cidr)
-    port3subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_public"].cidr )
+    port3subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_public2"].cidr )
     port4subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_ha"].cidr     )
 
-    fgt_external_gw     = cidrhost(var.az_branchsubnetscidrs["branch1_fgt_public"].cidr , 1)
+    fgt_external_gw     = cidrhost(var.az_branchsubnetscidrs["branch1_fgt_public1"].cidr , 1)
     fgt_internal_gw     = cidrhost(var.az_branchsubnetscidrs["branch1_fgt_private"].cidr, 1)
     fgt_mgmt_gw         = cidrhost(var.az_branchsubnetscidrs["branch1_fgt_mgmt"].cidr , 1)
+
+    fgt_external_gw2 =  cidrhost(var.az_branchsubnetscidrs["branch1_fgt_public2"].cidr , 1)
+    isp2             =  var.branch1fgt1["nic3"].name
 
   
     fgt_ha_peerip       = var.branch1fgt2["nic4"].ip
@@ -398,6 +401,10 @@ data "template_file" "br1fgt1_customdata" {
 
     port_ha             = "port4"
     port_mgmt           = "port5"
+    
+    fgt_config_sdwan      = true
+    remotegw1       = azurerm_public_ip.hubpip["hub-pip1"].ip_address
+    remotegw2       = azurerm_public_ip.hubpip["hub-pip1"].ip_address
   }
 }
 
@@ -471,7 +478,7 @@ resource "azurerm_role_assignment" "br1fgt1_reader" {
 //////////////////////////BR1 FGT2//////////////////////////
 
 data "template_file" "br1fgt2_customdata" {
-  template = file ("./assets/fgt-br-ap-userdata.tpl")
+  template = file ("./assets/fgt-br-userdata.tpl")
   vars = {
     fgt_id              = "br1fgt2"
     fgt_license_file    = ""
@@ -492,14 +499,17 @@ data "template_file" "br1fgt2_customdata" {
     Port5Alias          = var.branch1fgt2["nic5"].alias 
         
 
-    port1subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_public"].cidr )
+    port1subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_public1"].cidr )
     port2subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_private"].cidr)
-    port3subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_public"].cidr )
+    port3subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_public2"].cidr )
     port4subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch1_fgt_ha"].cidr     )
 
-    fgt_external_gw     = cidrhost(var.az_branchsubnetscidrs["branch1_fgt_public"].cidr , 1)
+    fgt_external_gw     = cidrhost(var.az_branchsubnetscidrs["branch1_fgt_public1"].cidr , 1)
     fgt_internal_gw     = cidrhost(var.az_branchsubnetscidrs["branch1_fgt_private"].cidr, 1)
     fgt_mgmt_gw         = cidrhost(var.az_branchsubnetscidrs["branch1_fgt_mgmt"].cidr , 1)
+
+    fgt_external_gw2 =  cidrhost(var.az_branchsubnetscidrs["branch1_fgt_public2"].cidr , 1)
+    isp2             =  var.branch1fgt2["nic3"].name
 
   
     fgt_ha_peerip       = var.branch1fgt1["nic4"].ip
@@ -508,6 +518,10 @@ data "template_file" "br1fgt2_customdata" {
 
     port_ha             = "port4"
     port_mgmt           = "port5"
+
+    fgt_config_sdwan      = true
+    remotegw1       = azurerm_public_ip.hubpip["hub-pip1"].ip_address
+    remotegw2       = azurerm_public_ip.hubpip["hub-pip1"].ip_address 
 
   }
 }
@@ -580,7 +594,7 @@ resource "azurerm_role_assignment" "br1fgt2_reader" {
 
 //////////////////////////BR2 FGT1//////////////////////////
 data "template_file" "br2fgt1_customdata" {
-  template = file ("./assets/fgt-br-ap-userdata.tpl")
+  template = file ("./assets/fgt-br-userdata.tpl")
   vars = {
     fgt_id              = "br2fgt1"
     fgt_license_file    = ""
@@ -601,14 +615,17 @@ data "template_file" "br2fgt1_customdata" {
     Port5Alias          = var.branch2fgt1["nic5"].alias 
         
 
-    port1subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_public"].cidr )
+    port1subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_public1"].cidr )
     port2subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_private"].cidr)
-    port3subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_public"].cidr )
+    port3subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_public2"].cidr )
     port4subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_ha"].cidr     )
 
-    fgt_external_gw     = cidrhost(var.az_branchsubnetscidrs["branch2_fgt_public"].cidr , 1)
+    fgt_external_gw     = cidrhost(var.az_branchsubnetscidrs["branch2_fgt_public1"].cidr , 1)
     fgt_internal_gw     = cidrhost(var.az_branchsubnetscidrs["branch2_fgt_private"].cidr, 1)
     fgt_mgmt_gw         = cidrhost(var.az_branchsubnetscidrs["branch2_fgt_mgmt"].cidr , 1)
+
+    fgt_external_gw2 =  cidrhost(var.az_branchsubnetscidrs["branch2_fgt_public2"].cidr , 1)
+    isp2             =  var.branch2fgt1["nic3"].name
 
   
     fgt_ha_peerip       = var.branch2fgt2["nic4"].ip
@@ -617,6 +634,11 @@ data "template_file" "br2fgt1_customdata" {
 
     port_ha             = "port4"
     port_mgmt           = "port5"
+    
+    fgt_config_sdwan      = true
+    remotegw1       = azurerm_public_ip.hubpip["hub-pip1"].ip_address
+    remotegw2       = azurerm_public_ip.hubpip["hub-pip1"].ip_address
+
   }
 }
 
@@ -687,7 +709,7 @@ resource "azurerm_role_assignment" "br2fgt1_reader" {
 //////////////////////////BR2 FGT2//////////////////////////
 
 data "template_file" "br2fgt2_customdata" {
-  template = file ("./assets/fgt-br-ap-userdata.tpl")
+  template = file ("./assets/fgt-br-userdata.tpl")
   vars = {
     fgt_id              = "br2fgt2"
     fgt_license_file    = ""
@@ -708,14 +730,17 @@ data "template_file" "br2fgt2_customdata" {
     Port5Alias          = var.branch2fgt2["nic5"].alias 
         
 
-    port1subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_public"].cidr )
+    port1subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_public1"].cidr )
     port2subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_private"].cidr)
-    port3subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_public"].cidr )
+    port3subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_public2"].cidr )
     port4subnetmask   = cidrnetmask(var.az_branchsubnetscidrs["branch2_fgt_ha"].cidr     )
 
-    fgt_external_gw     = cidrhost(var.az_branchsubnetscidrs["branch2_fgt_public"].cidr , 1)
+    fgt_external_gw     = cidrhost(var.az_branchsubnetscidrs["branch2_fgt_public1"].cidr , 1)
     fgt_internal_gw     = cidrhost(var.az_branchsubnetscidrs["branch2_fgt_private"].cidr, 1)
     fgt_mgmt_gw         = cidrhost(var.az_branchsubnetscidrs["branch2_fgt_mgmt"].cidr , 1)
+
+    fgt_external_gw2 =  cidrhost(var.az_branchsubnetscidrs["branch2_fgt_public2"].cidr , 1)
+    isp2             =  var.branch2fgt2["nic3"].name
 
   
     fgt_ha_peerip       = var.branch2fgt1["nic4"].ip
@@ -724,6 +749,10 @@ data "template_file" "br2fgt2_customdata" {
 
     port_ha             = "port4"
     port_mgmt           = "port5"
+
+    fgt_config_sdwan      = true
+    remotegw1       = azurerm_public_ip.hubpip["hub-pip1"].ip_address
+    remotegw2       = azurerm_public_ip.hubpip["hub-pip1"].ip_address    
 
   }
 }
@@ -797,7 +826,7 @@ resource "azurerm_role_assignment" "br2fgt2_reader" {
 //////////////////////////BR3 FGT1//////////////////////////
 
 data "template_file" "br3fgt1_customdata" {
-  template = file ("./assets/fgt-br-ap-userdata.tpl")
+  template = file ("./assets/fgt-br-userdata.tpl")
   vars = {
     fgt_id              = "br3fgt1"
     fgt_license_file    = ""
@@ -826,7 +855,15 @@ data "template_file" "br3fgt1_customdata" {
     fgt_external_gw     = cidrhost(var.az_branchsubnetscidrs["branch3_fgt_public1"].cidr , 1)
     fgt_internal_gw     = cidrhost(var.az_branchsubnetscidrs["branch3_fgt_private"].cidr, 1)
 
+    fgt_external_gw2 =  cidrhost(var.az_branchsubnetscidrs["branch3_fgt_public2"].cidr , 1)
+    isp2             =  var.branch3fgt1["nic3"].name
+
     vnet_network        = var.az_branches["branch3"].cidr
+
+    fgt_config_sdwan      = true
+    remotegw1       = azurerm_public_ip.hubpip["hub-pip1"].ip_address
+    remotegw2       = azurerm_public_ip.hubpip["hub-pip1"].ip_address
+
 
   }
 }
@@ -897,3 +934,78 @@ resource "azurerm_role_assignment" "br3fgt1_reader" {
   ]
 }
 
+
+
+//#########################################################Branch Sites VM#######################################################################
+
+resource "azurerm_network_interface" "branchvmnics" {
+  for_each = var.branchvm
+
+  name                            = "${var.TAG}-${var.project}-${each.value.vmname}-nic"
+  location                        = azurerm_virtual_network.branches[each.value.vnet].location
+  resource_group_name             = azurerm_resource_group.hubrg.name
+
+  enable_ip_forwarding            = false
+  enable_accelerated_networking   = false
+
+  ip_configuration {
+    name                          = "ipconfig1"
+    subnet_id                     = azurerm_subnet.brsubnets[each.value.subnet].id
+    private_ip_address_allocation = "Dynamic"
+  }
+    depends_on = [
+    azurerm_virtual_machine.br1fgt1,
+    azurerm_virtual_machine.br1fgt2,
+    azurerm_virtual_machine.br2fgt1,
+    azurerm_virtual_machine.br2fgt2,
+    azurerm_virtual_machine.br3fgt1
+  ]
+}
+
+data "template_file" "brlnx_customdata" {
+  template = "./assets/lnx-spoke.tpl"
+
+  vars = {
+  }
+}
+
+resource "azurerm_virtual_machine" "branchlnx" {
+  for_each = var.branchvm
+
+  name                            = "${var.TAG}-${var.project}-${each.value.vmname}"
+  location                        = azurerm_virtual_network.branches[each.value.vnet].location
+  resource_group_name             = azurerm_resource_group.hubrg.name
+
+  network_interface_ids           = [azurerm_network_interface.branchvmnics[each.key].id]
+  vm_size                         = var.az_lnx_vmsize
+
+  storage_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
+    version   = "latest"
+  }
+
+  storage_os_disk {
+    name              = "${var.TAG}-${var.project}-${each.value.vmname}-lnx-OSDisk"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
+  }
+
+  os_profile {
+    computer_name  = "${var.TAG}-${var.project}-${each.value.vmname}-lnx"
+    admin_username = var.username
+    admin_password = var.password
+    custom_data    = data.template_file.brlnx_customdata.rendered
+  }
+
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+
+  tags = {
+    Project = "${var.project}"
+  }
+
+}

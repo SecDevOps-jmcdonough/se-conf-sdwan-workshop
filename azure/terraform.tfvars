@@ -1,51 +1,56 @@
-azsubscriptionid = "put your own"
+azsubscriptionid = "use your own"
 
-project = "mremini-workshop"
+project = "student01-workshop"
 TAG     = "sdwan"
-username = "mremini"
-password = "put your own"
+username = "student01"
+password = "fortinet123!"
 
-hubrglocation= "westeurope"
+hubrglocation= "eastus"
 
 //////////////////////////////////////////////////////////Hub Sites////////////////////////////////////////////////////////////////
 az_hubs={
-  "hub1"  = { name = "hub1", cidr = "10.10.0.0/16", location="westeurope" },
+  "hub1"  = { name = "hub1", cidr = "10.10.0.0/16", location="eastus" },
 }
 
 az_hubsubnetscidrs = {
   "hub1_fgt_public"  = { name = "fgt_public", cidr = "10.10.0.0/24" , vnet= "hub1"},
   "hub1_fgt_private" = { name = "fgt_private", cidr = "10.10.1.0/24", vnet= "hub1" },
-  "hub1_RouteServer"  = { name = "RouteServerSubnet", cidr = "10.10.2.0/24", vnet= "hub1" }
+  "hub1_RouteServer"  = { name = "RouteServerSubnet", cidr = "10.10.2.0/24", vnet= "hub1" },
+  "hub1_fgt_ha"  = { name = "fgt_ha", cidr = "10.10.3.0/24" , vnet= "hub1"},
+  "hub1_fgt_mgmt" = { name = "fgt_mgmt", cidr = "10.10.4.0/24", vnet= "hub1" },  
 }
 
 vnetroutetables = {
-  "hub1_fgt_public"  = { name = "hub1_fgt-pub_rt" ,  vnet= "hub1"},
-  "hub1_fgt_private" = { name = "hub1_fgt-priv_rt" , vnet= "hub1" }
+  "hub1_fgt_public"  = { name = "hub1_fgt-pub_rt" ,  vnet= "hub1" , disablepropagation= "false" },
+  "hub1_fgt_private" = { name = "hub1_fgt-priv_rt" , vnet= "hub1" , disablepropagation= "true" },
+  "hub1_fgt_ha" = { name = "hub1_fgt-ha_rt" , vnet= "hub1" , disablepropagation= "true" },
+  "hub1_fgt_mgmt" = { name = "hub1_fgt-mgmt_rt" , vnet= "hub1" , disablepropagation= "false" },
+    
 }
 
 
 hub1fgt1 = {
-  "nic1" = { vmname = "fgt1", name = "port1", subnet = "hub1_fgt_public", ip = "10.10.0.4" , nsgname= "pub-nsg"  , vnet= "hub1" },
-  "nic2" = { vmname = "fgt1", name = "port2", subnet = "hub1_fgt_private", ip = "10.10.1.4", nsgname= "priv-nsg" , vnet= "hub1" },
+  "nic1" = { vmname = "fgt1", name = "port1", alias = "pub" ,   subnet = "hub1_fgt_public", ip = "10.10.0.4" , nsgname= "pub-nsg"  , vnet= "hub1" },
+  "nic2" = { vmname = "fgt1", name = "port2", alias = "priv" ,  subnet = "hub1_fgt_private", ip = "10.10.1.4", nsgname= "priv-nsg" , vnet= "hub1" },
+  "nic3" = { vmname = "fgt1", name = "port3", alias = "ha"   ,  subnet = "hub1_fgt_ha", ip = "10.10.3.4", nsgname= "priv-nsg" , vnet= "hub1" },
+  "nic4" = { vmname = "fgt1", name = "port4", alias = "mgmt" ,  subnet = "hub1_fgt_mgmt", ip = "10.10.4.4", nsgname= "pub-nsg" , vnet= "hub1" }      
 }
 hub1fgt2 = {
-  "nic1" = { vmname = "fgt2", name = "port1", subnet = "hub1_fgt_public", ip = "10.10.0.5",  nsgname= "pub-nsg"  , vnet= "hub1" },
-  "nic2" = { vmname = "fgt2", name = "port2", subnet = "hub1_fgt_private", ip = "10.10.1.5", nsgname= "priv-nsg" , vnet= "hub1"},
+  "nic1" = { vmname = "fgt2", name = "port1", alias = "pub" ,   subnet = "hub1_fgt_public", ip = "10.10.0.5",  nsgname= "pub-nsg"  , vnet= "hub1" },
+  "nic2" = { vmname = "fgt2", name = "port2", alias = "priv" ,  subnet = "hub1_fgt_private", ip = "10.10.1.5", nsgname= "priv-nsg" , vnet= "hub1"},
+  "nic3" = { vmname = "fgt2", name = "port3", alias = "ha"   ,  subnet = "hub1_fgt_ha", ip = "10.10.3.5", nsgname= "priv-nsg" , vnet= "hub1" },
+  "nic4" = { vmname = "fgt2", name = "port4", alias = "mgmt" ,  subnet = "hub1_fgt_mgmt", ip = "10.10.4.5", nsgname= "pub-nsg" , vnet= "hub1" }   
 }
 
-hub1fgt3 = {
-  "nic1" = { vmname = "fgt3", name = "port1", subnet = "hub1_fgt_public", ip = "10.10.0.6",  nsgname= "pub-nsg" , vnet= "hub1"},
-  "nic2" = { vmname = "fgt3", name = "port2", subnet = "hub1_fgt_private", ip = "10.10.1.6", nsgname= "priv-nsg", vnet= "hub1" },
-}
 
 
 az_ilbip = ["10.10.2.10", // Hub1 Internal LB Listner 
 ]
 az_lbprob = "3422"
 
-az_fgt_vmsize    = "Standard_F4s_v2"
+az_fgt_vmsize    = "Standard_F8s"
 az_FGT_IMAGE_SKU = "fortinet_fg-vm_payg_20190624"
-az_FGT_VERSION   = "7.0.0"
+az_FGT_VERSION   = "7.0.4"
 az_FGT_OFFER     = "fortinet_fortigate-vm_v5"
 
 az_fgtasn= "64622"
@@ -73,25 +78,27 @@ hubpublicip = {
   "hub-pip1"  = { name = "hub-elbpip1" ,  vnet= "hub1"},
 }
 hubextlb = {
- "hubextlb1"  = { name = "hub1-elb1" ,  vnet= "hub1", type="external" , probe= "8008" ,  pool= "hub1-ext-fgt-aa" , frontendip = "hub-pip1" , subnet= "" }
+ "hubextlb1"  = { name = "hub1-elb1" ,  vnet= "hub1", type="external" , probe= "8008"  , frontendip = "hub-pip1" , subnet= "" }
 }
 
 hubextlbnat = {
- "fgt1https"  = { name = "https-fgt1" ,  lb= "hubextlb1", protocol = "Tcp", frontport="1443" , backport= "34443" , frontendip = "hub-pip1" , interfacenat = "fgt1-port1" },
- "fgt2https"  = { name = "https-fgt2" ,  lb= "hubextlb1", protocol = "Tcp", frontport="2443" , backport= "34443" , frontendip = "hub-pip1" , interfacenat = "fgt2-port1" },
- "fgt3https"  = { name = "https-fgt3" ,  lb= "hubextlb1", protocol = "Tcp", frontport="3443" , backport= "34443" , frontendip = "hub-pip1" , interfacenat = "fgt3-port1" },
+ "fgt1https"  = { name = "https-fgt1" ,  lb= "hubextlb1", protocol = "Tcp", frontport="1443" , backport= "34443" , frontendip = "hub-pip1" , interfacenat = "fgt1-port4" },
+ "fgt2https"  = { name = "https-fgt2" ,  lb= "hubextlb1", protocol = "Tcp", frontport="2443" , backport= "34443" , frontendip = "hub-pip1" , interfacenat = "fgt2-port4" }
 
- "fgt1ssh"  = { name = "ssh-fgt1" ,  lb= "hubextlb1", protocol = "Tcp", frontport="1422" , backport= "3422" , frontendip = "hub-pip1" , interfacenat = "fgt1-port1" },
- "fgt2ssh"  = { name = "ssh-fgt2" ,  lb= "hubextlb1", protocol = "Tcp", frontport="2422" , backport= "3422" , frontendip = "hub-pip1" , interfacenat = "fgt2-port1" },
- "fgt3ssh"  = { name = "ssh-fgt3" ,  lb= "hubextlb1", protocol = "Tcp", frontport="3422" , backport= "3422" , frontendip = "hub-pip1" , interfacenat = "fgt3-port1" },
+ "fgt1ssh"  = { name = "ssh-fgt1" ,  lb= "hubextlb1", protocol = "Tcp", frontport="1422" , backport= "3422" , frontendip = "hub-pip1" , interfacenat = "fgt1-port4" },
+ "fgt2ssh"  = { name = "ssh-fgt2" ,  lb= "hubextlb1", protocol = "Tcp", frontport="2422" , backport= "3422" , frontendip = "hub-pip1" , interfacenat = "fgt2-port4" }
+}
+
+hublbpools = {
+  "hub1elbpool1"  = { pool= "hub1-ext-fgt" , lb="hubextlb1"}
 }
 
 
 //####################################Spoke Vnets#############################
 
 az_spokevnet={
-  "spoke11"  = { name = "spoke11", cidr = "10.11.0.0/16", location="westeurope" , peerto= "hub1"},
-  "spoke12"  = { name = "spoke12", cidr = "10.12.0.0/16", location="northeurope", peerto= "hub1"}
+  "spoke11"  = { name = "spoke11", cidr = "10.11.0.0/16", location="eastus" , peerto= "hub1"},
+  "spoke12"  = { name = "spoke12", cidr = "10.12.0.0/16", location="eastus", peerto= "hub1"}
 }
 
 az_spokevnetsubnet = {
@@ -104,59 +111,64 @@ az_lnx_vmsize       = "Standard_D2_v3"
 //////////////////////////////////////////////////////////Branch Sites////////////////////////////////////////////////////////////////
 
 az_branches={
-  "branch1"  = { name = "branch1", cidr = "172.16.0.0/16", location="eastus2" },
-  "branch2"  = { name = "branch2", cidr = "172.17.0.0/16", location="eastus2" },
-  "branch3"  = { name = "branch3", cidr = "172.18.0.0/16", location="westeurope" },
+  "branch1"  = { name = "branch1", cidr = "172.16.0.0/16", location="eastus" },
+  "branch2"  = { name = "branch2", cidr = "172.17.0.0/16", location="eastus" },
+  "branch3"  = { name = "branch3", cidr = "172.18.0.0/16", location="southcentralus" },
 }
 
 az_branchsubnetscidrs = {
-  "branch1_fgt_public"  = { name = "br1_fgt_pub",   cidr = "172.16.1.0/24" ,vnet= "branch1"},
+  "branch1_fgt_public1"  = { name = "br1_fgt_pub1",   cidr = "172.16.1.0/24" ,vnet= "branch1"},
+  "branch1_fgt_public2"  = { name = "br1_fgt_pub2",   cidr = "172.16.11.0/24" ,vnet= "branch1"},  
   "branch1_fgt_private" = { name = "br1_fgt_priv",  cidr = "172.16.2.0/24", vnet= "branch1"},
   "branch1_fgt_ha"      = { name = "br1_fgt_ha",    cidr = "172.16.3.0/24" ,vnet= "branch1"},
-  "branch1_fgt_mgmt"    = { name = "br1_fgt_mgmt",  cidr = "172.16.4.0/24", vnet= "branch1"},  
-  "branch2_fgt_public"  = { name = "br2_fgt_pub",   cidr = "172.17.1.0/24" ,vnet= "branch2"},
+  "branch1_fgt_mgmt"    = { name = "br1_fgt_mgmt",  cidr = "172.16.4.0/24", vnet= "branch1"},
+  "branch1_protected"    = { name = "br1_protected",  cidr = "172.16.5.0/24", vnet= "branch1"},
+  "branch2_fgt_public1"  = { name = "br2_fgt_pub1",   cidr = "172.17.1.0/24" ,vnet= "branch2"},
+  "branch2_fgt_public2"  = { name = "br2_fgt_pub2",   cidr = "172.17.11.0/24" ,vnet= "branch2"},  
   "branch2_fgt_private" = { name = "br2_fgt_priv",  cidr = "172.17.2.0/24", vnet= "branch2"},
-  "branch2_fgt_ha"      = { name = "br1_fgt_ha",    cidr = "172.17.3.0/24" ,vnet= "branch2"},
-  "branch2_fgt_mgmt"    = { name = "br1_fgt_mgmt",  cidr = "172.17.4.0/24", vnet= "branch2"}, 
+  "branch2_fgt_ha"      = { name = "br2_fgt_ha",    cidr = "172.17.3.0/24" ,vnet= "branch2"},
+  "branch2_fgt_mgmt"    = { name = "br2_fgt_mgmt",  cidr = "172.17.4.0/24", vnet= "branch2"},
+  "branch2_protected"    = { name = "br2_protected",  cidr = "172.17.5.0/24", vnet= "branch2"},   
   "branch3_fgt_public1"  = { name = "br3_fgt_pub1",   cidr = "172.18.1.0/24" ,vnet= "branch3"},
   "branch3_fgt_public2"  = { name = "br3_fgt_pub2",   cidr = "172.18.11.0/24" ,vnet= "branch3"},  
-  "branch3_fgt_private" = { name = "br3_fgt_priv",  cidr = "172.18.2.0/24", vnet= "branch3"}
+  "branch3_fgt_private" = { name = "br3_fgt_priv",  cidr = "172.18.2.0/24", vnet= "branch3"},
+  "branch3_protected"    = { name = "br3_protected",  cidr = "172.18.5.0/24", vnet= "branch3"} 
 }
 
 branch_vnetroutetables = {
-  "branch1_fgt_private"  = { name = "branch1_rt" ,  vnet= "branch1"},
-  "branch2_fgt_private"  = { name = "branch2_rt" ,  vnet= "branch2"},
-  "branch3_fgt_private"  = { name = "branch3_rt" ,  vnet= "branch3"},
+  "branch1_protected"  = { name = "branch1_rt" ,  vnet= "branch1"},
+  "branch2_protected"  = { name = "branch2_rt" ,  vnet= "branch2"},
+  "branch3_protected"  = { name = "branch3_rt" ,  vnet= "branch3"},
 }
 
 
 branch1fgt1 = {
-  "nic1" = { vmname = "fgt1", name = "port1", alias = "isp1" , subnet = "branch1_fgt_public",  ip = "172.16.1.4" , vnet = "branch1" , pool="branch1extlbpool1", nsgname="br1-nsg"},
+  "nic1" = { vmname = "fgt1", name = "port1", alias = "isp1" , subnet = "branch1_fgt_public1",  ip = "172.16.1.4" , vnet = "branch1" , pool="branch1extlbpool1", nsgname="br1-nsg"},
   "nic2" = { vmname = "fgt1", name = "port2", alias = "priv" , subnet = "branch1_fgt_private", ip = "172.16.2.4",  vnet = "branch1" , pool="branch1intlbpool1", nsgname="br1-nsg"},
-  "nic3" = { vmname = "fgt1", name = "port3", alias = "isp2" , subnet = "branch1_fgt_public",  ip = "172.16.1.14", vnet = "branch1" , pool="branch1extlbpool2", nsgname="br1-nsg"},
+  "nic3" = { vmname = "fgt1", name = "port3", alias = "isp2" , subnet = "branch1_fgt_public2",  ip = "172.16.11.14", vnet = "branch1" , pool="branch1extlbpool2", nsgname="br1-nsg"},
   "nic4" = { vmname = "fgt1", name = "port4", alias = "ha"   , subnet = "branch1_fgt_ha",      ip = "172.16.3.4",  vnet = "branch1" , pool="branch1intlbparking", nsgname="br1-nsg"},
   "nic5" = { vmname = "fgt1", name = "port5", alias = "mgmt" , subnet = "branch1_fgt_mgmt",    ip = "172.16.4.4",  vnet = "branch1" , pool="branch1intlbparking", nsgname="br1-nsg"}
 }
 branch1fgt2 = {
-  "nic1" = { vmname = "fgt2", name = "port1", alias = "isp1" ,subnet = "branch1_fgt_public" , ip = "172.16.1.5" ,vnet = "branch1" , pool="branch1extlbpool1", nsgname="br1-nsg" },
+  "nic1" = { vmname = "fgt2", name = "port1", alias = "isp1" ,subnet = "branch1_fgt_public1" , ip = "172.16.1.5" ,vnet = "branch1" , pool="branch1extlbpool1", nsgname="br1-nsg" },
   "nic2" = { vmname = "fgt2", name = "port2", alias = "priv" ,subnet = "branch1_fgt_private", ip = "172.16.2.5", vnet = "branch1" , pool="branch1intlbpool1", nsgname="br1-nsg" },
-  "nic3" = { vmname = "fgt2", name = "port3", alias = "isp2" ,subnet = "branch1_fgt_public",  ip = "172.16.1.15",vnet = "branch1" , pool="branch1extlbpool2", nsgname="br1-nsg" },
+  "nic3" = { vmname = "fgt2", name = "port3", alias = "isp2" ,subnet = "branch1_fgt_public2",  ip = "172.16.11.15",vnet = "branch1" , pool="branch1extlbpool2", nsgname="br1-nsg" },
   "nic4" = { vmname = "fgt2", name = "port4", alias = "ha"   ,subnet = "branch1_fgt_ha",      ip = "172.16.3.5", vnet = "branch1" , pool="branch1intlbparking", nsgname="br1-nsg"},
   "nic5" = { vmname = "fgt2", name = "port5", alias = "mgmt" ,subnet = "branch1_fgt_mgmt",    ip = "172.16.4.5", vnet = "branch1" , pool="branch1intlbparking", nsgname="br1-nsg"}  
 }
 
 branch2fgt1 = {
-  "nic1" = { vmname = "fgt1", name = "port1", alias = "isp1" , subnet = "branch2_fgt_public"  , ip = "172.17.1.4", vnet = "branch2" , pool="branch2extlbpool1", nsgname="br2-nsg" },
-  "nic2" = { vmname = "fgt1", name = "port2", alias = "priv" , subnet = "branch2_fgt_private" , ip = "172.17.2.4", vnet = "branch2" , pool="branch2intlbpool1", nsgname="br2-nsg" },
-  "nic3" = { vmname = "fgt1", name = "port3", alias = "isp2" , subnet = "branch2_fgt_public" ,  ip = "172.17.1.14",vnet = "branch2",  pool="branch2extlbpool2", nsgname="br2-nsg" },
-  "nic4" = { vmname = "fgt1", name = "port4", alias = "ha"   , subnet = "branch2_fgt_ha",       ip = "172.17.3.4", vnet = "branch2" , pool="branch2intlbparking", nsgname="br2-nsg"},
-  "nic5" = { vmname = "fgt1", name = "port5", alias = "mgmt" , subnet = "branch2_fgt_mgmt",     ip = "172.17.4.4", vnet = "branch2" , pool="branch2intlbparking", nsgname="br2-nsg"}   
+  "nic1" = { vmname = "fgt1", name = "port1", alias = "isp1" , subnet = "branch2_fgt_public1"  , ip = "172.17.1.4", vnet = "branch2" , pool="branch2extlbpool1", nsgname="br2-nsg" },
+  "nic2" = { vmname = "fgt1", name = "port2", alias = "priv" , subnet = "branch2_fgt_private" , ip = "172.17.2.4", vnet = "branch2" ,  pool="branch2intlbpool1", nsgname="br2-nsg" },
+  "nic3" = { vmname = "fgt1", name = "port3", alias = "isp2" , subnet = "branch2_fgt_public2" ,  ip = "172.17.11.14",vnet = "branch2", pool="branch2extlbpool2", nsgname="br2-nsg" },
+  "nic4" = { vmname = "fgt1", name = "port4", alias = "ha"   , subnet = "branch2_fgt_ha",       ip = "172.17.3.4", vnet = "branch2" ,  pool="branch2intlbparking", nsgname="br2-nsg"},
+  "nic5" = { vmname = "fgt1", name = "port5", alias = "mgmt" , subnet = "branch2_fgt_mgmt",     ip = "172.17.4.4", vnet = "branch2" ,  pool="branch2intlbparking", nsgname="br2-nsg"}   
   
 }
 branch2fgt2 = {
-  "nic1" = { vmname = "fgt2", name = "port1", alias = "isp1" , subnet = "branch2_fgt_public" , ip = "172.17.1.5", vnet = "branch2" , pool="branch2extlbpool1", nsgname="br2-nsg" },
+  "nic1" = { vmname = "fgt2", name = "port1", alias = "isp1" , subnet = "branch2_fgt_public1" , ip = "172.17.1.5", vnet = "branch2" , pool="branch2extlbpool1", nsgname="br2-nsg" },
   "nic2" = { vmname = "fgt2", name = "port2", alias = "priv" , subnet = "branch2_fgt_private", ip = "172.17.2.5", vnet = "branch2" , pool="branch2intlbpool1", nsgname="br2-nsg" },
-  "nic3" = { vmname = "fgt2", name = "port3", alias = "isp2" , subnet = "branch2_fgt_public",  ip = "172.17.1.15",vnet = "branch2",  pool="branch2extlbpool2", nsgname="br2-nsg" },
+  "nic3" = { vmname = "fgt2", name = "port3", alias = "isp2" , subnet = "branch2_fgt_public2",  ip = "172.17.11.15",vnet = "branch2",  pool="branch2extlbpool2", nsgname="br2-nsg" },
   "nic4" = { vmname = "fgt2", name = "port4", alias = "ha"   , subnet = "branch2_fgt_ha",      ip = "172.17.3.5", vnet = "branch2" , pool="branch2intlbparking", nsgname="br2-nsg"},
   "nic5" = { vmname = "fgt2", name = "port5", alias = "mgmt" , subnet = "branch2_fgt_mgmt",    ip = "172.17.4.5", vnet = "branch2" , pool="branch2intlbparking", nsgname="br2-nsg"}   
 }
@@ -189,7 +201,7 @@ brlb_frontend_ip_configurations = {
   "branch1extlbfront1"  = { name = "fgt-front-1" , lb="branch1extlb", subnet= "",                    frontendip = "branch1-pip1", type="external" },
   "branch1extlbfront2"  = { name = "fgt-front-2" , lb="branch1extlb", subnet= "",                    frontendip = "branch1-pip2", type="external" },
   "branch2extlbfront1"  = { name = "fgt-front-1" , lb="branch2extlb", subnet= "",                    frontendip = "branch2-pip1", type="external" },
-  "branch2extlbfront2"  = { name = "fgt-front-2" , lb="branch2extlb", subnet= "",                    frontendip = "branch2-pip2", type="external" },
+  "branch2extlbfront2"  = { name = "fgt-front-2" , lb="branch2extlb", subnet= "",                    frontendip = "branch2-pip2", type="external" }
 }
 
 branchlbpools = {
@@ -200,7 +212,7 @@ branchlbpools = {
   "branch2extlbpool1"  = { pool= "br2-ext-fgt-ap-port1" , lb="branch2extlb"},
   "branch2extlbpool2"  = { pool= "br2-ext-fgt-ap-port3" , lb="branch2extlb"},
   "branch1intlbparking"  = { pool= "br1-int-parking" , lb="branch1intlb"},
-  "branch2intlbparking"  = { pool= "br2-int-parking" , lb="branch2intlb"},
+  "branch2intlbparking"  = { pool= "br2-int-parking" , lb="branch2intlb"}
   
 }
 
@@ -208,7 +220,7 @@ branchlbprobes = {
   "branch1intlbprob1"  = { name= "fgt-lbprobe" , lb="branch1intlb", port="8008" },
   "branch2intlbprob1"  = { name= "fgt-lbprobe" , lb="branch2intlb", port="8008" },
   "branch1extlbprob1"  = { name= "fgt-lbprobe" , lb="branch1extlb", port="8008" },
-  "branch2extlbprob1"  = { name= "fgt-lbprobe" , lb="branch2extlb", port="8008" },
+  "branch2extlbprob1"  = { name= "fgt-lbprobe" , lb="branch2extlb", port="8008" }
 }
 
 branchlbrules = {
@@ -266,3 +278,12 @@ brnsgsrules = {
   "br3-outbound"  = { nsgname = "br3-nsg", rulename = "AllOutbound", priority = "100", direction = "Outbound", access = "Allow"   },
 }
 
+////////////////////Branch VM//////////////////
+
+
+branchvm = {
+  "br1vm1" = { vmname = "br1lnx1",  vnet= "branch1" , subnet = "branch1_protected" },
+  "br2vm1" = { vmname = "br2lnx1",  vnet= "branch2" , subnet = "branch2_protected" },
+  "br3vm1" = { vmname = "br3lnx1",  vnet= "branch3" , subnet = "branch3_protected" }
+
+}

@@ -28,6 +28,7 @@ resource "azurerm_subnet" "spokesubnets" {
 
 //############################ Peer the Hubs ##################
 
+/*
 ///////Spokes to Hubs
 resource "azurerm_virtual_network_peering" "spoke-to-hub" {
   for_each = var.az_spokevnet  
@@ -62,7 +63,10 @@ resource "azurerm_virtual_network_peering" "hub-to-spoke" {
 
 }
 
+*/
+
 //===================================Create Spoke Workloads===================================
+
 data "template_file" "lnx_customdata" {
   template = "./assets/lnx-spoke.tpl"
 

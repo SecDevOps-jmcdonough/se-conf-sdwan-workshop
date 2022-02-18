@@ -57,10 +57,7 @@ variable "hub1fgt2" {
   description = "Azure FGT2 nics IP"
 
 }
-variable "hub1fgt3" {
-  description = "Azure FGT3 nics IP"
 
-}
 
 variable "az_ilbip" {
   description = "Internal LBs IP"
@@ -86,6 +83,12 @@ variable "hubextlbnat" {
   description = "Hub External NAT"
 
 }
+variable "hublbpools" {
+  description = "Hub External NAT"
+
+}
+
+
 
 //-----------------FG information ---------------
 variable "az_fgt_vmsize" {
@@ -159,6 +162,13 @@ variable "branch2fgt2" {
 }
 variable "branch3fgt1" {
   description = "Branch3 FGT1"
+
+}
+
+//---------------Branch VMs-------
+
+variable "branchvm" {
+  description = "Branch VM"
 
 }
 

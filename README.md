@@ -7,8 +7,8 @@
 
 ***
 ***
-## Section1 - Setting up the environment
-_[Deployment exercise] [estimated duration 40min]_
+## Chapter1 - Setting up the environment (40min)
+_[Deployment exercise - estimated duration 40min]_
 
 ### Task 1 - Setup your AzureCloud Shell 
 
@@ -29,8 +29,8 @@ _[Deployment exercise] [estimated duration 40min]_
 
 ***
 ***
-## Section2 - Hub and Branch VPN Connectivity 
-_[Configuration exercise] [estimated duration 20min]_
+## Chapter2 - Hub and Branch VPN Connectivity (20min)
+_[Configuration exercise - estimated duration 20min]_
 
 ### Task 1 - Add the FortiGates to the Hub Load Balancer Backend Pool
 * Go to the Hub External Load Balancer **sdwan-student01-workshop-hub1-elb1**
@@ -68,22 +68,23 @@ _[Configuration exercise] [estimated duration 20min]_
 
 [Slides to explain Azure Route Server, VNET peering , SDN connector]
 
-## Section 3 - Hub and Spoke VNET Connectivity 
-_[Configuration and troubleshooting exercise] [estimated duration 40min]_
+***
+***
+## Chapter3 - Hub and Spoke VNET Connectivity (40min)
+_[Configuration and troubleshooting exercise - estimated duration 40min]_
 
 ### Task 1 - Create the VNET peering
 * Create a VNET peering between the Spoke11 VNET and the Hub VNET. Go to the Spoke VNET, studentxx-workshop-sdwan-spoke11 and then click on Peerings.
 * Repeat the above between Spoke12 VNET and the Hub VNET
 
     ![vnetpeering1](images/spoke11-to-Hub-peering.jpg)
-    ![vnetpeering2](images/spoke12-to-Hub-peering.jpg)
 
-* Check that the Branch FortiGate learn the Spoke11 VNET and Spoke12 VNET CIDR
+* Check now that the Branch FortiGate learn the Spoke11 VNET and Spoke12 VNET CIDRs
 
 ### Task 2 - Check Azure route server configuration and learned routes
 * Go to Azure Route Server. Click on your Azure Route Server studentxx-workshop-sdwan-RouteServer.
 * Click on Peers on the left side of the menu
-* List the routes leanred by Azure Route Server. Run the command below from Azure Shell
+* List the routes leanred by Azure Route Server. Run the command below from your Azure Cloud Shell
 
 `az network routeserver peering list-learned-routes -g studentxx-workshop-sdwan --routeserver studentxx-workshop-sdwan-RouteServer --name sdwan-fgt1`
 
@@ -92,10 +93,11 @@ _[Configuration and troubleshooting exercise] [estimated duration 40min]_
 
 ### Task 3 - Create a Dynamic SDN object [troubleshooting required]
 * Is your Hub FortiGate able to see the Dynamic filters ?
-    * Trouleshoot and Make the required changes to allow the FortiGate to retrieve the SDN filters.
+    * **Trouleshoot and Make the required changes** to allow the FortiGate to retrieve the SDN filters.
     * Hints:
+    =
         * FGT Branch3 is able to retrieve the filters, why that is not the case for the FortiGates Behind Load Balancers.
-        * FGT Branch3 is standalone, all other FortiGates are in A-P HA.
+        * FGT Branch3 is standalone, all other FortiGates are in A-P HA, how does that affect traffic to retrieve SDN filters?
 
 * On the Hub FortiGate, create a dynamic object that resolves to the Spoke VNETs VMs
 * On the Hub FortiGate, use the object created above on policy3 to restrict traffic coming from the Branches       
@@ -104,7 +106,6 @@ _[Configuration and troubleshooting exercise] [estimated duration 40min]_
     1. Connect to the Branch1 Primary FortiGate
     2. Configure ping-options to initiate traffic from FortiGate's private nic. 
     3. Initiate a ping to Spoke11 and Spoke12 Linux VM
-    4. Does it work ?
 
     ![traffic](images/traffic1.jpg)
 
@@ -118,6 +119,8 @@ _[Configuration and troubleshooting exercise] [estimated duration 40min]_
             ![console2](images/ssh-br-lnx-console2.jpg)
     
     2. Go to the VM Serial Console
+        ![console3](images/ssh-br-lnx-console3.jpg)
+
     3. Initiate a ping to Spoke11 and Spoke12 Linux VMs 
     ```
      ping 10.11.1.4
@@ -129,41 +132,57 @@ _[Configuration and troubleshooting exercise] [estimated duration 40min]_
 
 ### Task 5 - QUIZ
 * Why the Branch FortiGate is able to reach the remote spoke VNET but _NOT_ The Branch VM  behind the FortiGate
-* How is the Spoke VNET VM able to respond to ping requests from the Branch site without any routing configuration
-
 * What was missing to allow the FortiGates to retreive SDN connector filters 
 * Why the FortiGate is able to ONLY see filters and objects ONLY in its resource groupe
-* How does the FortiGate get the token to authenticate API calls to Azure
 * FortiGate at the Branch1 and Branch2 are both behind Azure Load Balancer (behind NAT). Branch1 to Branch2 traffic will succesfully establish an ADVPN shortcut?
 
-## Section 4 - Branch to Branch connectivity  [Configuration exercise] [estimated duration 20min]
+***
+***
+## Chapter4 - Branch to Cloud and Branch to Branch connectivity (20min)
+_[Configuration exercise - estimated duration 20min]_
 
 ### Task 1 - Create a route in the UDR
 * Click on the Branch1 private route table (studentxx-sdwan-workshop-branch1_rt)
 * Add a default route that points to the Internal Load balancer listener 
 * Repeat the previous step to Branch2 and Branch3 Route Tables (please use the correct ip as the next hop)
 
-### Task 3 - Generate traffic
-* Connect to the Branch1 Linux Host
-* Generate traffic to Branch2 Linux Host 
-* Check if an ADVPN shortcut has been created 
+        ![console3](images/defaultroutebranch1.jpg)
+
+### Task 3 - Generate traffic to the Hub
+* Connect to the Branch1 Linux Host via the serial console
+* Generate traffic to Hub
+    ```
+     ping 10.11.1.4
+     ping 10.12.1.4 
+     
+    ```
+* Does it work now ?
+
+### Task 3 - Generate traffic between Branches
+* Connect to the Branch1 Linux Host via the serial console
+* Generate traffic to Branch2 Linux Host
+   ```
+     ping 172.17.5.4
+     
+    ```
+* Check if an ADVPN shortcut has been created
 
 ### Task 3 - QUIZ
-* How do we ensure that traffic egress Branch1 on port1 (isp1)  has always the same public ip 
+* We are able to How is the Spoke VNET VM able to respond to ping requests from the Branch site without any routing configuration
+* The Load balancer has two front end ip addresses, How do we ensure that traffic egress Branch1 on port1 (isp1)  has always the same public ip 
 
-[15min break]
-## Section 5 - Redundancy [estimated duration 20min]
-### Task 1 - Enable Console Access on Branch1 Linux Host
 
-### Task 2 - Generate UDP traffic
+## Chapter5 - Redundancy 
+_[estimated duration 20min]_
+### Task 1 - Generate UDP traffic
 * Access the serial console by clicking on the VM studentXX-sdwan-workshop-br1lnx1 and then Serial Console
 * Ping a resource in the Hub as well as in a remote branch site `fping -c 1000 10.11.1.4`
-### Task 3 - Initiate a failover
+### Task 2 - Initiate a failover
 * Connect to the Branch1 Primary FortiGate . Initiate a failover by rebooting the primary FortiGate
 * Monitor the stream of the generated UDP traffic
 * Did you lose the UDP connexion ?
 
-### Task 4 - Generate TCP traffic
+### Task 3 - Generate TCP traffic
 * Ensure that both units of Branch1 FGT are up and running 
 * Access the serial console of Branch1 Linux VM by clicking on the VM studentXX-sdwan-workshop-br1lnx1 and then click on Serial Console
 * Generate an SSH session to Branch2 Linux VM `ssh studentxx@172.17.2.6`
@@ -175,8 +194,8 @@ _[Configuration and troubleshooting exercise] [estimated duration 40min]_
 ### Task 6 - QUIZ
 * Why did we lose the SSH (TCP) session and we did not lose the UDP connection ? 
 
-## Section 6 - Scaling [estimated duration 20min]
+## Chapter 6 - Scaling [estimated duration 20min]
 
 [15min break]
 
-## Section 7 - Azure virtualWAN [estimated duration 60min]
+## Chapter 7 - Azure virtualWAN [estimated duration 60min]
