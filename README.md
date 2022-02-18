@@ -81,6 +81,7 @@ _[Configuration exercise - estimated duration 20min]_
 _[Configuration and troubleshooting exercise - estimated duration 40min]_
 
 <details>
+
 ### Task 1 - Create the VNET peering
 * Create a VNET peering between the Spoke11 VNET and the Hub VNET. Go to the Spoke VNET, studentxx-workshop-sdwan-spoke11 and then click on Peerings.
 * Repeat the above between Spoke12 VNET and the Hub VNET
@@ -151,14 +152,16 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
 ## Chapter4 - Branch to Cloud and Branch to Branch connectivity (20min)
 _[Configuration exercise - estimated duration 20min]_
 
+<details>
+
 ### Task 1 - Create a route in the UDR
 * Click on the Branch1 private route table (studentxx-sdwan-workshop-branch1_rt)
 * Add a default route that points to the Internal Load balancer listener 
 * Repeat the previous step to Branch2 and Branch3 Route Tables (please use the correct ip as the next hop)
 
-        ![console3](images/defaultroutebranch1.jpg)
+    ![udr](images/defaultroutebranch1.jpg)
 
-### Task 3 - Generate traffic to the Hub
+### Task 2 - Generate traffic to the Hub
 * Connect to the Branch1 Linux Host via the serial console
 * Generate traffic to Hub
     ```
@@ -183,8 +186,15 @@ _[Configuration exercise - estimated duration 20min]_
 * The Load balancer has two front end ip public addresses, How do we ensure that traffic egressing Branch1 on port1 (isp1)  has always the same public ip applied ? Same for traffic egressing Branch1 on port3 (isp2)
 
 
+</details>
+
+***
+***
 ## Chapter5 - Redundancy (20min)
-_[estimated duration 20min]_
+_[failover exercise - estimated duration 20min]_
+
+<details>
+
 ### Task 1 - Generate ICMP traffic
 * Access the serial console by clicking on the VM studentXX-sdwan-workshop-br1lnx1 and then Serial Console
 * Ping a resource in the Hub as well as in a remote branch site `ping 10.11.1.4`
@@ -192,21 +202,46 @@ _[estimated duration 20min]_
 * Connect to the Branch1 Primary FortiGate . Initiate a failover by rebooting the primary FortiGate
 * Monitor the number of lost Ping and the failover time
 * How long did it take ?
+* Have the VPN been renegotiated upon failover or maintained ?
+
+    ![failover](images/defaultroutebranch1.jpg)
 
 ### Task 3 - Generate TCP traffic
 * Ensure that both units of Branch1 FGT in the cluster is up and running
 * Access the serial console of Branch1 Linux VM by clicking on the VM studentXX-sdwan-workshop-br1lnx1 and then click on Serial Console
-* Generate an SSH session to Branch2 Linux VM `ssh studentxx@10.11.1.4`
-* From Branch2 Linux VM SSH session generate a continous stream of connections to track the failover event 
-`while true; date; do curl -I -sw '%{http_code}'  https://www.lemonde.fr/ ; echo -e "\n================="; sleep 1 ; done `
+* Generate an SSH session to the Hub Linux VM 
+
+   ```
+   ssh studentxx@10.11.1.4
+   
+   ```
+* From Hub Linux VM SSH session generate a continous stream of connections to track the failover event 
+   
+   ```
+   while true; date; do curl -I -sw '%{http_code}'  https://www.lemonde.fr/ ; echo -e "\n================="; sleep 1 ; done
+
+   ```   
 * Connect to the Branch1 Primary FortiGate . Initiate a failover by rebooting the primary FortiGate
-* Monitor the SSH connexion to Branch2 Linux VM
+* Monitor the SSH connexion
 * Did you lose the TCP connexion ?
 ### Task 6 - QUIZ
-* Why did we lose the SSH (TCP) session and we did not lose the UDP connection ? 
+* Why did we lose the SSH (TCP) session with a "short" failover time ? 
 
-## Chapter 6 - Scaling [estimated duration 20min]
 
-[15min break]
+***
+***
+## Chapter 6 - Scaling (20min)
+_[Presentation - estimated duration 20min]_
+<details>
+
+</details>
+
+***
+***
 
 ## Chapter 7 - Azure virtualWAN [estimated duration 60min]
+_[Configuration exercise - estimated duration 20min]_
+
+<details>
+
+</details>
