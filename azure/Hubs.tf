@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "hubrg" {
 //############################ Create Hub VNETs  ##################
 
 resource "azurerm_virtual_network" "Hubs" {
-   for_each = var.az_hubs  
+  for_each            = var.az_hubs
   name                = "${var.project}-${var.TAG}-${each.value.name}"
   location            = each.value.location
   resource_group_name = azurerm_resource_group.hubrg.name
@@ -26,7 +26,7 @@ resource "azurerm_virtual_network" "Hubs" {
 resource "azurerm_subnet" "hubsubnets" {
   for_each = var.az_hubsubnetscidrs
 
-  name                 = each.value.name == "RouteServerSubnet" ? "${each.value.name}" :  "${var.TAG}-${var.project}-subnet-${each.value.name}"
+  name                 = each.value.name == "RouteServerSubnet" ? "${each.value.name}" : "${var.TAG}-${var.project}-subnet-${each.value.name}"
   resource_group_name  = azurerm_resource_group.hubrg.name
   address_prefixes     = [each.value.cidr]
   virtual_network_name = azurerm_virtual_network.Hubs[each.value.vnet].name
@@ -41,7 +41,7 @@ resource "azurerm_route_table" "hubvnet_route_tables" {
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
 
-  disable_bgp_route_propagation  = each.value.disablepropagation
+  disable_bgp_route_propagation = each.value.disablepropagation
   //disable_bgp_route_propagation = false
   tags = {
     Project = "${var.project}"
@@ -63,7 +63,7 @@ resource "azurerm_network_security_group" "fgt_nsgs" {
   for_each = var.nsgs
 
   name                = "${var.TAG}-${var.project}-${each.value.vnet}-${each.value.name}"
-  location                      = azurerm_virtual_network.Hubs[each.value.vnet].location
+  location            = azurerm_virtual_network.Hubs[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
 }
 
@@ -71,7 +71,7 @@ resource "azurerm_network_security_rule" "fgt_nsg_rules" {
   for_each = var.nsgrules
 
   name                        = each.value.rulename
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name         = azurerm_resource_group.hubrg.name
   network_security_group_name = azurerm_network_security_group.fgt_nsgs[each.value.nsgname].name
   priority                    = each.value.priority
   direction                   = each.value.direction
@@ -91,7 +91,7 @@ resource "azurerm_network_interface" "hub1fgt1nics" {
   for_each                      = var.hub1fgt1
   name                          = "${each.value.vnet}-${each.value.vmname}-${each.value.name}"
   location                      = azurerm_virtual_network.Hubs[each.value.vnet].location
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name           = azurerm_resource_group.hubrg.name
   enable_ip_forwarding          = true
   enable_accelerated_networking = true
 
@@ -111,7 +111,7 @@ resource "azurerm_network_interface" "hub1fgt2nics" {
   for_each                      = var.hub1fgt2
   name                          = "${each.value.vnet}-${each.value.vmname}-${each.value.name}"
   location                      = azurerm_virtual_network.Hubs[each.value.vnet].location
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name           = azurerm_resource_group.hubrg.name
   enable_ip_forwarding          = true
   enable_accelerated_networking = false
 
@@ -131,13 +131,13 @@ resource "azurerm_network_interface" "hub1fgt2nics" {
 
 
 resource "azurerm_network_interface_security_group_association" "hub1fgt1nsg" {
-  for_each = var.hub1fgt1
+  for_each                  = var.hub1fgt1
   network_interface_id      = azurerm_network_interface.hub1fgt1nics[each.key].id
   network_security_group_id = azurerm_network_security_group.fgt_nsgs[each.value.nsgname].id
 }
 
 resource "azurerm_network_interface_security_group_association" "hub1fgt2nsg" {
-  for_each = var.hub1fgt1
+  for_each                  = var.hub1fgt1
   network_interface_id      = azurerm_network_interface.hub1fgt2nics[each.key].id
   network_security_group_id = azurerm_network_security_group.fgt_nsgs[each.value.nsgname].id
 }
@@ -149,53 +149,53 @@ resource "azurerm_network_interface_security_group_association" "hub1fgt2nsg" {
 data "template_file" "hub1fgt1_customdata" {
   template = file("./assets/fgt-hub-userdata.tpl")
   vars = {
-    fgt_id             = "hub1-fgt1"
-    fgt_license_file   = ""
-    fgt_username       = var.username
-    fgt_config_ha      = true
+    fgt_id               = "hub1-fgt1"
+    fgt_license_file     = ""
+    fgt_username         = var.username
+    fgt_config_ha        = true
     fgt_config_autoscale = false
-    fgt_ssh_public_key = ""
-    fgt_config_probe = true
+    fgt_ssh_public_key   = ""
+    fgt_config_probe     = true
 
-    Port1IP             = var.hub1fgt1["nic1"].ip
-    Port1Alias          = var.hub1fgt1["nic1"].alias
-    Port2IP             = var.hub1fgt1["nic2"].ip
-    Port2Alias          = var.hub1fgt1["nic2"].alias
-    Port3IP             = var.hub1fgt1["nic3"].ip
-    Port3Alias          = var.hub1fgt1["nic3"].alias 
-    Port4IP             = var.hub1fgt1["nic4"].ip
-    Port4Alias          = var.hub1fgt1["nic4"].alias
+    Port1IP    = var.hub1fgt1["nic1"].ip
+    Port1Alias = var.hub1fgt1["nic1"].alias
+    Port2IP    = var.hub1fgt1["nic2"].ip
+    Port2Alias = var.hub1fgt1["nic2"].alias
+    Port3IP    = var.hub1fgt1["nic3"].ip
+    Port3Alias = var.hub1fgt1["nic3"].alias
+    Port4IP    = var.hub1fgt1["nic4"].ip
+    Port4Alias = var.hub1fgt1["nic4"].alias
 
-    port3subnetmask   = cidrnetmask(var.az_hubsubnetscidrs ["hub1_fgt_ha"].cidr )
-    port4subnetmask   = cidrnetmask(var.az_hubsubnetscidrs ["hub1_fgt_mgmt"].cidr     )
+    port3subnetmask = cidrnetmask(var.az_hubsubnetscidrs["hub1_fgt_ha"].cidr)
+    port4subnetmask = cidrnetmask(var.az_hubsubnetscidrs["hub1_fgt_mgmt"].cidr)
 
-    fgt_external_gw     = cidrhost(var.az_hubsubnetscidrs ["hub1_fgt_public"].cidr , 1)
-    fgt_internal_gw     = cidrhost(var.az_hubsubnetscidrs ["hub1_fgt_private"].cidr, 1)
-    fgt_mgmt_gw         = cidrhost(var.az_hubsubnetscidrs ["hub1_fgt_mgmt"].cidr , 1)
-  
-    fgt_ha_peerip       = var.hub1fgt2["nic3"].ip
-    fgt_ha_priority     = "100"
-    vnet_network        = var.az_hubs["hub1"].cidr
+    fgt_external_gw = cidrhost(var.az_hubsubnetscidrs["hub1_fgt_public"].cidr, 1)
+    fgt_internal_gw = cidrhost(var.az_hubsubnetscidrs["hub1_fgt_private"].cidr, 1)
+    fgt_mgmt_gw     = cidrhost(var.az_hubsubnetscidrs["hub1_fgt_mgmt"].cidr, 1)
 
-    port_ha             = "port3"
-    port_mgmt           = "port4"
+    fgt_ha_peerip   = var.hub1fgt2["nic3"].ip
+    fgt_ha_priority = "100"
+    vnet_network    = var.az_hubs["hub1"].cidr
+
+    port_ha   = "port3"
+    port_mgmt = "port4"
 
     fgt_config_bgp = true
-    fgt_as =  var.az_fgtasn
-    peer1 =  cidrhost (element(azurerm_subnet.hubsubnets["hub1_RouteServer"].address_prefixes , 0 ), 4) 
-    peer2 =  cidrhost (element(azurerm_subnet.hubsubnets["hub1_RouteServer"].address_prefixes , 0 ), 5)
-    peer_as = "65515" 
+    fgt_as         = var.az_fgtasn
+    peer1          = cidrhost(element(azurerm_subnet.hubsubnets["hub1_RouteServer"].address_prefixes, 0), 4)
+    peer2          = cidrhost(element(azurerm_subnet.hubsubnets["hub1_RouteServer"].address_prefixes, 0), 5)
+    peer_as        = "65515"
 
-    fgt_config_sdwan      = true
+    fgt_config_sdwan = true
 
 
-  }  
+  }
 }
 
 resource "azurerm_virtual_machine" "hub1fgt1" {
   name                         = "${var.TAG}-${var.project}-hub1-fgt1"
-  location                      = azurerm_virtual_network.Hubs["hub1"].location
-  resource_group_name = azurerm_resource_group.hubrg.name
+  location                     = azurerm_virtual_network.Hubs["hub1"].location
+  resource_group_name          = azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.hub1fgt1nics : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.hub1fgt1nics)[*].id, 0)
   vm_size                      = var.az_fgt_vmsize
@@ -261,55 +261,55 @@ resource "azurerm_role_assignment" "hub1fgt1_reader" {
 data "template_file" "hub1fgt2_customdata" {
   template = file("./assets/fgt-hub-userdata.tpl")
   vars = {
-    fgt_id             = "hub1-fgt2"
-    fgt_license_file   = ""
-    fgt_username       = var.username
-    fgt_config_ha      = true
+    fgt_id               = "hub1-fgt2"
+    fgt_license_file     = ""
+    fgt_username         = var.username
+    fgt_config_ha        = true
     fgt_config_autoscale = false
-    fgt_ssh_public_key = ""
-    fgt_config_probe = true
+    fgt_ssh_public_key   = ""
+    fgt_config_probe     = true
 
-    Port1IP             = var.hub1fgt2["nic1"].ip
-    Port1Alias          = var.hub1fgt2["nic1"].alias
-    Port2IP             = var.hub1fgt2["nic2"].ip
-    Port2Alias          = var.hub1fgt2["nic2"].alias
-    Port3IP             = var.hub1fgt2["nic3"].ip
-    Port3Alias          = var.hub1fgt2["nic3"].alias 
-    Port4IP             = var.hub1fgt2["nic4"].ip
-    Port4Alias          = var.hub1fgt2["nic4"].alias
+    Port1IP    = var.hub1fgt2["nic1"].ip
+    Port1Alias = var.hub1fgt2["nic1"].alias
+    Port2IP    = var.hub1fgt2["nic2"].ip
+    Port2Alias = var.hub1fgt2["nic2"].alias
+    Port3IP    = var.hub1fgt2["nic3"].ip
+    Port3Alias = var.hub1fgt2["nic3"].alias
+    Port4IP    = var.hub1fgt2["nic4"].ip
+    Port4Alias = var.hub1fgt2["nic4"].alias
 
-    port3subnetmask   = cidrnetmask(var.az_hubsubnetscidrs ["hub1_fgt_ha"].cidr )
-    port4subnetmask   = cidrnetmask(var.az_hubsubnetscidrs ["hub1_fgt_mgmt"].cidr     )
+    port3subnetmask = cidrnetmask(var.az_hubsubnetscidrs["hub1_fgt_ha"].cidr)
+    port4subnetmask = cidrnetmask(var.az_hubsubnetscidrs["hub1_fgt_mgmt"].cidr)
 
-    fgt_external_gw     = cidrhost(var.az_hubsubnetscidrs ["hub1_fgt_public"].cidr , 1)
-    fgt_internal_gw     = cidrhost(var.az_hubsubnetscidrs ["hub1_fgt_private"].cidr, 1)
-    fgt_mgmt_gw         = cidrhost(var.az_hubsubnetscidrs ["hub1_fgt_mgmt"].cidr , 1)
+    fgt_external_gw = cidrhost(var.az_hubsubnetscidrs["hub1_fgt_public"].cidr, 1)
+    fgt_internal_gw = cidrhost(var.az_hubsubnetscidrs["hub1_fgt_private"].cidr, 1)
+    fgt_mgmt_gw     = cidrhost(var.az_hubsubnetscidrs["hub1_fgt_mgmt"].cidr, 1)
 
 
-    fgt_ha_peerip       = var.hub1fgt1["nic3"].ip
-    fgt_ha_priority     = "50"
-    vnet_network        = var.az_hubs["hub1"].cidr
+    fgt_ha_peerip   = var.hub1fgt1["nic3"].ip
+    fgt_ha_priority = "50"
+    vnet_network    = var.az_hubs["hub1"].cidr
 
-    port_ha             = "port3"
-    port_mgmt           = "port4"
+    port_ha   = "port3"
+    port_mgmt = "port4"
 
 
     fgt_config_bgp = true
-    fgt_as =  var.az_fgtasn
-    peer1 =  cidrhost (element(azurerm_subnet.hubsubnets["hub1_RouteServer"].address_prefixes , 0 ), 4) 
-    peer2 =  cidrhost (element(azurerm_subnet.hubsubnets["hub1_RouteServer"].address_prefixes , 0 ), 5)
-    peer_as = "65515" 
+    fgt_as         = var.az_fgtasn
+    peer1          = cidrhost(element(azurerm_subnet.hubsubnets["hub1_RouteServer"].address_prefixes, 0), 4)
+    peer2          = cidrhost(element(azurerm_subnet.hubsubnets["hub1_RouteServer"].address_prefixes, 0), 5)
+    peer_as        = "65515"
 
-    fgt_config_sdwan      = true
+    fgt_config_sdwan = true
 
 
-  }  
+  }
 }
 
 resource "azurerm_virtual_machine" "hub1fgt2" {
   name                         = "${var.TAG}-${var.project}-hub1-fgt2"
-  location                      = azurerm_virtual_network.Hubs["hub1"].location
-  resource_group_name = azurerm_resource_group.hubrg.name
+  location                     = azurerm_virtual_network.Hubs["hub1"].location
+  resource_group_name          = azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.hub1fgt2nics : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.hub1fgt2nics)[*].id, 0)
   vm_size                      = var.az_fgt_vmsize
@@ -376,12 +376,12 @@ resource "azurerm_role_assignment" "hub1fgt2_reader" {
 //////////////////////////////////LB and NAT rules//////////////////////////////////////
 
 resource "azurerm_public_ip" "hubpip" {
-for_each = var.hubpublicip
+  for_each            = var.hubpublicip
   name                = "${var.TAG}-${var.project}-${each.value.name}"
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
   allocation_method   = "Static"
-  sku = "Standard"
+  sku                 = "Standard"
 
   tags = {
     Project = "${var.project}"
@@ -390,15 +390,15 @@ for_each = var.hubpublicip
 }
 
 resource "azurerm_lb" "hub1extlb" {
-for_each = var.hubextlb
+  for_each            = var.hubextlb
   name                = "${var.TAG}-${var.project}-${each.value.name}"
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
   sku                 = "Standard"
 
-   frontend_ip_configuration {
+  frontend_ip_configuration {
     name                 = each.value.frontendip
-    public_ip_address_id = ( each.value.type == "external" ? azurerm_public_ip.hubpip[each.value.frontendip].id : null )
+    public_ip_address_id = (each.value.type == "external" ? azurerm_public_ip.hubpip[each.value.frontendip].id : null)
 
   }
   tags = {
@@ -408,10 +408,10 @@ for_each = var.hubextlb
 
 
 resource "azurerm_lb_nat_rule" "fgttfaccess" {
-for_each = var.hubextlbnat
+  for_each = var.hubextlbnat
 
-  resource_group_name = azurerm_resource_group.hubrg.name
-  loadbalancer_id     = azurerm_lb.hub1extlb[each.value.lb].id
+  resource_group_name            = azurerm_resource_group.hubrg.name
+  loadbalancer_id                = azurerm_lb.hub1extlb[each.value.lb].id
   name                           = each.value.name
   protocol                       = each.value.protocol
   frontend_port                  = each.value.frontport
@@ -420,28 +420,28 @@ for_each = var.hubextlbnat
 }
 
 resource "azurerm_network_interface_nat_rule_association" "fgtmastertfaccess" {
-for_each = var.hubextlbnat
+  for_each = var.hubextlbnat
 
-  network_interface_id  = ( each.value.interfacenat == "fgt1-port4" ? azurerm_network_interface.hub1fgt1nics["nic4"].id : azurerm_network_interface.hub1fgt2nics["nic4"].id )
+  network_interface_id  = (each.value.interfacenat == "fgt1-port4" ? azurerm_network_interface.hub1fgt1nics["nic4"].id : azurerm_network_interface.hub1fgt2nics["nic4"].id)
   ip_configuration_name = "ipconfig1"
   nat_rule_id           = azurerm_lb_nat_rule.fgttfaccess[each.key].id
 }
 
 
 resource "azurerm_lb_probe" "hubelbprobe" {
-for_each = var.hubextlb
+  for_each = var.hubextlb
 
   resource_group_name = azurerm_resource_group.hubrg.name
   loadbalancer_id     = azurerm_lb.hub1extlb[each.key].id
-  name                = "${each.value.name }-probe"
+  name                = "${each.value.name}-probe"
   port                = each.value.probe
 }
 
 resource "azurerm_lb_backend_address_pool" "hublbbackend" {
-for_each = var.hublbpools
+  for_each = var.hublbpools
 
-  loadbalancer_id     = azurerm_lb.hub1extlb[each.value.lb].id
-  name                = each.value.pool
+  loadbalancer_id = azurerm_lb.hub1extlb[each.value.lb].id
+  name            = each.value.pool
 }
 
 //////////////////////////////////Azure Route Server////////////////////////////////////
@@ -449,10 +449,10 @@ for_each = var.hublbpools
 
 resource "azurerm_public_ip" "arspip" {
   name                = "${var.TAG}-${var.project}-arspip"
-  location                      = azurerm_virtual_network.Hubs["hub1"].location
+  location            = azurerm_virtual_network.Hubs["hub1"].location
   resource_group_name = azurerm_resource_group.hubrg.name
   allocation_method   = "Static"
-  sku = "Standard"
+  sku                 = "Standard"
 
   tags = {
     Project = "${var.project}"
@@ -462,15 +462,15 @@ resource "azurerm_public_ip" "arspip" {
 
 resource "azurerm_resource_group_template_deployment" "AzureRouteServer" {
 
-      lifecycle {
-      ignore_changes = all
+  lifecycle {
+    ignore_changes = all
   }
 
   name                = "SDWAN-WOrkshop-ARS"
   resource_group_name = azurerm_resource_group.hubrg.name
-  deployment_mode = "Incremental"
-  debug_level = "requestContent, responseContent"
-    parameters_content = jsonencode({
+  deployment_mode     = "Incremental"
+  debug_level         = "requestContent, responseContent"
+  parameters_content = jsonencode({
     "project" = {
       value = var.project
     },
@@ -480,21 +480,21 @@ resource "azurerm_resource_group_template_deployment" "AzureRouteServer" {
     "location" = {
       value = azurerm_virtual_network.Hubs["hub1"].location
     },
-    "RouteServerSubnetID" ={
+    "RouteServerSubnetID" = {
       value = azurerm_subnet.hubsubnets["hub1_RouteServer"].id
     },
-    "peer1ip" ={
+    "peer1ip" = {
       value = azurerm_network_interface.hub1fgt1nics["nic2"].private_ip_address
     },
-    "peer2ip" ={
+    "peer2ip" = {
       value = azurerm_network_interface.hub1fgt2nics["nic2"].private_ip_address
     },
-    "peerasn" ={
+    "peerasn" = {
       value = var.az_fgtasn
     },
-    "RouteServerPIPID" ={
+    "RouteServerPIPID" = {
       value = azurerm_public_ip.arspip.id
-    }               
+    }
   })
   template_content = <<TEMPLATE
   {

@@ -10,6 +10,7 @@ variable "project" {
 
 variable "azsubscriptionid" {
   description = "Azure Subscription id"
+  default     = ""
 }
 variable "hubrglocation" {
   description = "Hub Resource Group Location"
