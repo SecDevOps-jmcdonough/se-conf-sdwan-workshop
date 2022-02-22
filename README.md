@@ -13,6 +13,20 @@ _[Deployment exercise - estimated duration 40min]_
 <details>
 
 ### Task 1 - Setup your AzureCloud Shell 
+* Login to Azure Cloud Portal https://portal.azure.com/ with the login/password that has been provided to you
+* Click on Cloud Shell icon on the Top Right side of the portal
+* Select Bash
+* Click on **show advanced settings**
+* Select **your own resource group** , use the the storage account available in that Resource Group, use the existing File Share **cloudshell**
+
+    ![cloudshell1](images/cloudshell-01.jpg)
+    ![cloudshell2](images/cloudshell-02.jpg)
+    ![cloudshell4](images/cloudshell-04.jpg)
+    ![cloudshell5](images/cloudshell-05.jpg)
+    ![cloudshell6](images/cloudshell-06.jpg)
+    ![cloudshell7](images/cloudshell-07.jpg)
+    ![cloudshell8](images/cloudshell-08.jpg)                     
+
 
 ### Task 2 - Run the Terraform Code
 * Clone the Github repo
@@ -20,13 +34,16 @@ _[Deployment exercise - estimated duration 40min]_
 * Run `Terraform plan`
 * Run `Terraform apply`
 
+* At the end of this step you should have the following architecture
+    ![global-step1](images/SDWAN_Workshop_global1.jpg)
+
 ### Task 3 - Verifications
-* Using the Terraform output verify that you have access to the FortiGates
+* Using the Terraform output verify that you have Web and SSH access to the FortiGates
 * Connect to the Branch sites FortiGates and check the VPN status 
 
 
 ### Task 4 - QUIZ
-* FortiGates do not have public IP attached to them, how are we accessing them then?
+* FortiGates in the Hub do not have public IP attached to them, how are we able to access the Web UI then?
 * Why the VPN are down ?
 
 </details>
@@ -64,6 +81,10 @@ _[Configuration exercise - estimated duration 20min]_
 
 * Verify that the BGP peering with the hub is UP and that the Branch FortiGate learn the Hub and other Branches CIDRs
 
+* At the end of this step you should have the following architecture
+    ![global-step2](images/SDWAN_Workshop_global2.jpg
+
+### Task 4 - Traffic generation
 
 ### Task 4 - QUIZ
 * Why to access the FortiGates we used NAT rules, and for IPSEC VPN traffic we used Load balancing rules ?
@@ -77,7 +98,7 @@ _[Configuration exercise - estimated duration 20min]_
 
 ***
 ***
-## Chapter3 - Hub and Spoke VNET Connectivity (40min)
+## Chapter3 - Hub VNET and Spoke VNET Connectivity (40min)
 _[Configuration and troubleshooting exercise - estimated duration 40min]_
 
 <details>
@@ -114,7 +135,7 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
 * Generate Traffic from Branch1 Primary FortiGate:  
     1. Connect to the Branch1 Primary FortiGate
     2. Configure ping-options to initiate traffic from FortiGate's private nic. 
-    3. Initiate a ping to Spoke11 and Spoke12 Linux VM
+    3. Initiate a ping to Spoke11 and Spoke12 Linux VM (10.11.1.4 and 10.12.1.4)
 
     ![traffic](images/traffic1.jpg)
 
@@ -138,11 +159,13 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
     ```
     4. Does it work ?
 
+* At the end of this step  you should have the following architecture
+    ![global-step3](images/SDWAN_Workshop_global3.jpg
 
 ### Task 5 - QUIZ
-* Why the Branch FortiGate is able to reach the remote spoke VNET but _NOT_ The Branch VM  behind the FortiGate
 * What was missing to allow the FortiGates to retreive SDN connector filters 
 * Why the FortiGate is able to ONLY see filters and objects ONLY in its resource groupe
+* Why the Branch FortiGate itself able to reach the remote spoke VNET VM (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch FortiGate is not ?
 * FortiGate at the Branch1 and Branch2 are both behind Azure Load Balancer (behind NAT). Branch1 to Branch2 traffic will succesfully establish an ADVPN shortcut?
 
 </details>
@@ -154,14 +177,16 @@ _[Configuration exercise - estimated duration 20min]_
 
 <details>
 
-### Task 1 - Create a route in the UDR
+### Branch to Cloud
+
+#### Task 1 - Create a route in the UDR
 * Click on the Branch1 private route table (studentxx-sdwan-workshop-branch1_rt)
 * Add a default route that points to the Internal Load balancer listener 
 * Repeat the previous step to Branch2 and Branch3 Route Tables (please use the correct ip as the next hop)
 
     ![udr](images/defaultroutebranch1.jpg)
 
-### Task 2 - Generate traffic to the Hub
+#### Task 2 - Generate traffic to the Hub
 * Connect to the Branch1 Linux Host via the serial console
 * Generate traffic to Hub
     ```
@@ -171,7 +196,8 @@ _[Configuration exercise - estimated duration 20min]_
     ```
 * Does it work now ?
 
-### Task 3 - Generate traffic between Branches
+### Branch to Branch
+#### Task 3 - Generate traffic between Branches
 * Connect to the Branch1 Linux Host via the serial console
 * Generate traffic to Branch2 Linux Host
    ```
@@ -180,8 +206,8 @@ _[Configuration exercise - estimated duration 20min]_
     ```
 * Check if an ADVPN shortcut has been created
 
-### Task 3 - QUIZ
-* How is the Spoke VNET Linux VM is able to respond to ping requests from the Branch site without any routing configuration while we had to confiure a route for the Branch Linux VM.
+### Task 4 - QUIZ
+* How is the Spoke VNET Linux VM is able to respond to ping requests from the Branch site without any route table configuration while we had to confiure a route for the Branch Linux VM.
 
 * The Load balancer has two front end ip public addresses, How do we ensure that traffic egressing Branch1 on port1 (isp1)  has always the same public ip applied ? Same for traffic egressing Branch1 on port3 (isp2)
 
