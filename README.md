@@ -14,20 +14,27 @@ _[Deployment exercise - estimated duration 40min]_
 
 ### Task 1 - Setup your AzureCloud Shell 
 * Login to Azure Cloud Portal https://portal.azure.com/ with the login/password that has been provided to you
-* Click on Cloud Shell icon on the Top Right side of the portal
-* Select Bash
-* Click on **show advanced settings**
-* Select **your own resource group** , use the the storage account available in that Resource Group, use the existing File Share **cloudshell**
 
     ![cloudshell1](images/cloudshell-01.jpg)
     ![cloudshell2](images/cloudshell-02.jpg)
+
+* Click on Cloud Shell icon on the Top Right side of the portal
+* Select Bash
+
     ![cloudshell4](images/cloudshell-04.jpg)
     ![cloudshell5](images/cloudshell-05.jpg)
+
+* Click on **show advanced settings**
+
     ![cloudshell6](images/cloudshell-06.jpg)
+
+* Select **your own resource group** , use the the storage account available in that Resource Group, use the existing File Share **cloudshell**
+
     ![cloudshell7](images/cloudshell-07.jpg)
-    ![cloudshell8](images/cloudshell-08.jpg)                     
+                  
+* You should now have access to Azure Cloud Shell console
 
-
+    ![cloudshell8](images/cloudshell-08.jpg)   
 ### Task 2 - Run the Terraform Code
 * Clone the Github repo
 * Run `Terraform init`
