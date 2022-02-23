@@ -37,6 +37,8 @@ _[Deployment exercise - estimated duration 40min]_
     ![cloudshell8](images/cloudshell-08.jpg)   
 ### Task 2 - Run the Terraform Code
 * Clone the Github repo
+* Customize the Resource Group name User name , based on the user id that was assigned to you
+
 * Run `Terraform init`
 * Run `Terraform plan`
 * Run `Terraform apply`
@@ -46,7 +48,7 @@ _[Deployment exercise - estimated duration 40min]_
 
 ### Task 3 - Verifications
 * Using the Terraform output verify that you have Web and SSH access to the FortiGates
-* Connect to the Branch sites FortiGates and check the VPN status 
+* Connect to the Branch sites FortiGates and check the VPN status. If they are down try to bring them UP
 
 
 ### Task 4 - QUIZ
@@ -94,10 +96,9 @@ _[Configuration exercise - estimated duration 20min]_
 ### Task 4 - Traffic generation
 
 ### Task 4 - QUIZ
-* Why to access the FortiGates we used NAT rules, and for IPSEC VPN traffic we used Load balancing rules ?
-* Why only one FortiGate is answering Azure LB Health Checks
-* In the routing table do you see Spoke11 and Spoke12 CIDRs ?
-* Why the FortiGates in the Branch don't see the Spoke11 VNET and Spoke12 VNET CIDRs (10.11.0.0/16 and 10.12.0.0/16)
+* Why one FortiGate is depicted as unhealthy by Azure LB ?
+* Why to access the FortiGates we used NAT rules, and for IPSEC VPN traffic we used Load balancing rules?
+* In the FortiGate Branch1 routing table do you see Spoke11 and Spoke12 CIDRs?
 
 </details>
 
@@ -137,7 +138,9 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
         * FGT Branch3 is standalone, all other FortiGates are in A-P HA, how does that affect traffic to retrieve SDN filters?
 
 * On the Hub FortiGate, create a dynamic object that resolves to the Spoke VNETs VMs
-* On the Hub FortiGate, use the object created above on policy3 to restrict traffic coming from the Branches       
+* On the Hub FortiGate, use the object created above on policy3 to restrict traffic coming from the Branches
+    ![policy3](images/policy3.jpg)
+          
 ### Task 4 - Traffic generation
 * Generate Traffic from Branch1 Primary FortiGate:  
     1. Connect to the Branch1 Primary FortiGate
@@ -170,8 +173,8 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
     ![global-step3](images/SDWAN_Workshop_global3.jpg
 
 ### Task 5 - QUIZ
-* What was missing to allow the FortiGates to retreive SDN connector filters 
-* Why the FortiGate is able to ONLY see filters and objects ONLY in its resource groupe
+* What was missing to allow the FortiGates to retreive SDN connector filters
+* Why the FortiGate is able to retrieve SDN filters and objects of its own resource groupe Only?
 * Why the Branch FortiGate itself able to reach the remote spoke VNET VM (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch FortiGate is not ?
 * FortiGate at the Branch1 and Branch2 are both behind Azure Load Balancer (behind NAT). Branch1 to Branch2 traffic will succesfully establish an ADVPN shortcut?
 
@@ -203,8 +206,33 @@ _[Configuration exercise - estimated duration 20min]_
     ```
 * Does it work now ?
 
+#### Task 3 - Check effective routes
+* Go to your resource group and click on Spoke11 Linux VM
+* Click on Networking in the Navigation Menu
+    ![effectiveroutes1](images/effectiveroutes-lnx-1.jpg)
+
+* Click on the VM nic
+    ![effectiveroutes2](images/effectiveroutes-lnx-2.jpg)
+
+* Click on **Effective routes**
+    ![effectiveroutes3](images/effectiveroutes-lnx-3.jpg)
+
+* Check that Azure Route Server has injected the Branch sites CIDRs learnt from the FGT
+
+* Go to your resource group and click on the Hub FGT VM
+* Click on Networking in the Navigation Menu
+    ![effectiveroutes4](images/effectiveroutes-lnx-4.jpg)
+
+* Click on the VM port2 nic
+    ![effectiveroutes5](images/effectiveroutes-lnx-5.jpg)
+
+* Click on **Effective routes**
+    ![effectiveroutes6](images/effectiveroutes-lnx-6.jpg)
+
+* Has Azure Route Server injected the Branch sites CIDRs learnt from the FGT?  Why ?
+
 ### Branch to Branch
-#### Task 3 - Generate traffic between Branches
+#### Task 4 - Generate traffic between Branches
 * Connect to the Branch1 Linux Host via the serial console
 * Generate traffic to Branch2 Linux Host
    ```
@@ -213,10 +241,10 @@ _[Configuration exercise - estimated duration 20min]_
     ```
 * Check if an ADVPN shortcut has been created
 
-### Task 4 - QUIZ
-* How is the Spoke VNET Linux VM is able to respond to ping requests from the Branch site without any route table configuration while we had to confiure a route for the Branch Linux VM.
+### Task 5 - QUIZ
+* Why Azure Route Server (ARS) has injected the Branch sites CIDRs to the Spoke VNET protected subnet but not the FortiGate private subnet?
 
-* The Load balancer has two front end ip public addresses, How do we ensure that traffic egressing Branch1 on port1 (isp1)  has always the same public ip applied ? Same for traffic egressing Branch1 on port3 (isp2)
+* The Branch external Load balancer has two front end public ip. How do we ensure that traffic egressing Branch1 on port1 (isp1)  has always the same public ip applied? Same for traffic egressing Branch1 on port3 (isp2)
 
 
 </details>
@@ -233,9 +261,9 @@ _[failover exercise - estimated duration 20min]_
 * Ping a resource in the Hub as well as in a remote branch site `ping 10.11.1.4`
 ### Task 2 - Initiate a failover
 * Connect to the Branch1 Primary FortiGate . Initiate a failover by rebooting the primary FortiGate
-* Monitor the number of lost Ping and the failover time
+* Monitor the number of **lost Pings** and the **failover time**
 * How long did it take ?
-* Have the VPN been renegotiated upon failover or maintained ?
+* Have the VPNs to the Hub been renegotiated upon failover or maintained ?
 
     ![failover](images/defaultroutebranch1.jpg)
 
@@ -258,6 +286,8 @@ _[failover exercise - estimated duration 20min]_
 * Monitor the SSH connexion
 * Did you lose the TCP connexion ?
 ### Task 6 - QUIZ
+* How long was your failover time ? 
+
 * Why did we lose the SSH (TCP) session with a "short" failover time ? 
 
 </details>
