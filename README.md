@@ -112,7 +112,7 @@ _[Presentation about Azure Route Server- estimated duration 20min]_
 
 ***
 ***
-## Chapter3 - Hub VNET and Spoke VNET Connectivity (40min)
+## Chapter4 - Hub VNET and Spoke VNET Connectivity (40min)
 _[Configuration and troubleshooting exercise - estimated duration 40min]_
 
 <details>
@@ -194,7 +194,7 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
 
 ***
 ***
-## Chapter4 - Branch to Cloud and Branch to Branch connectivity (20min)
+## Chapter5 - Branch to Cloud and Branch to Branch connectivity (20min)
 _[Configuration exercise - estimated duration 20min]_
 
 <details>
@@ -266,7 +266,7 @@ _[Configuration exercise - estimated duration 20min]_
 
 ***
 ***
-## Chapter5 - Redundancy (20min)
+## Chapter6 - Redundancy (20min)
 _[failover exercise - estimated duration 20min]_
 
 <details>
@@ -309,7 +309,7 @@ _[failover exercise - estimated duration 20min]_
 
 ***
 ***
-## Chapter 6 - Scaling (20min)
+## Chapter7 - Scaling (20min)
 _[Presentation about FGT A/A and SDWAN usecase- estimated duration 20min]_
 
 <details>
@@ -319,7 +319,7 @@ _[Presentation about FGT A/A and SDWAN usecase- estimated duration 20min]_
 ***
 ***
 
-## Chapter 7 - Azure virtualWAN [estimated duration 60min]
+## Chapter8 - Azure virtualWAN [estimated duration 60min]
 _[Configuration exercise - estimated duration 20min]_
 
 <details>
