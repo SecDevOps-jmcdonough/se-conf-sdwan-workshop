@@ -28,7 +28,7 @@ _[Deployment exercise - estimated duration 40min]_
 
     ![cloudshell6](images/cloudshell-06.jpg)
 
-* Select **your own resource group** , use the the storage account available in that Resource Group, use the existing File Share **cloudshell**
+* Select **your own resource group** , use the the storage account available in that Resource Group, use the existing File Share **cloudshell**  (type cloudshell)
 
     ![cloudshell7](images/cloudshell-07.jpg)
                   
@@ -98,11 +98,17 @@ _[Configuration exercise - estimated duration 20min]_
 ### Task 4 - QUIZ
 * Why one FortiGate is depicted as unhealthy by Azure LB ?
 * Why to access the FortiGates we used NAT rules, and for IPSEC VPN traffic we used Load balancing rules?
-* In the FortiGate Branch1 routing table do you see Spoke11 and Spoke12 CIDRs?
+* Do FortiGates in the Branches learn Spoke11 and Spoke12 CIDRs?
+
 
 </details>
 
-[Slides to explain Azure Route Server, VNET peering , SDN connector]
+## Chapter3 - Hub VNET and Spoke VNET Connectivity (40min)
+_[Presentation about Azure Route Server- estimated duration 20min]_
+
+<details>
+
+</details>
 
 ***
 ***
@@ -180,7 +186,7 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
 
 ### Task 5 - QUIZ
 * What was missing to allow the FortiGates to retreive SDN connector filters
-* Why the FortiGate is able to retrieve SDN filters and objects of its own resource groupe Only?
+* Why the FortiGate is able to retrieve the SDN connector filters of its own resource group Only?
 * Why the Branch FortiGate itself able to reach the remote spoke VNET VM (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch FortiGate is not ?
 * FortiGate at the Branch1 and Branch2 are both behind Azure Load Balancer (behind NAT). Branch1 to Branch2 traffic will succesfully establish an ADVPN shortcut?
 
@@ -304,7 +310,8 @@ _[failover exercise - estimated duration 20min]_
 ***
 ***
 ## Chapter 6 - Scaling (20min)
-_[Presentation - estimated duration 20min]_
+_[Presentation about FGT A/A and SDWAN usecase- estimated duration 20min]_
+
 <details>
 
 </details>
