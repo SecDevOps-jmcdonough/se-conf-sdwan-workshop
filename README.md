@@ -91,7 +91,7 @@ _[Configuration exercise - estimated duration 20min]_
 * Verify that the BGP peering with the hub is UP and that the Branch FortiGate learn the Hub and other Branches CIDRs
 
 * At the end of this step you should have the following architecture
-    ![global-step2](images/SDWAN_Workshop_global2.jpg
+    ![global-step2](images/SDWAN_Workshop_global2.jpg)
 
 ### Task 4 - Traffic generation
 
@@ -131,23 +131,26 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
 
 ### Task 3 - Create a Dynamic SDN object [troubleshooting required]
 * Is your Hub FortiGate able to see the Dynamic filters ?
-    * **Trouleshoot and Make the required changes** to allow the FortiGate to retrieve the SDN filters.
+    * **Trouleshoot and Make the required changes to allow the FortiGate to retrieve the SDN filters.**
     * Hints:
-    =
+        =
         * FGT Branch3 is able to retrieve the filters, why that is not the case for the FortiGates Behind Load Balancers.
         * FGT Branch3 is standalone, all other FortiGates are in A-P HA, how does that affect traffic to retrieve SDN filters?
 
 * On the Hub FortiGate, create a dynamic object that resolves to the Spoke VNETs VMs
 * On the Hub FortiGate, use the object created above on policy3 to restrict traffic coming from the Branches
+
     ![policy3](images/policy3.jpg)
-          
+
 ### Task 4 - Traffic generation
 * Generate Traffic from Branch1 Primary FortiGate:  
     1. Connect to the Branch1 Primary FortiGate
     2. Configure ping-options to initiate traffic from FortiGate's private nic. 
     3. Initiate a ping to Spoke11 and Spoke12 Linux VM (10.11.1.4 and 10.12.1.4)
 
-    ![traffic](images/traffic1.jpg)
+    ![traffic2](images/traffic2.jpg)
+
+    ![traffic1](images/traffic1.jpg)
 
 * Generate Traffic from Branch1 Linux VM:  
     1. Enable serial console access on Branch1 Linux VM
@@ -167,10 +170,13 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
      ping 10.12.1.4 
      
     ```
+    ![traffic3](images/traffic3.jpg)
+
     4. Does it work ?
 
 * At the end of this step  you should have the following architecture
-    ![global-step3](images/SDWAN_Workshop_global3.jpg
+
+    ![global-step3](images/SDWAN_Workshop_global3.jpg)
 
 ### Task 5 - QUIZ
 * What was missing to allow the FortiGates to retreive SDN connector filters
@@ -192,7 +198,7 @@ _[Configuration exercise - estimated duration 20min]_
 #### Task 1 - Create a route in the UDR
 * Click on the Branch1 private route table (studentxx-sdwan-workshop-branch1_rt)
 * Add a default route that points to the Internal Load balancer listener 
-* Repeat the previous step to Branch2 and Branch3 Route Tables (please use the correct ip as the next hop)
+* **Repeat the previous step to Branch2 and Branch3 Route Tables (please use the correct ip as the next hop)**
 
     ![udr](images/defaultroutebranch1.jpg)
 
@@ -230,6 +236,9 @@ _[Configuration exercise - estimated duration 20min]_
     ![effectiveroutes6](images/effectiveroutes-lnx-6.jpg)
 
 * Has Azure Route Server injected the Branch sites CIDRs learnt from the FGT?  Why ?
+
+
+
 
 ### Branch to Branch
 #### Task 4 - Generate traffic between Branches
