@@ -358,9 +358,11 @@ _[Configuration exercise - estimated duration 20min]_
     ![vwan2](images/vwan2.jpg)
 
 * Click on your vWAN and verify that you see the virtual Hub you just deployed
+
     ![vwan3](images/vwan3jpg)
 
 * Click on the vWAN Hub and verify that the deployment and routing status complete
+
     ![vwan4](images/vwan4jpg)
 
 
