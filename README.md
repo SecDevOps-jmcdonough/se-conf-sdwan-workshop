@@ -64,7 +64,7 @@ _[Deployment exercise - estimated duration 40min]_
 
 ### Task 4 - QUIZ
 * FortiGates in the Hub do not have public IP attached to them, how are we able to access the Web UI then?
-* Why the VPN are down ?
+* Why the VPN are still down ?
 
 </details>
 
@@ -334,5 +334,36 @@ _[Presentation about FGT A/A and SDWAN usecase- estimated duration 20min]_
 _[Configuration exercise - estimated duration 20min]_
 
 <details>
+
+### Task 1 - Deployment
+
+* Create your vWAN and the vWAN Hub using the CLI command below
+
+* Please replace the student variable with your own Student ID
+ 
+
+   ``` 
+    student='student05'
+
+    az network vwan create --name sdwan-$student-workshop-vwan --resource-group  $student-workshop-sdwan --location eastus --type Standard
+
+    az network vhub create --address-prefix 10.14.0.0/16 --name $student-eastushub --resource-group $student-workshop-sdwan --vwan sdwan-$student-workshop-vwan --location eastus --sku Standard
+
+   ``` 
+
+    ![vwan1](images/vwan1.jpg)
+
+
+* Navigate to your Resource Group and verify that you see your vWAN
+    ![vwan2](images/vwan2.jpg)
+
+* Click on your vWAN and verify that you see the virtual Hub you just deployed
+    ![vwan3](images/vwan3jpg)
+
+* Click on the vWAN Hub and verify that the deployment and routing status complete
+    ![vwan4](images/vwan4jpg)
+
+
+### Task 2 - Deployment
 
 </details>
