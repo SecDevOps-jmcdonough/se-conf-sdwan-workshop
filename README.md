@@ -41,19 +41,24 @@ _[Deployment exercise - estimated duration 40min]_
     ![gitclone](images/git-clone.jpg)
 
 * Move to the azure folder `cd ./se-conf-sdwan-workshop/azure/`
-* Customize your project name and the User name , based on the user id that was assigned to you
+* Customize your project name and the User name, based on the user id that was assigned to you
+  
+  `vi terraform.tfvars`
 
+    ![vi](images/vi.jpg)
     ![rgcustom](images/rg-customname.jpg)
 
 * Run `Terraform init`
 * Run `Terraform plan`
-* Run `Terraform apply`
+* Run `Terraform apply` and then answer `yes`
 
 * At the end of this step you should have the following architecture
     ![global-step1](images/SDWAN_Workshop_global1.jpg)
 
 ### Task 3 - Verifications
 * Using the Terraform output verify that you have Web and SSH access to the FortiGates
+    ![output](images/output.jpg)
+
 * Connect to the Branch sites FortiGates and check the VPN status. If they are down try to bring them UP
 
 
