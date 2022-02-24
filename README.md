@@ -36,8 +36,14 @@ _[Deployment exercise - estimated duration 40min]_
 
     ![cloudshell8](images/cloudshell-08.jpg)   
 ### Task 2 - Run the Terraform Code
-* Clone the Github repo
-* Customize the Resource Group name User name , based on the user id that was assigned to you
+* Clone the Github repo `git clone https://github.com/FortinetSecDevOps/se-conf-sdwan-workshop.git`
+
+    ![gitclone](images/git-clone.jpg)
+
+* Move to the azure folder `cd ./se-conf-sdwan-workshop/azure/`
+* Customize your project name and the User name , based on the user id that was assigned to you
+
+    ![rgcustom](images/rg-customname.jpg)
 
 * Run `Terraform init`
 * Run `Terraform plan`
@@ -103,7 +109,7 @@ _[Configuration exercise - estimated duration 20min]_
 
 </details>
 
-## Chapter3 - Hub VNET and Spoke VNET Connectivity (40min)
+## Chapter3 - Azure Route Server Presentation (40min)
 _[Presentation about Azure Route Server- estimated duration 20min]_
 
 <details>
