@@ -475,6 +475,8 @@ _[Configuration exercise - estimated duration 20min]_
 
 * Why the vWAN was not able to inject Spoke11 and Spoke12 VNETs CIDRs to FortiGate Private UDR?
 
+* The above setting is normally set to "yes", why did we set it to "no" ? Hint: We had Azure Route Server before
+
 * In the Spokes-VNET vWAN Route Table, the next-hop is the Primary FortiGate IP. What should we add/ do to handle failover ?
 
 </details>
