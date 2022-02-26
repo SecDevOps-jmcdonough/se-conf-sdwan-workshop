@@ -392,11 +392,11 @@ _[Configuration exercise - estimated duration 20min]_
 * Create Virtual WAN  VNET Connections
     * Go to the vWAN, Click on Virtual Network Connection
 
-        ![vwanconnection1](images/vwanconnection1.jpg)
+        ![vwanconnection1](images/vnetconnection1.jpg)
 
     * Create a VNET connection for Spoke11, attach it to the Spoke-VNETS Route Table and propagate it to FGT-VNET Route Table[**Please choose your own Resource Group and your own VNET** ]
 
-        ![vwanconnection2](images/vwanconnection2.jpg)
+        ![vwanconnection2](images/vnetconnection2.jpg)
 
     * Repeat the same for Spoke12
 
@@ -413,8 +413,8 @@ _[Configuration exercise - estimated duration 20min]_
         * Does it work now ?
         * why ?
 
-        ![vwanconnection3](images/vwanconnection3.jpg)
-        ![vwanconnection4](images/vwanconnection4.jpg)    
+        ![vwanconnection3](images/vnetconnection3.jpg)
+        ![vwanconnection4](images/vnetconnection4.jpg)    
 
 * Configure Spoke-VNETS Routes
     * Go your vWAN Hub, click on Routing and then click on Spoke-VNETS Route Table
@@ -434,7 +434,7 @@ _[Configuration exercise - estimated duration 20min]_
 
 * At the end of this step you should have the following architecture 
 
-    ![vwanhubrouting4](images/vwanhubrouting4.jpg)  
+    ![global4](images/SDWAN_Workshop_global4.jpg)  
 
 ### Task 3 - Traffic generation [troubleshooting required]
 
