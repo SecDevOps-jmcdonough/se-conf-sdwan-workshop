@@ -464,11 +464,14 @@ _[Configuration exercise - estimated duration 20min]_
             * Take a packet capture on the Hub, Do you see echo-requests arriving?  
                 `diagnose sniffer packet any 'net 10.11.0.0/16' 4 0 a` 
 
-            * Traffic is egressing the Hub FGT on port2, but you don't see any reply?... What is missing?  Check FHT Hub port2 **effective routes**?       
+            * Traffic is egressing the Hub FGT on port2, but you don't see any reply?... What is missing?  
+                * Check FGT Hub port2 **effective routes**?
+                * Do you see spoke11 and spoke12 CIDRs? Why the vWAN is not propagating them to the Route Table attached to the FGT private subnet ?  
+                * Check the Route Table **configuration** settings                   
 
                 ![bgp2](images/bgp2.jpg) 
 
-            * Do you see spoke11 and spoke12 CIDRs? Why the vWAN is not propagating them to the Route Table attached to the FGT private subnet ?  Check the Route Table **configuration** settings
+
 
 ### Task 4 - QUIZ
 * Why we were not able to attach the Hub FortiGate VNET to vWAN until we deleted Azure Route Server ?
