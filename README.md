@@ -407,7 +407,7 @@ _[Configuration exercise - estimated duration 20min]_
     * Locate your own Azure Route Server and delete it
 
         ![findars](images/findars.jpg)
-        ![deleteaes](images/deleteaes.jpg)
+        ![deletears](images/deletears.jpg)
 
     * Try now to connect the FGT VNET to the vWAN Hub, attach it to the FGT-VNET Route Table. 
         * Does it work now ?
@@ -416,7 +416,7 @@ _[Configuration exercise - estimated duration 20min]_
         ![vwanconnection3](images/vnetconnection3.jpg)
         ![vwanconnection4](images/vnetconnection4.jpg)    
 
-* Configure Spoke-VNETS Routes
+* Configure Spoke-VNETS Route Table
     * Go your vWAN Hub, click on Routing and then click on Spoke-VNETS Route Table
 
         ![vwanhubrouting1](images/vwanhubrouting1.jpg)
@@ -451,8 +451,8 @@ _[Configuration exercise - estimated duration 20min]_
     * Hints:
         =
         * FGT Branch1 does it learn routes to spokes from the Hub?
-        * COnfigure the Hub to advertise Spoke11 and Spoke12 CIDRs to the Branches
-            * On the Hub, add Static Routes to Spok11 and Spoke12. **What would be the next hop ?**
+        * Configure the Hub FGT to advertise Spoke11 and Spoke12 CIDRs to the Branches
+            * On the Hub FGT, add Static Routes to Spok11 and Spoke12. **What would be the next-hop ?**
             * Add Spoke11 and Spoke12 to the list of networks under BGP configuration
 
                 ![bgp1](images/bgp1.jpg) 
