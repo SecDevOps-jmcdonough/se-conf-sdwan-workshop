@@ -422,7 +422,7 @@ _[Configuration exercise - estimated duration 20min]_
         ![vwanhubrouting1](images/vwanhubrouting1.jpg)
         ![vwanhubrouting2](images/vwanhubrouting2.jpg) 
 
-    * Add a default route that points to the FortiGate VNET connection. The next hop ip is the Primary FGT port2 ip
+    * Add a default route that points to the FortiGate VNET connection. The next hop ip is the **Primary FGT port2 ip**
         ![vwanhubrouting3](images/vwanhubrouting3.jpg) 
 
     * Verify that this default route has been propagated to the Spokes VNETs
@@ -437,5 +437,39 @@ _[Configuration exercise - estimated duration 20min]_
     ![global4](images/SDWAN_Workshop_global4.jpg)  
 
 ### Task 3 - Traffic generation [troubleshooting required]
+* Connect to the Branch1 Linux Host via the serial console
+* Generate traffic to Hub
+    ```
+     ping 10.11.1.4
+     
+    ```
+* Does it work ?
+* Troubleshoot and make all the required changs to make it work
+    * Hints:
+        =
+        * FGT Branch1 does it learn routes to spokes from the Hub?
+        * Make the Hub advertise Spoke11 and Spoke12 CIDRs
+            * On the Hub, add Static Routes to Spok11 and Spoke12. **What would be the next hop ?**
+            * Add Spoke11 and Spoke12 to the list of networks under BGP configuration
+
+                ![bgp1](images/bgp1.jpg) 
+
+        * Verify that Branches are now receiving Spoke11 and Spoke12 CIDRs. Use the command `get router info routing-table all`
+
+        * Does it work now or not yet ?
+            * Take a packet capture on the Hub, Do you see echo-requests arriving?  `diagnose sniffer packet any 'net 10.11.0.0/16' 4 0 a` 
+
+            * Traffic is egressing the Hub FGT on port2, but you don't see any reply?... What is missing?  Check FHT Hub port2 **effective routes**?       
+
+                ![bgp2](images/bgp2.jpg) 
+
+            * Do you see spoke11 and spoke12 CIDRs? Why the vWAN is not propagating them to the Route Table attached to the FGT private subnet ?  Check the Route Table **configuration** settings
+
+### Task 4 - QUIZ
+* Why we were not able to attach the Hub FortiGate VNET to vWAN until we deleted Azure Route Server ?
+
+* Why the vWAN was not able to inject Spoke11 and Spoke12 VNETs CIDRs to FortiGate Private UDR?
+
+* In the Spokes-VNET vWAN Route Table, the next-hop is the Primary FortiGate IP. What should we add/ do to handle failover ?
 
 </details>
