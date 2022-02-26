@@ -114,8 +114,8 @@ _[Configuration exercise - estimated duration 20min]_
 
 </details>
 
-## Chapter3 - Azure Route Server Presentation (40min)
-_[Presentation about Azure Route Server- estimated duration 20min]_
+## Chapter3 - Azure Route Server Presentation (30min)
+_[Presentation about Azure Route Server- estimated duration 30min]_
 
 <details>
 
@@ -141,9 +141,14 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
 * Click on Peers on the left side of the menu
 * List the routes leanred by Azure Route Server. Run the command below from your Azure Cloud Shell
 
-`az network routeserver peering list-learned-routes -g studentxx-workshop-sdwan --routeserver studentxx-workshop-sdwan-RouteServer --name sdwan-fgt1`
+```
+student='student01'
 
-`az network routeserver peering list-learned-routes -g studentxx-workshop-sdwan --routeserver studentxx-workshop-sdwan-RouteServer --name sdwan-fgt2`
+az network routeserver peering list-learned-routes -g $student-workshop-sdwan --routeserver $student-workshop-sdwan-RouteServer --name sdwan-fgt1
+
+az network routeserver peering list-learned-routes -g $student-workshop-sdwan --routeserver $student-workshop-sdwan-RouteServer --name sdwan-fgt2
+
+```
 
 
 ### Task 3 - Create a Dynamic SDN object [troubleshooting required]
@@ -359,13 +364,77 @@ _[Configuration exercise - estimated duration 20min]_
 
 * Click on your vWAN and verify that you see the virtual Hub you just deployed
 
-    ![vwan3](images/vwan3jpg)
+    ![vwan3](images/vwan3.jpg)
 
 * Click on the vWAN Hub and verify that the deployment and routing status complete
 
-    ![vwan4](images/vwan4jpg)
+    ![vwan4](images/vwan4.jpg)
 
 
-### Task 2 - Deployment
+### Task 2 - Routing and VNET connection Configuration
+
+* Go to your resource Group and then click on the Hub VNET
+* Delete the Hub to Spoke VNET peerings
+
+    ![vwan-rtb1](images/vwan-rtb1.jpg)
+
+* Click on your virtual Hub and then click on Routing
+    ![vwan-rtb1](images/vwan-rtb1.jpg)
+
+* Create a Route Table Called Spoke-VNETS. Keep all other settings unchanged
+
+    ![vwan-rtb2](images/vwan-rtb2.jpg)
+
+* Repeat the same for FGT vWAN Route Table: FGT-VNET
+
+    ![vwan-rtb3](images/vwan-rtb3.jpg)
+
+* Go to the vWAN, Click on Virtual Network Connection
+
+    ![vwanconnection1](images/vwanconnection1.jpg)
+
+* Create a VNET connection for Spoke11, attach it to the Spoke-VNETS Route Table and propagate it to FGT-VNET Route Table[**Please choose your own Resource Group and your own VNET** ]
+
+    ![vwanconnection2](images/vwanconnection2.jpg)
+
+* Repeat the same for Spoke12
+
+* Repeat the same for FGT VNET connection, attach it to the FGT-VNET Route Table. 
+    * Does it work ?
+    * why ?
+
+* Locate your own Azure Route Server and delete it
+
+    ![findars](images/findars.jpg)
+    ![deleteaes](images/deleteaes.jpg)
+
+* Try now to connect the FGT VNET to the vWAN Hub, attach it to the FGT-VNET Route Table. 
+    * Does it work now ?
+    * why ?
+
+    ![vwanconnection3](images/vwanconnection3.jpg)
+    ![vwanconnection4](images/vwanconnection4.jpg)    
+
+
+* Go your vWAN Hub, click on Routing and then click on Spoke-VNETS Route Table
+
+    ![vwanhubrouting1](images/vwanhubrouting1.jpg)
+    ![vwanhubrouting2](images/vwanhubrouting2.jpg) 
+
+* Add a default route that points to the FortiGate VNET connection. The next hop ip is the Primary FGT port2 ip
+    ![vwanhubrouting3](images/vwanhubrouting3.jpg) 
+
+* Verify that this default route has been propagated to the Spokes VNETs
+    * Go to the Spoke11 Linux VM -> Networking -> Click on nic and then click on **Effective Routes**
+
+    ![vwanhubrouting4](images/vwanhubrouting4.jpg)
+    ![vwanhubrouting5](images/vwanhubrouting5.jpg)    
+
+
+* At the end of this step you should have the following architecture 
+
+    ![vwanhubrouting4](images/vwanhubrouting4.jpg)  
+
+### Task 3 - Traffic generation [troubleshooting required]
 
 </details>
