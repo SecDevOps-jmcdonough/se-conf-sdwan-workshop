@@ -444,20 +444,25 @@ _[Configuration exercise - estimated duration 20min]_
      
     ```
 * Does it work ?
+
+    ![vwan-flow1.jpg](images/vwan-flow1.jpg)  
+
 * Troubleshoot and make all the required changs to make it work
     * Hints:
         =
         * FGT Branch1 does it learn routes to spokes from the Hub?
-        * Make the Hub advertise Spoke11 and Spoke12 CIDRs
+        * COnfigure the Hub to advertise Spoke11 and Spoke12 CIDRs to the Branches
             * On the Hub, add Static Routes to Spok11 and Spoke12. **What would be the next hop ?**
             * Add Spoke11 and Spoke12 to the list of networks under BGP configuration
 
                 ![bgp1](images/bgp1.jpg) 
 
-        * Verify that Branches are now receiving Spoke11 and Spoke12 CIDRs. Use the command `get router info routing-table all`
+        * Verify that Branches are now receiving Spoke11 and Spoke12 CIDRs. Use the command 
+            `get router info routing-table all`
 
         * Does it work now or not yet ?
-            * Take a packet capture on the Hub, Do you see echo-requests arriving?  `diagnose sniffer packet any 'net 10.11.0.0/16' 4 0 a` 
+            * Take a packet capture on the Hub, Do you see echo-requests arriving?  
+                `diagnose sniffer packet any 'net 10.11.0.0/16' 4 0 a` 
 
             * Traffic is egressing the Hub FGT on port2, but you don't see any reply?... What is missing?  Check FHT Hub port2 **effective routes**?       
 
