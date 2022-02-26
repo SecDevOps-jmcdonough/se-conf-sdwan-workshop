@@ -78,7 +78,7 @@ _[Configuration exercise - estimated duration 20min]_
 ### Task 1 - Add the FortiGates to the Hub Load Balancer Backend Pool
 * Go to the Hub External Load Balancer **sdwan-student01-workshop-hub1-elb1**
 * Click on Backend pools
-* Add FortiGate1 and FortiGate2 port1 interfaces
+* Add FortiGate1 and FortiGate2 **port1 interfaces** and then click on Save
 
     ![hub-lb-backend](images/externallbbackend.jpg)
 
@@ -129,7 +129,7 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
 <details>
 
 ### Task 1 - Create the VNET peering
-* Create a VNET peering between the Spoke11 VNET and the Hub VNET. Go to the Spoke VNET, studentxx-workshop-sdwan-spoke11 and then click on Peerings.
+* Create a VNET peering between the Spoke11 VNET and the Hub VNET. Go to the Spoke VNET, studentxx-workshop-sdwan-spoke11 and then click on Peerings. (Please replace StudentXX with your own Student ID)
 * Repeat the above between Spoke12 VNET and the Hub VNET
 
     ![vnetpeering1](images/spoke11-to-Hub-peering.jpg)
@@ -137,7 +137,7 @@ _[Configuration and troubleshooting exercise - estimated duration 40min]_
 * Check now that the Branch FortiGate learn the Spoke11 VNET and Spoke12 VNET CIDRs
 
 ### Task 2 - Check Azure route server configuration and learned routes
-* Go to Azure Route Server. Click on your Azure Route Server studentxx-workshop-sdwan-RouteServer.
+* Go to Azure Route Server. Click on your Azure Route Server studentxx-workshop-sdwan-RouteServer. (Please replace StudentXX with your own Student ID)
 * Click on Peers on the left side of the menu
 * List the routes leanred by Azure Route Server. Run the command below from your Azure Cloud Shell
 
@@ -219,8 +219,8 @@ _[Configuration exercise - estimated duration 20min]_
 
 #### Task 1 - Create a route in the UDR
 * Click on the Branch1 private route table (studentxx-sdwan-workshop-branch1_rt)
-* Add a default route that points to the Internal Load balancer listener 
-* **Repeat the previous step to Branch2 and Branch3 Route Tables (please use the correct ip as the next hop)**
+* Add a default route that points to the **Internal Load balancer listener** 
+* **Repeat the previous step to Branch2 and Branch3 Route Tables (please use the correct ip as the next hop ie the correct Internal Load balancer listener ip)**
 
     ![udr](images/defaultroutebranch1.jpg)
 
@@ -258,8 +258,6 @@ _[Configuration exercise - estimated duration 20min]_
     ![effectiveroutes6](images/effectiveroutes-lnx-6.jpg)
 
 * Has Azure Route Server injected the Branch sites CIDRs learnt from the FGT?  Why ?
-
-
 
 
 ### Branch to Branch
@@ -374,61 +372,64 @@ _[Configuration exercise - estimated duration 20min]_
 ### Task 2 - Routing and VNET connection Configuration
 
 * Go to your resource Group and then click on the Hub VNET
-* Delete the Hub to Spoke VNET peerings
+* Delete the Hub to Spoke VNET peerings (Please delete both Spoke11 and Spoke12 peerings)
 
-    ![vwan-rtb1](images/vwan-rtb1.jpg)
+    ![peeringdelete.jpg](images/peeringdelete.jpg)
 
-* Click on your virtual Hub and then click on Routing
-    ![vwan-rtb1](images/vwan-rtb1.jpg)
+* Create Virtual WAN Route Tables
+    * Click on your virtual Hub and then click on Routing
+        ![vwan3](images/vwan3.jpg)    
+        ![vwan-rtb1](images/vwan-rtb1.jpg)
 
-* Create a Route Table Called Spoke-VNETS. Keep all other settings unchanged
+    * Create a Route Table Called Spoke-VNETS. Keep all other settings unchanged
 
-    ![vwan-rtb2](images/vwan-rtb2.jpg)
+        ![vwan-rtb2](images/vwan-rtb2.jpg)
 
-* Repeat the same for FGT vWAN Route Table: FGT-VNET
+    * Repeat the same for FGT vWAN Route Table: FGT-VNET
 
-    ![vwan-rtb3](images/vwan-rtb3.jpg)
+        ![vwan-rtb3](images/vwan-rtb3.jpg)
 
-* Go to the vWAN, Click on Virtual Network Connection
+* Create Virtual WAN  VNET Connections
+    * Go to the vWAN, Click on Virtual Network Connection
 
-    ![vwanconnection1](images/vwanconnection1.jpg)
+        ![vwanconnection1](images/vwanconnection1.jpg)
 
-* Create a VNET connection for Spoke11, attach it to the Spoke-VNETS Route Table and propagate it to FGT-VNET Route Table[**Please choose your own Resource Group and your own VNET** ]
+    * Create a VNET connection for Spoke11, attach it to the Spoke-VNETS Route Table and propagate it to FGT-VNET Route Table[**Please choose your own Resource Group and your own VNET** ]
 
-    ![vwanconnection2](images/vwanconnection2.jpg)
+        ![vwanconnection2](images/vwanconnection2.jpg)
 
-* Repeat the same for Spoke12
+    * Repeat the same for Spoke12
 
-* Repeat the same for FGT VNET connection, attach it to the FGT-VNET Route Table. 
-    * Does it work ?
-    * why ?
+    * Repeat the same for FGT VNET connection, attach it to the FGT-VNET Route Table. 
+        * Does it work ?
+        * why ?
 
-* Locate your own Azure Route Server and delete it
+    * Locate your own Azure Route Server and delete it
 
-    ![findars](images/findars.jpg)
-    ![deleteaes](images/deleteaes.jpg)
+        ![findars](images/findars.jpg)
+        ![deleteaes](images/deleteaes.jpg)
 
-* Try now to connect the FGT VNET to the vWAN Hub, attach it to the FGT-VNET Route Table. 
-    * Does it work now ?
-    * why ?
+    * Try now to connect the FGT VNET to the vWAN Hub, attach it to the FGT-VNET Route Table. 
+        * Does it work now ?
+        * why ?
 
-    ![vwanconnection3](images/vwanconnection3.jpg)
-    ![vwanconnection4](images/vwanconnection4.jpg)    
+        ![vwanconnection3](images/vwanconnection3.jpg)
+        ![vwanconnection4](images/vwanconnection4.jpg)    
 
+* Configure Spoke-VNETS Routes
+    * Go your vWAN Hub, click on Routing and then click on Spoke-VNETS Route Table
 
-* Go your vWAN Hub, click on Routing and then click on Spoke-VNETS Route Table
+        ![vwanhubrouting1](images/vwanhubrouting1.jpg)
+        ![vwanhubrouting2](images/vwanhubrouting2.jpg) 
 
-    ![vwanhubrouting1](images/vwanhubrouting1.jpg)
-    ![vwanhubrouting2](images/vwanhubrouting2.jpg) 
+    * Add a default route that points to the FortiGate VNET connection. The next hop ip is the Primary FGT port2 ip
+        ![vwanhubrouting3](images/vwanhubrouting3.jpg) 
 
-* Add a default route that points to the FortiGate VNET connection. The next hop ip is the Primary FGT port2 ip
-    ![vwanhubrouting3](images/vwanhubrouting3.jpg) 
+    * Verify that this default route has been propagated to the Spokes VNETs
+        * Go to the Spoke11 Linux VM -> Networking -> Click on nic and then click on **Effective Routes**
 
-* Verify that this default route has been propagated to the Spokes VNETs
-    * Go to the Spoke11 Linux VM -> Networking -> Click on nic and then click on **Effective Routes**
-
-    ![vwanhubrouting4](images/vwanhubrouting4.jpg)
-    ![vwanhubrouting5](images/vwanhubrouting5.jpg)    
+        ![vwanhubrouting4](images/vwanhubrouting4.jpg)
+        ![vwanhubrouting5](images/vwanhubrouting5.jpg)    
 
 
 * At the end of this step you should have the following architecture 
