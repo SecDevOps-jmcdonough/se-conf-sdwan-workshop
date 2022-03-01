@@ -13,7 +13,7 @@
 ***
 ***
 
-## Chapter1 - Setting up the environment (40min)
+## Chapter 1 - Setting up the environment (40min)
 
 ***[Deployment exercise - estimated duration 40min]***
 
@@ -73,8 +73,7 @@
 
 * Connect to the Branch sites FortiGates and check the VPN status. If they are down try to bring them UP
 
-
-### Task 4 - QUIZ
+### Chapter 1 - QUIZ
 
 * FortiGates in the Hub do not have public IPs attached to them, how are we able to access the Web UI then?
 * Why the VPN connections are still down?
@@ -84,7 +83,7 @@
 ***
 ***
 
-## Chapter2 - Hub and Branch VPN Connectivity (20min)
+## Chapter 2 - Hub and Branch VPN Connectivity (20min)
 
 ***[Configuration exercise - estimated duration 20min]***
 
@@ -123,7 +122,7 @@
 
 ### Task 4 - Traffic generation
 
-### Chapter 1 - QUIZ
+### Chapter 2 - QUIZ
 
 * Why one FortiGate is depicted as unhealthy by Azure LB?
 * Why to access the FortiGates we used NAT rules, and for IPSEC VPN traffic we used Load balancing rules?
@@ -142,7 +141,7 @@
 ***
 ***
 
-## Chapter4 - Hub VNET and Spoke VNET Connectivity (40min)
+## Chapter 4 - Hub VNET and Spoke VNET Connectivity (40min)
 
 ***[Configuration and troubleshooting exercise - estimated duration 40min]***
 
@@ -176,8 +175,11 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 
 * Is your Hub FortiGate able to see the Dynamic filters ?
   * **Troubleshoot and Make the required changes to allow the FortiGate to retrieve the SDN filters.**
+
   * Hints:
-        =
+
+    ***
+
     * FGT Branch3 is able to retrieve the filters, why that is not the case for the FortiGates Behind Load Balancers?
     * FGT Branch3 is standalone, all other FortiGates are in A-P HA, how does that affect traffic to retrieve SDN filters?
 
@@ -224,7 +226,7 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 
     ![global-step3](images/SDWAN_Workshop_global3.jpg)
 
-### Task 5 - QUIZ
+### Chapter 4 - QUIZ
 
 * What was missing to allow the FortiGates to retrieve SDN connector filters
 * Why the FortiGate is able to retrieve the SDN connector filters of its own resource group Only?
@@ -235,6 +237,7 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 
 ***
 ***
+
 ## Chapter5 - Branch to Cloud and Branch to Branch connectivity (20min)
 
 ***[Configuration exercise - estimated duration 20min]***
@@ -304,7 +307,7 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 
 * Check if an ADVPN shortcut has been created
 
-### Task 5 - QUIZ
+### Chapter 5 - QUIZ
 
 * Why Azure Route Server (ARS) has injected the Branch sites CIDRs to the Spoke VNET protected subnet but not the FortiGate private subnet?
 * The Branch external Load balancer has two front end public ip. How do we ensure that traffic egressing Branch1 on port1 (isp1)  has always the same public ip applied? Same for traffic egressing Branch1 on port3 (isp2)
@@ -355,7 +358,7 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 * Monitor the SSH connection
 * Did you lose the TCP connection ?
 
-### Task 6 - QUIZ
+### Chapter 6 - QUIZ
 
 * How long was your failover time ?
 
@@ -365,6 +368,7 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 
 ***
 ***
+
 ## Chapter7 - Scaling (20min)
 
 ***[Presentation about FGT A/A and SDWAN use case- estimated duration 20min]***
@@ -409,7 +413,6 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 * Click on the vWAN Hub and verify that the deployment and routing status complete
 
     ![vwan4](images/vwan4.jpg)
-
 
 ### Task 2 - Routing and VNET connection Configuration
 
@@ -493,23 +496,25 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 
     ![vwan-flow1.jpg](images/vwan-flow1.jpg)  
 
-* Troubleshoot and make all the required changs to make it work
+* Troubleshoot and make all the required changes to make it work
 
   * Hints:
-        =
+
+    ***
+
     * FGT Branch1 does it learn routes to spokes from the Hub?
     * Configure the Hub FGT to advertise Spoke11 and Spoke12 CIDRs to the Branches
-      * On the Hub FGT, add Static Routes to Spok11 and Spoke12. **What would be the next-hop ?**
+      * On the Hub FGT, add Static Routes to Spoke11 and Spoke12. **What would be the next-hop ?**
       * Add Spoke11 and Spoke12 to the list of networks under BGP configuration
 
-      ![bgp1](images/bgp1.jpg) 
+      ![bgp1](images/bgp1.jpg)
 
-      * Verify that Branches are now receiving Spoke11 and Spoke12 CIDRs. Use the command 
+      * Verify that Branches are now receiving Spoke11 and Spoke12 CIDRs. Use the command
         `get router info routing-table all`
 
       * Does it work now or not yet ?
       * Take a packet capture on the Hub, Do you see echo-requests arriving?  
-        `diagnose sniffer packet any 'net 10.11.0.0/16' 4 0 a` 
+        `diagnose sniffer packet any 'net 10.11.0.0/16' 4 0 a`
 
       * Traffic is egressing the Hub FGT on port2, but you don't see any reply?... What is missing?  
         * Check FGT Hub port2 **effective routes**?
@@ -518,7 +523,7 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 
         ![bgp2](images/bgp2.jpg)
 
-### Task 4 - QUIZ
+### Chapter 8 - QUIZ
 
 * Why we were not able to attach the Hub FortiGate VNET to vWAN until we deleted Azure Route Server ?
 
