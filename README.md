@@ -27,16 +27,20 @@
     ![cloudshell2](images/cloudshell-02.jpg)
 
 * Click on Cloud Shell icon on the Top Right side of the portal
-* Select Bash
 
     ![cloudshell4](images/cloudshell-04.jpg)
+
+* Select Bash
+
     ![cloudshell5](images/cloudshell-05.jpg)
 
 * Click on **show advanced settings**
 
     ![cloudshell6](images/cloudshell-06.jpg)
-
-* Select **your own resource group** , use the the storage account available in that Resource Group, use the existing File Share **cloudshell**  (type cloudshell)
+* Select
+  * Use existing Resource Group  - select **your resource group** - studentXX
+  * Use existing Storage account - it ***should*** auto populate
+  * Use existing File Share  - type **cloudshell**
 
     ![cloudshell7](images/cloudshell-07.jpg)
 
@@ -50,32 +54,35 @@
 
     ![gitclone](images/git-clone.jpg)
 
-* Move to the azure folder `cd ./se-conf-sdwan-workshop/azure/`
-* Customize your project name and the User name, based on the user id that was assigned to you
+* Change to the azure folder `cd ./se-conf-sdwan-workshop/azure/`
+* Edit the `terraform.tfvars` file - `vi terraform.tfvars`
+  * Modify the `project` and `username` variables based on the assigned username - studentXX
   
-  `vi terraform.tfvars`
-
-    ![vi](images/vi.jpg)
     ![rgcustom](images/rg-customname.jpg)
 
-* Run `Terraform init`
-* Run `Terraform plan`
-* Run `Terraform apply` and then answer `yes`
+* Run `terraform init`
+* Run `terraform plan`
+* Run `terraform apply` and then answer `yes`
+  * This command can also be run as `terraform apply -auto-approve` which removes the need to type yes
 
 * At the end of this step you should have the following architecture
+
     ![global-step1](images/SDWAN_Workshop_global1.jpg)
 
 ### Task 3 - Verifications
 
-* Using the Terraform output verify that you have Web and SSH access to the FortiGates
+* Using the Terraform output, verify that you have Web and SSH access to the FortiGates.
 
     ![output](images/output.jpg)
 
-* Connect to the Branch sites FortiGates and check the VPN status. If they are down try to bring them UP
+* Terraform output can be redisplayed at any point as long as you are in the `./se-conf-sdwan-workshop/azure/` directory, by using the command
+  * `terraform output`
+
+* Connect to the Branch sites FortiGates and check the VPN status. If they are down try to bring them UP.
 
 ### Chapter 1 - QUIZ
 
-* FortiGates in the Hub do not have public IPs attached to them, how are we able to access the Web UI then?
+* FortiGates in the Hub do not have public IPs, how are they accessible via the Web UI?
 * Why the VPN connections are still down?
 
 </details>
@@ -91,7 +98,7 @@
 
 ### Task 1 - Add the FortiGates to the Hub Load Balancer Backend Pool
 
-* Go to the Hub External Load Balancer **sdwan-student01-workshop-hub1-elb1**
+* Go to the Hub External Load Balancer **sdwan-studentXX-workshop-hub1-elb1**
 * Click on Backend pools
 * Add FortiGate1 and FortiGate2 **port1 interfaces** and then click on Save
 
@@ -99,33 +106,35 @@
 
 ### Task 2 - Create load balancing rules for IPSEC VPN Traffic
 
-* Click on the Hub external Load balance and go to Load balancing rules
-* Create Load balacing rules for UDP 500 and UDP 4500
+* Click on the Hub External Load balancer **sdwan-studentXX-workshop-hub1-elb1**
+* Click on Load balancing rules
+* Create Load balancing rules for UDP 500 and UDP 4500 - ***one rule for each***
 
     ![hub-lb-rule1](images/externallbrule1.jpg)
     ![hub-lb-rule2](images/externallbrule2.jpg)
 
 ### Task 3 - Verifications
 
-* Verify that the FortiGate are responding to Azure Load Balancer Health Checks: click on the Hub external Load balance and then go to Insights
+* Verify that the FortiGate are responding to Azure Load Balancer Health Checks
+  * Click on the Hub External Load balancer
+  * Click on Insights - Click the "Refresh" button a few times, eventually (~30 seconds) the FortiGate reachability will be indicated.
 
     ![hub-lb-insights](images/externallbinsights.jpg)
 
-* Verify that the VPN to the Hub are UP  (please reboot the Branch FortiGate once if the VPN does not come up)
+* Verify that the VPN to the Hub are UP  (You may have to reboot the Branch FortiGate one time if the VPN does not come up)
 
     ![vpn](images/vpnup.jpg)
 
-* Verify that the BGP peering with the hub is UP and that the Branch FortiGate learn the Hub and other Branches CIDRs
+* Verify that the BGP peering with the hub is UP and that the Branch FortiGate learned the Hub and other Branches' CIDRs
 
 * At the end of this step you should have the following architecture
-    ![global-step2](images/SDWAN_Workshop_global2.jpg)
 
-### Task 4 - Traffic generation
+    ![global-step2](images/SDWAN_Workshop_global2.jpg)
 
 ### Chapter 2 - QUIZ
 
-* Why one FortiGate is depicted as unhealthy by Azure LB?
-* Why to access the FortiGates we used NAT rules, and for IPSEC VPN traffic we used Load balancing rules?
+* Why is one FortiGate depicted as unhealthy by the Azure Hub External Load Balancer?
+* Why is NAT used to access the FortiGates, but for IPSEC VPN traffic Load balancing rules are used?
 * Do FortiGates in the Branches learn Spoke11 and Spoke12 CIDRs?
 
 </details>
@@ -133,10 +142,6 @@
 ## Chapter3 - Azure Route Server Presentation (30min)
 
 ***[Presentation about Azure Route Server- estimated duration 30min]***
-
-<details>
-
-</details>
 
 ***
 ***
@@ -149,26 +154,45 @@
 
 ### Task 1 - Create the VNET peering
 
-* Create a VNET peering between the Spoke11 VNET and the Hub VNET. Go to the Spoke VNET, studentxx-workshop-sdwan-spoke11 and then click on Peerings. (Please replace StudentXX with your own Student ID)
-* Repeat the above between Spoke12 VNET and the Hub VNET
+* Create a VNET peering between the Spoke11 VNET and the Hub VNET
+
+  * Go to the Spoke VNET, **studentXX-workshop-sdwan-spoke11** - (replace studentXX with your username)
+    * Click on Peerings
+    * Add peering to Hub VNET, **studentXX-workshop-sdwan-hub1**
+
+  * Repeat the above between Spoke12 VNET, **studentXX-workshop-sdwan-spoke12** and the Hub VNET
 
     ![vnetpeering1](images/spoke11-to-Hub-peering.jpg)
 
-* Check now that the Branch FortiGate learn the Spoke11 VNET and Spoke12 VNET CIDRs
+* Verify that the Branch FortiGates have learned the Spoke11 VNET and Spoke12 VNET CIDRs
 
-### Task 2 - Check Azure route server configuration and learned routes
+### Task 2 - Check Azure Route Server Configuration and Learned Routes
 
-* Go to Azure Route Server. Click on your Azure Route Server studentxx-workshop-sdwan-RouteServer. (Please replace StudentXX with your own Student ID)
-* Click on Peers on the left side of the menu
-* List the routes learned by Azure Route Server. Run the command below from your Azure Cloud Shell
+* Go to Azure Route Server
+  * The Route Server ***is not*** contained within your Resource Group, search for Route Server in the top of teh screen search field, then select "Route Server" under Services.
+
+    ![routeserver](images/routeserver.jpg)
+
+* Click on your Azure Route Server **studentXX-workshop-sdwan-RouteServer** (replace studentXX with your username)
+* Click on Peers on the left side of the menu, verify the connection to the Hub FortiGates
+* List the routes learned by Azure Route Server. Run the commands below from your Azure Cloud Shell
 
 ```bash
-student='student01'
+az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --routeserver ${USER}-workshop-sdwan-RouteServer --name sdwan-fgt1
+```
 
-az network routeserver peering list-learned-routes -g $student-workshop-sdwan --routeserver $student-workshop-sdwan-RouteServer --name sdwan-fgt1
+```bash
+az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --routeserver ${USER}-workshop-sdwan-RouteServer --name sdwan-fgt2
+```
 
-az network routeserver peering list-learned-routes -g $student-workshop-sdwan --routeserver $student-workshop-sdwan-RouteServer --name sdwan-fgt2
+> The passive FortiGate will produce empty output
 
+```json
+{
+  "RouteServiceRole_IN_0": [],
+  "RouteServiceRole_IN_1": [],
+  "value": null
+}
 ```
 
 ### Task 3 - Create a Dynamic SDN object [troubleshooting required]
@@ -180,8 +204,9 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 
     ***
 
-    * FGT Branch3 is able to retrieve the filters, why that is not the case for the FortiGates Behind Load Balancers?
+    * FGT Branch3 is able to retrieve the filters, why that is not the case for the FortiGates behind Load Balancers?
     * FGT Branch3 is standalone, all other FortiGates are in A-P HA, how does that affect traffic to retrieve SDN filters?
+    * Pools and Rules
 
 * On the Hub FortiGate, create a dynamic object that resolves to the Spoke VNETs VMs
 * On the Hub FortiGate, use the object created above on policy3 to restrict traffic coming from the Branches
@@ -191,9 +216,13 @@ az network routeserver peering list-learned-routes -g $student-workshop-sdwan --
 ### Task 4 - Traffic generation
 
 * Generate Traffic from Branch1 Primary FortiGate:  
-    1. Connect to the Branch1 Primary FortiGate
-    2. Configure ping-options to initiate traffic from FortiGate's private nic. 
-    3. Initiate a ping to Spoke11 and Spoke12 Linux VM (10.11.1.4 and 10.12.1.4)
+  1. Connect to the Branch1 Primary FortiGate
+  2. Configure ping-options to initiate traffic from FortiGate's private nic (port2).
+      * `execute ping-options source 172.16.2.5` - source IP depends on which Branch1 FortiGate is primary br1fgt1 or br1fgt2
+      * `execute ping-options repeat-count 100`
+  3. Initiate a ping to Spoke11 and Spoke12 Linux VMs (10.11.1.4 and 10.12.1.4)
+      * `execute ping 10.11.1.4`
+      * `execute ping 10.12.1.4`
 
     ![traffic2](images/traffic2.jpg)
 
