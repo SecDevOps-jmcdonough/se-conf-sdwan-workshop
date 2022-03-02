@@ -69,7 +69,7 @@
 
     ![global-step1](images/SDWAN_Workshop_global1.jpg)
 
-### Task 3 - Verifications
+### Task 3 - Terraform Verifications
 
 * Using the Terraform output, verify that you have Web and SSH access to the FortiGates.
 
@@ -113,7 +113,7 @@
     ![hub-lb-rule1](images/externallbrule1.jpg)
     ![hub-lb-rule2](images/externallbrule2.jpg)
 
-### Task 3 - Verifications
+### Task 3 - Hub and Branch VPN Connectivity Verifications
 
 * Verify that the FortiGate are responding to Azure Load Balancer Health Checks
   * Click on the Hub External Load balancer
@@ -175,7 +175,8 @@
 
 * Click on your Azure Route Server **studentXX-workshop-sdwan-RouteServer** (replace studentXX with your username)
 * Click on Peers on the left side of the menu, verify the connection to the Hub FortiGates
-* List the routes learned by Azure Route Server. Run the commands below from your Azure Cloud Shell
+* List the routes learned by Azure Route Server, run the commands below from your Azure Cloud Shell
+* The variable `${USER}` in the commands reads your username from the environment
 
 ```bash
 az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --routeserver ${USER}-workshop-sdwan-RouteServer --name sdwan-fgt1
@@ -230,9 +231,10 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 * Generate Traffic from Branch1 Linux VM:  
     1. Enable serial console access on Branch1 Linux VM
-        * Click on the VM studentXX-sdwan-workshop-br1lnx1
+        * Click on the VM **studentXX-sdwan-workshop-br1lnx1**
         * Go to Boot diagnostics -> Settings ->  Select **Enable with custom storage account**
-        * From the dropdown list, select the storage account that is assigned to you
+        * From the dropdown list, select the storage account that is assigned to your username - **setrainstudentXX#######**
+        * Click Save
 
             ![console1](images/ssh-br-lnx-console1.jpg)
             ![console2](images/ssh-br-lnx-console2.jpg)
@@ -242,14 +244,14 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
     3. Initiate a ping to Spoke11 and Spoke12 Linux VMs
 
-    ```bash
-     ping 10.11.1.4
-     ping 10.12.1.4 
-    ```
+        ```bash
+        ping 10.11.1.4
+        ping 10.12.1.4 
+        ```
 
-    ![traffic3](images/traffic3.jpg)
+        ![traffic3](images/traffic3.jpg)
 
-    4. Does it work ?
+    4. Does it work?
 
 * At the end of this step  you should have the following architecture
 
@@ -257,17 +259,17 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 ### Chapter 4 - QUIZ
 
-* What was missing to allow the FortiGates to retrieve SDN connector filters
-* Why the FortiGate is able to retrieve the SDN connector filters of its own resource group Only?
-* Why the Branch FortiGate itself able to reach the remote spoke VNET VM (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch FortiGate is not ?
-* FortiGate at the Branch1 and Branch2 are both behind Azure Load Balancer (behind NAT). Branch1 to Branch2 traffic will successfully establish an ADVPN shortcut?
+* What was missing to allow the FortiGates to retrieve SDN connector filters?
+* Why is the FortiGate only able to retrieve the SDN connector filters of its own Resource Group?
+* Why is the Branch FortiGate able to reach the remote Spoke VNETs VMs (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch FortiGate cannot?
+* FortiGates at Branch1 and Branch2 site are both behind Azure Load Balancers (behind NAT). Will Branch1 to Branch2 traffic successfully establish an ADVPN shortcut?
 
 </details>
 
 ***
 ***
 
-## Chapter5 - Branch to Cloud and Branch to Branch connectivity (20min)
+## Chapter5 - Branch to Cloud and Branch to Branch Connectivity (20min)
 
 ***[Configuration exercise - estimated duration 20min]***
 
@@ -277,9 +279,10 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 #### Task 1 - Create a route in the UDR
 
-* Click on the Branch1 private route table (studentxx-sdwan-workshop-branch1_rt)
-* Add a default route that points to the **Internal Load balancer listener**
-* **Repeat the previous step to Branch2 and Branch3 Route Tables (please use the correct ip as the next hop ie the correct Internal Load balancer listener ip)**
+* Click on the Branch1 private route table **studentXX-sdwan-workshop-branch1_rt**
+* Add a default route for `0.0.0.0/0` that points to the **Internal Load balancer listener**
+* Repeat the previous step for the **Branch2** and **Branch3** Route Tables
+  * Be sure to use the correct IP as the next hop, that is the correct Internal Load balancer listener IP or FortiGate internal interface. Hint: is the next hop a load balancer or a stand-alone FortiGate
 
     ![udr](images/defaultroutebranch1.jpg)
 
@@ -327,7 +330,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 #### Task 4 - Generate traffic between Branches
 
-* Connect to the Branch1 Linux Host via the serial console
+* Connect to the Branch1 Linux Host via the serial console - **studentXX-sdwan-workshop-br1lnx1**
 * Generate traffic to Branch2 Linux Host
 
    ```bash
@@ -338,7 +341,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 ### Chapter 5 - QUIZ
 
-* Why Azure Route Server (ARS) has injected the Branch sites CIDRs to the Spoke VNET protected subnet but not the FortiGate private subnet?
+* Why has the Azure Route Server (ARS) injected Branch site CIDRs to the Spoke VNET protected subnet but not the FortiGate private subnet?
 * The Branch external Load balancer has two front end public ip. How do we ensure that traffic egressing Branch1 on port1 (isp1)  has always the same public ip applied? Same for traffic egressing Branch1 on port3 (isp2)
 
 </details>
@@ -354,44 +357,50 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 ### Task 1 - Generate ICMP traffic
 
-* Access the serial console by clicking on the VM studentXX-sdwan-workshop-br1lnx1 and then Serial Console
-* Ping a resource in the Hub as well as in a remote branch site `ping 10.11.1.4`
+* Connect to the Branch1 Linux Host via the serial console - **studentXX-sdwan-workshop-br1lnx1**
+* Ping a resource in a remote branch site - **sdwan-student05-workshop-spoke11-subnet1-lnx**
+  * `ping 10.11.1.4`
+  * Let the ping run
 
 ### Task 2 - Initiate a failover
 
-* Connect to the Branch1 Primary FortiGate . Initiate a failover by rebooting the primary FortiGate
+* Connect to the Branch1 Primary FortiGate . Initiate a failover by rebooting the primary FortiGate or by forcing a failover via the CLI
+
+  ```bash
+  execute ha failover set 1
+  ```
+
 * Monitor the number of **lost Pings** and the **failover time**
-* How long did it take ?
-* Have the VPNs to the Hub been renegotiated upon failover or maintained ?
+* How long did it take?
+* Have the VPNs to the Hub been renegotiated upon failover or maintained?
 
     ![failover](images/defaultroutebranch1.jpg)
 
 ### Task 3 - Generate TCP traffic
 
-* Ensure that both units of Branch1 FGT in the cluster is up and running
-* Access the serial console of Branch1 Linux VM by clicking on the VM studentXX-sdwan-workshop-br1lnx1 and then click on Serial Console
-* Generate an SSH session to the Hub Linux VM
+* Ensure that both Branch1 FortiGates in the cluster are up and running
+* Connect to the Branch1 Linux Host via the serial console - **studentXX-sdwan-workshop-br1lnx1**
+* Generate an SSH session to the Spoke Linux VM - **sdwan-studentXX-workshop-spoke11-subnet1-lnx**
 
    ```bash
-   ssh studentxx@10.11.1.4
-   
+   ssh studentXX@10.11.1.4
    ```
 
-* From Hub Linux VM SSH session generate a continuous stream of connections to track the failover event
+* From Spoke Linux VM SSH session generate a continuous stream of connections to track the failover event
 
    ```bash
    while true; date; do curl -I -sw '%{http_code}'  https://www.lemonde.fr/ ; echo -e "\n================="; sleep 1 ; done
    ```
 
-* Connect to the Branch1 Primary FortiGate . Initiate a failover by rebooting the primary FortiGate
+* Connect to the Branch1 Primary FortiGate . Initiate a failover by rebooting the primary FortiGate or by forcing a failover via the CLI
+
 * Monitor the SSH connection
-* Did you lose the TCP connection ?
+* Did you lose the TCP connection?
 
 ### Chapter 6 - QUIZ
 
-* How long was your failover time ?
-
-* Why did we lose the SSH (TCP) session with a "short" failover time ?
+* How long was your failover time?
+* Why did we lose the SSH (TCP) session with a "short" failover time?
 
 </details>
 
@@ -401,10 +410,6 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 ## Chapter7 - Scaling (20min)
 
 ***[Presentation about FGT A/A and SDWAN use case- estimated duration 20min]***
-
-<details>
-
-</details>
 
 ***
 ***
@@ -418,15 +423,14 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 ### Task 1 - Deployment
 
 * Create your vWAN and the vWAN Hub using the CLI command below
-
-* Please replace the student variable with your own Student ID
+* The variable `${USER}` in the commands reads your username from the environment
 
    ```bash
-    student='student05'
+    az network vwan create --name sdwan-${USER}-workshop-vwan --resource-group  ${USER}-workshop-sdwan --location eastus --type Standard
+    ```
 
-    az network vwan create --name sdwan-$student-workshop-vwan --resource-group  $student-workshop-sdwan --location eastus --type Standard
-
-    az network vhub create --address-prefix 10.14.0.0/16 --name $student-eastushub --resource-group $student-workshop-sdwan --vwan sdwan-$student-workshop-vwan --location eastus --sku Standard
+    ```bash
+    az network vhub create --address-prefix 10.14.0.0/16 --name ${USER}-eastushub --resource-group ${USER}-workshop-sdwan --vwan sdwan-${USER}-workshop-vwan --location eastus --sku Standard
    ```
 
     ![vwan1](images/vwan1.jpg)
