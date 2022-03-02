@@ -429,6 +429,8 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
     az network vwan create --name sdwan-${USER}-workshop-vwan --resource-group  ${USER}-workshop-sdwan --location eastus --type Standard
     ```
 
+    > If you are prompted to install teh extension `virtual-wan` answer `Y`
+
     ```bash
     az network vhub create --address-prefix 10.14.0.0/16 --name ${USER}-eastushub --resource-group ${USER}-workshop-sdwan --vwan sdwan-${USER}-workshop-vwan --location eastus --sku Standard
    ```
