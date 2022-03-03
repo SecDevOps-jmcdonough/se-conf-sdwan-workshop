@@ -137,6 +137,7 @@ resource "azurerm_lb_rule" "brilbrules" {
 
   frontend_ip_configuration_name = each.value.frontendipname
   probe_id                       = azurerm_lb_probe.brilbprobe[each.value.probe].id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.brlbbackend[each.value.pool].id]
   disable_outbound_snat          = true
 }
 
