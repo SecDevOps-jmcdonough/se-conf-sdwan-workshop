@@ -544,6 +544,20 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
       ![bgp1](images/bgp1.jpg)
 
+        ```bash
+        config network
+            edit 1
+                set prefix 10.10.255.1 255.255.255.255
+            next
+            edit 2
+                set prefix 10.11.0.0 255.255.0.0
+            next
+            edit 3
+                set prefix 10.12.0.0 255.255.0.0
+            next
+        end
+        ```
+
       * Verify that Branches are now receiving Spoke11 and Spoke12 CIDRs. Use the command
         `get router info routing-table all`
 
