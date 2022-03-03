@@ -429,7 +429,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
     az network vwan create --name sdwan-${USER}-workshop-vwan --resource-group  ${USER}-workshop-sdwan --location eastus --type Standard
     ```
 
-    > If you are prompted to install teh extension `virtual-wan` answer `Y`
+    > If you are prompted to install the extension `virtual-wan` answer `Y`
 
     ```bash
     az network vhub create --address-prefix 10.14.0.0/16 --name ${USER}-eastushub --resource-group ${USER}-workshop-sdwan --vwan sdwan-${USER}-workshop-vwan --location eastus --sku Standard
@@ -451,7 +451,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 ### Task 2 - Routing and VNET connection Configuration
 
-* Go to your resource Group and then click on the Hub VNET
+* Go to your resource Group and then click on the Hub VNET - **student61-workshop-sdwan-hub1**
 * Delete the Hub to Spoke VNET peerings (Please delete both Spoke11 and Spoke12 peerings)
 
     ![peeringdelete.jpg](images/peeringdelete.jpg)
@@ -476,15 +476,15 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
     ![vwanconnection1](images/vnetconnection1.jpg)
 
-    * Create a VNET connection for Spoke11, attach it to the Spoke-VNETS Route Table and propagate it to FGT-VNET Route Table[**Please choose your own Resource Group and your own VNET** ]
+    * Create a VNET connection for Spoke11, attach it to the Spoke-VNETS Route Table and propagate it to FGT-VNET Route Table - select **your resource group and VNET** - studentXX
 
       ![vwanconnection2](images/vnetconnection2.jpg)
 
     * Repeat the same for Spoke12
 
-    * Repeat the same for FGT VNET connection, attach it to the FGT-VNET Route Table. 
-      * Does it work?
-      * why?
+    * Repeat the same for FGT VNET connection, attach it to the FGT-VNET Route Table.
+      * Is the connection for FGT VNET created?
+      * Why not?
 
     * Locate your own Azure Route Server and delete it
 
@@ -492,8 +492,8 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
       ![deletears](images/deletears.jpg)
 
     * Try now to connect the FGT VNET to the vWAN Hub, attach it to the FGT-VNET Route Table.
-      * Does it work now ?
-      * why ?
+      * Is the connection for FGT VNET created, this try?
+      * Why did it work?
 
         ![vwanconnection3](images/vnetconnection3.jpg)
         ![vwanconnection4](images/vnetconnection4.jpg)
