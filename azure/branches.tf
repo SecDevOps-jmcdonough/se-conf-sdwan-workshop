@@ -3,14 +3,14 @@
 resource "azurerm_virtual_network" "branches" {
   for_each = var.az_branches
 
-  name                = "${var.project}-${var.TAG}-${each.value.name}"
+  name                = "${local.project_tag}-${each.value.name}"
   location            = each.value.location
   resource_group_name = azurerm_resource_group.hubrg.name
   address_space       = [each.value.cidr]
 
   tags = {
-    Project = "${var.project}"
-    Role    = "${var.TAG}"
+    Project = local.project
+    Role    = local.tag
   }
 }
 
@@ -19,7 +19,7 @@ resource "azurerm_virtual_network" "branches" {
 resource "azurerm_subnet" "brsubnets" {
   for_each = var.az_branchsubnetscidrs
 
-  name                 = each.value.name == "RouteServerSubnet" ? "${each.value.name}" : "${var.TAG}-${var.project}-subnet-${each.value.name}"
+  name                 = each.value.name == "RouteServerSubnet" ? "${each.value.name}" : "${local.tag_project}-subnet-${each.value.name}"
   resource_group_name  = azurerm_resource_group.hubrg.name
   address_prefixes     = [each.value.cidr]
   virtual_network_name = azurerm_virtual_network.branches[each.value.vnet].name
@@ -30,12 +30,12 @@ resource "azurerm_subnet" "brsubnets" {
 resource "azurerm_route_table" "branchvnet_route_tables" {
   for_each = var.branch_vnetroutetables
 
-  name                = "${var.TAG}-${var.project}-${each.value.name}"
+  name                = "${local.tag_project}-${each.value.name}"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
   //disable_bgp_route_propagation = false
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 }
 
@@ -57,14 +57,14 @@ resource "azurerm_subnet_route_table_association" "brvnet_rt_assoc" {
 
 resource "azurerm_public_ip" "branchpip" {
   for_each            = var.branchpublicip
-  name                = "${var.TAG}-${var.project}-${each.value.name}"
+  name                = "${local.tag_project}-${each.value.name}"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
   allocation_method   = "Static"
   sku                 = "Standard"
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }
@@ -74,7 +74,7 @@ resource "azurerm_public_ip" "branchpip" {
 resource "azurerm_lb" "branchlb" {
   for_each = var.branchlb
 
-  name                = "${var.TAG}-${var.project}-${each.value.name}"
+  name                = "${local.tag_project}-${each.value.name}"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
   sku                 = "Standard"
@@ -104,7 +104,7 @@ resource "azurerm_lb" "branchlb" {
   }
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 }
 
@@ -303,7 +303,7 @@ resource "azurerm_lb_outbound_rule" "fgtbroutbound" {
 resource "azurerm_network_security_group" "fgtbr_nsgs" {
   for_each = var.brnsgs
 
-  name                = "${var.TAG}-${var.project}-${each.value.name}"
+  name                = "${local.tag_project}-${each.value.name}"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
 }
@@ -409,7 +409,7 @@ data "template_file" "br1fgt1_customdata" {
 
 
 resource "azurerm_virtual_machine" "br1fgt1" {
-  name                         = "${var.TAG}-${var.project}-br1-fgt1"
+  name                         = "${local.tag_project}-br1-fgt1"
   location                     = azurerm_virtual_network.branches["branch1"].location
   resource_group_name          = azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.branch1fgt1nic : nic.id]
@@ -434,21 +434,21 @@ resource "azurerm_virtual_machine" "br1fgt1" {
   }
 
   storage_os_disk {
-    name              = "${var.TAG}-${var.project}-br1-fgt1_OSDisk"
+    name              = "${local.tag_project}-br1-fgt1_OSDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "${var.TAG}-${var.project}-br1-fgt1_DataDisk"
+    name              = "${local.tag_project}-br1-fgt1_DataDisk"
     managed_disk_type = "Premium_LRS"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "20"
   }
   os_profile {
-    computer_name  = "${var.TAG}-${var.project}-br1-fgt1"
+    computer_name  = "${local.tag_project}-br1-fgt1"
     admin_username = var.username
     admin_password = var.password
     custom_data    = data.template_file.br1fgt1_customdata.rendered
@@ -459,7 +459,7 @@ resource "azurerm_virtual_machine" "br1fgt1" {
   }
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }
@@ -526,7 +526,7 @@ data "template_file" "br1fgt2_customdata" {
 }
 
 resource "azurerm_virtual_machine" "br1fgt2" {
-  name                         = "${var.TAG}-${var.project}-br1-fgt2"
+  name                         = "${local.tag_project}-br1-fgt2"
   location                     = azurerm_virtual_network.branches["branch1"].location
   resource_group_name          = azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.branch1fgt2nic : nic.id]
@@ -551,21 +551,21 @@ resource "azurerm_virtual_machine" "br1fgt2" {
   }
 
   storage_os_disk {
-    name              = "${var.TAG}-${var.project}-br1-fgt2_OSDisk"
+    name              = "${local.tag_project}-br1-fgt2_OSDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "${var.TAG}-${var.project}-br1-fgt2_DataDisk"
+    name              = "${local.tag_project}-br1-fgt2_DataDisk"
     managed_disk_type = "Premium_LRS"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "20"
   }
   os_profile {
-    computer_name  = "${var.TAG}-${var.project}-br1-fgt2"
+    computer_name  = "${local.tag_project}-br1-fgt2"
     admin_username = var.username
     admin_password = var.password
     custom_data    = data.template_file.br1fgt2_customdata.rendered
@@ -576,7 +576,7 @@ resource "azurerm_virtual_machine" "br1fgt2" {
   }
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }
@@ -643,7 +643,7 @@ data "template_file" "br2fgt1_customdata" {
 
 
 resource "azurerm_virtual_machine" "br2fgt1" {
-  name                         = "${var.TAG}-${var.project}-br2-fgt1"
+  name                         = "${local.tag_project}-br2-fgt1"
   location                     = azurerm_virtual_network.branches["branch2"].location
   resource_group_name          = azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.branch2fgt1nic : nic.id]
@@ -668,20 +668,20 @@ resource "azurerm_virtual_machine" "br2fgt1" {
   }
 
   storage_os_disk {
-    name              = "${var.TAG}-${var.project}-br2-fgt1_OSDisk"
+    name              = "${local.tag_project}-br2-fgt1_OSDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
   storage_data_disk {
-    name              = "${var.TAG}-${var.project}-br2-fgt1_DataDisk"
+    name              = "${local.tag_project}-br2-fgt1_DataDisk"
     managed_disk_type = "Premium_LRS"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "20"
   }
   os_profile {
-    computer_name  = "${var.TAG}-${var.project}-br2-fgt1"
+    computer_name  = "${local.tag_project}-br2-fgt1"
     admin_username = var.username
     admin_password = var.password
     custom_data    = data.template_file.br2fgt1_customdata.rendered
@@ -690,7 +690,7 @@ resource "azurerm_virtual_machine" "br2fgt1" {
     disable_password_authentication = false
   }
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }
@@ -757,7 +757,7 @@ data "template_file" "br2fgt2_customdata" {
 }
 
 resource "azurerm_virtual_machine" "br2fgt2" {
-  name                         = "${var.TAG}-${var.project}-br2-fgt2"
+  name                         = "${local.tag_project}-br2-fgt2"
   location                     = azurerm_virtual_network.branches["branch2"].location
   resource_group_name          = azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.branch2fgt2nic : nic.id]
@@ -782,21 +782,21 @@ resource "azurerm_virtual_machine" "br2fgt2" {
   }
 
   storage_os_disk {
-    name              = "${var.TAG}-${var.project}-br2-fgt2_OSDisk"
+    name              = "${local.tag_project}-br2-fgt2_OSDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "${var.TAG}-${var.project}-br2-fgt2_DataDisk"
+    name              = "${local.tag_project}-br2-fgt2_DataDisk"
     managed_disk_type = "Premium_LRS"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "20"
   }
   os_profile {
-    computer_name  = "${var.TAG}-${var.project}-br2-fgt2"
+    computer_name  = "${local.tag_project}-br2-fgt2"
     admin_username = var.username
     admin_password = var.password
     custom_data    = data.template_file.br2fgt2_customdata.rendered
@@ -807,7 +807,7 @@ resource "azurerm_virtual_machine" "br2fgt2" {
   }
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }
@@ -868,7 +868,7 @@ data "template_file" "br3fgt1_customdata" {
 }
 
 resource "azurerm_virtual_machine" "br3fgt1" {
-  name                         = "${var.TAG}-${var.project}-br3-fgt1"
+  name                         = "${local.tag_project}-br3-fgt1"
   location                     = azurerm_virtual_network.branches["branch3"].location
   resource_group_name          = azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.branch3fgt1nic : nic.id]
@@ -893,21 +893,21 @@ resource "azurerm_virtual_machine" "br3fgt1" {
   }
 
   storage_os_disk {
-    name              = "${var.TAG}-${var.project}-br3-fgt1_OSDisk"
+    name              = "${local.tag_project}-br3-fgt1_OSDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "${var.TAG}-${var.project}-br3-fgt1_DataDisk"
+    name              = "${local.tag_project}-br3-fgt1_DataDisk"
     managed_disk_type = "Premium_LRS"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "20"
   }
   os_profile {
-    computer_name  = "${var.TAG}-${var.project}-br3-fgt1"
+    computer_name  = "${local.tag_project}-br3-fgt1"
     admin_username = var.username
     admin_password = var.password
     custom_data    = data.template_file.br3fgt1_customdata.rendered
@@ -918,7 +918,7 @@ resource "azurerm_virtual_machine" "br3fgt1" {
   }
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }
@@ -940,7 +940,7 @@ resource "azurerm_role_assignment" "br3fgt1_reader" {
 resource "azurerm_network_interface" "branchvmnics" {
   for_each = var.branchvm
 
-  name                = "${var.TAG}-${var.project}-${each.value.vmname}-nic"
+  name                = "${local.tag_project}-${each.value.vmname}-nic"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
 
@@ -971,7 +971,7 @@ data "template_file" "brlnx_customdata" {
 resource "azurerm_virtual_machine" "branchlnx" {
   for_each = var.branchvm
 
-  name                = "${var.TAG}-${var.project}-${each.value.vmname}"
+  name                = "${local.tag_project}-${each.value.vmname}"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
 
@@ -986,14 +986,14 @@ resource "azurerm_virtual_machine" "branchlnx" {
   }
 
   storage_os_disk {
-    name              = "${var.TAG}-${var.project}-${each.value.vmname}-lnx-OSDisk"
+    name              = "${local.tag_project}-${each.value.vmname}-lnx-OSDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   os_profile {
-    computer_name  = "${var.TAG}-${var.project}-${each.value.vmname}-lnx"
+    computer_name  = "${local.tag_project}-${each.value.vmname}-lnx"
     admin_username = var.username
     admin_password = var.password
     custom_data    = data.template_file.brlnx_customdata.rendered
@@ -1004,7 +1004,7 @@ resource "azurerm_virtual_machine" "branchlnx" {
   }
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }

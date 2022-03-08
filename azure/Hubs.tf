@@ -1,7 +1,14 @@
+locals {
+  project_tag = "${var.username}-workshop-${var.TAG}"
+  tag_project = "${var.TAG}-${var.username}-workshop"
+  project     = "${var.username}-workshop"
+  tag         = var.TAG
+}
+
 //############################ Create Resource Group ##################
 
 resource "azurerm_resource_group" "hubrg" {
-  name     = "${var.project}-${var.TAG}"
+  name     = local.project_tag
   location = var.hubrglocation
 }
 
@@ -10,14 +17,14 @@ resource "azurerm_resource_group" "hubrg" {
 
 resource "azurerm_virtual_network" "Hubs" {
   for_each            = var.az_hubs
-  name                = "${var.project}-${var.TAG}-${each.value.name}"
+  name                = "${local.project_tag}-${each.value.name}"
   location            = each.value.location
   resource_group_name = azurerm_resource_group.hubrg.name
   address_space       = [each.value.cidr]
 
   tags = {
-    Project = "${var.project}"
-    Role    = "${var.TAG}"
+    Project = local.project
+    Role    = local.tag
   }
 }
 
@@ -26,7 +33,7 @@ resource "azurerm_virtual_network" "Hubs" {
 resource "azurerm_subnet" "hubsubnets" {
   for_each = var.az_hubsubnetscidrs
 
-  name                 = each.value.name == "RouteServerSubnet" ? "${each.value.name}" : "${var.TAG}-${var.project}-subnet-${each.value.name}"
+  name                 = each.value.name == "RouteServerSubnet" ? "${each.value.name}" : "${local.tag_project}-subnet-${each.value.name}"
   resource_group_name  = azurerm_resource_group.hubrg.name
   address_prefixes     = [each.value.cidr]
   virtual_network_name = azurerm_virtual_network.Hubs[each.value.vnet].name
@@ -37,14 +44,14 @@ resource "azurerm_subnet" "hubsubnets" {
 resource "azurerm_route_table" "hubvnet_route_tables" {
   for_each = var.vnetroutetables
 
-  name                = "${var.TAG}-${var.project}-${each.value.name}"
+  name                = "${local.tag_project}-${each.value.name}"
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
 
   disable_bgp_route_propagation = each.value.disablepropagation
   //disable_bgp_route_propagation = false
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 }
 
@@ -62,7 +69,7 @@ resource "azurerm_subnet_route_table_association" "vnet_rt_assoc" {
 resource "azurerm_network_security_group" "fgt_nsgs" {
   for_each = var.nsgs
 
-  name                = "${var.TAG}-${var.project}-${each.value.vnet}-${each.value.name}"
+  name                = "${local.tag_project}-${each.value.vnet}-${each.value.name}"
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
 }
@@ -193,7 +200,7 @@ data "template_file" "hub1fgt1_customdata" {
 }
 
 resource "azurerm_virtual_machine" "hub1fgt1" {
-  name                         = "${var.TAG}-${var.project}-hub1-fgt1"
+  name                         = "${local.tag_project}-hub1-fgt1"
   location                     = azurerm_virtual_network.Hubs["hub1"].location
   resource_group_name          = azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.hub1fgt1nics : nic.id]
@@ -218,21 +225,21 @@ resource "azurerm_virtual_machine" "hub1fgt1" {
   }
 
   storage_os_disk {
-    name              = "${var.TAG}-${var.project}-hub1-fgt1_OSDisk"
+    name              = "${local.tag_project}-hub1-fgt1_OSDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "${var.TAG}-${var.project}-hub1-fgt1_DataDisk"
+    name              = "${local.tag_project}-hub1-fgt1_DataDisk"
     managed_disk_type = "Premium_LRS"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "20"
   }
   os_profile {
-    computer_name  = "${var.TAG}-${var.project}-hub1-fgt1"
+    computer_name  = "${local.tag_project}-hub1-fgt1"
     admin_username = var.username
     admin_password = var.password
     custom_data    = data.template_file.hub1fgt1_customdata.rendered
@@ -243,7 +250,7 @@ resource "azurerm_virtual_machine" "hub1fgt1" {
   }
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }
@@ -307,7 +314,7 @@ data "template_file" "hub1fgt2_customdata" {
 }
 
 resource "azurerm_virtual_machine" "hub1fgt2" {
-  name                         = "${var.TAG}-${var.project}-hub1-fgt2"
+  name                         = "${local.tag_project}-hub1-fgt2"
   location                     = azurerm_virtual_network.Hubs["hub1"].location
   resource_group_name          = azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.hub1fgt2nics : nic.id]
@@ -332,21 +339,21 @@ resource "azurerm_virtual_machine" "hub1fgt2" {
   }
 
   storage_os_disk {
-    name              = "${var.TAG}-${var.project}-hub1-fgt2_OSDisk"
+    name              = "${local.tag_project}-hub1-fgt2_OSDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "${var.TAG}-${var.project}-hub1-fgt2_DataDisk"
+    name              = "${local.tag_project}-hub1-fgt2_DataDisk"
     managed_disk_type = "Premium_LRS"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "20"
   }
   os_profile {
-    computer_name  = "${var.TAG}-${var.project}-hub1-fgt2"
+    computer_name  = "${local.tag_project}-hub1-fgt2"
     admin_username = var.username
     admin_password = var.password
     custom_data    = data.template_file.hub1fgt2_customdata.rendered
@@ -357,7 +364,7 @@ resource "azurerm_virtual_machine" "hub1fgt2" {
   }
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }
@@ -377,21 +384,21 @@ resource "azurerm_role_assignment" "hub1fgt2_reader" {
 
 resource "azurerm_public_ip" "hubpip" {
   for_each            = var.hubpublicip
-  name                = "${var.TAG}-${var.project}-${each.value.name}"
+  name                = "${local.tag_project}-${each.value.name}"
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
   allocation_method   = "Static"
   sku                 = "Standard"
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }
 
 resource "azurerm_lb" "hub1extlb" {
   for_each            = var.hubextlb
-  name                = "${var.TAG}-${var.project}-${each.value.name}"
+  name                = "${local.tag_project}-${each.value.name}"
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
   resource_group_name = azurerm_resource_group.hubrg.name
   sku                 = "Standard"
@@ -402,7 +409,7 @@ resource "azurerm_lb" "hub1extlb" {
 
   }
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 }
 
@@ -448,14 +455,14 @@ resource "azurerm_lb_backend_address_pool" "hublbbackend" {
 
 
 resource "azurerm_public_ip" "arspip" {
-  name                = "${var.TAG}-${var.project}-arspip"
+  name                = "${local.tag_project}-arspip"
   location            = azurerm_virtual_network.Hubs["hub1"].location
   resource_group_name = azurerm_resource_group.hubrg.name
   allocation_method   = "Static"
   sku                 = "Standard"
 
   tags = {
-    Project = "${var.project}"
+    Project = local.project
   }
 
 }
@@ -472,10 +479,10 @@ resource "azurerm_resource_group_template_deployment" "AzureRouteServer" {
   debug_level         = "requestContent, responseContent"
   parameters_content = jsonencode({
     "project" = {
-      value = var.project
+      value = local.project
     },
     "TAG" = {
-      value = var.TAG
+      value = local.tag
     },
     "location" = {
       value = azurerm_virtual_network.Hubs["hub1"].location
@@ -577,7 +584,7 @@ resource "azurerm_resource_group_template_deployment" "AzureRouteServer" {
                 "subnet": {
                     "id": "[parameters('RouteServerSubnetID')]"
                 },
-               "PublicIPAddress": { "id": "[parameters('RouteServerPIPID')]" } 
+                "PublicIPAddress": { "id": "[parameters('RouteServerPIPID')]" } 
             }
         },
         {
@@ -597,8 +604,8 @@ resource "azurerm_resource_group_template_deployment" "AzureRouteServer" {
             "apiVersion": "2020-06-01",
             "name": "[concat(variables('fgRouteServerName'), '/', variables('ARSpeer2'))]",
             "dependsOn": [
-                 "[resourceId('Microsoft.Network/virtualHubs/ipConfigurations', variables('fgRouteServerName'), 'ipconfig1')]",
-                 "[resourceId('Microsoft.Network/virtualHubs/bgpConnections', variables('fgRouteServerName'), variables('ARSpeer1'))]"
+                  "[resourceId('Microsoft.Network/virtualHubs/ipConfigurations', variables('fgRouteServerName'), 'ipconfig1')]",
+                  "[resourceId('Microsoft.Network/virtualHubs/bgpConnections', variables('fgRouteServerName'), variables('ARSpeer1'))]"
             ],
             "properties": {
                 "peerAsn": "[parameters('peerasn')]",
@@ -609,10 +616,4 @@ resource "azurerm_resource_group_template_deployment" "AzureRouteServer" {
     "outputs": {}
   }
 TEMPLATE
-
-
 }
-
-
-
-

@@ -3,10 +3,10 @@ variable "TAG" {
   type        = string
 }
 
-variable "project" {
-  description = "project Prefix TAG of the created ressources"
-  type        = string
-}
+#variable "project" {
+#  description = "project Prefix TAG of the created ressources"
+#  type        = string
+#}
 
 variable "azsubscriptionid" {
   description = "Azure Subscription id"
