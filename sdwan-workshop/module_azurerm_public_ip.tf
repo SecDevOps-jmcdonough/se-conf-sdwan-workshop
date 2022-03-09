@@ -1,15 +1,15 @@
 locals {
   public_ips = {
-    "hub_elb_pip1" = { name = "hub_elb_pip1", allocation_method = "Static", sku = "Standard" }
+    "hub_elb_pip1" = { name = "pip_hub_elb_01", allocation_method = "Static", sku = "Standard" }
 
-    "br1_elb_pip1" = { name = "br1_elb_pip1", allocation_method = "Static", sku = "Standard" }
-    "br1_elb_pip2" = { name = "br1_elb_pip2", allocation_method = "Static", sku = "Standard" }
-    "br2_elb_pip1" = { name = "br2_elb_pip1", allocation_method = "Static", sku = "Standard" }
-    "br2_elb_pip2" = { name = "br2_elb_pip2", allocation_method = "Static", sku = "Standard" }
-    "br3_pip1"     = { name = "br3_pip1", allocation_method = "Static", sku = "Standard" }
-    "br3_pip2"     = { name = "br3_pip2", allocation_method = "Static", sku = "Standard" }
+    "pip_br1_elb_01" = { name = "pip_br1_elb_01", allocation_method = "Static", sku = "Standard" }
+    "pip_br1_elb_02" = { name = "pip_br1_elb_02", allocation_method = "Static", sku = "Standard" }
+    "pip_br2_elb_01" = { name = "pip_br2_elb_01", allocation_method = "Static", sku = "Standard" }
+    "pip_br2_elb_02" = { name = "pip_br2_elb_02", allocation_method = "Static", sku = "Standard" }
+    "pip_br3_01"     = { name = "pip_br3_01", allocation_method = "Static", sku = "Standard" }
+    "pip_br3_02"     = { name = "pip_br3_02", allocation_method = "Static", sku = "Standard" }
 
-    "${local.tag_project}_ars_pip" = { name = "${local.tag_project}_ars_pip", allocation_method = "Static", sku = "Standard" }
+    "pip_${local.tag_project}_ars" = { name = "pip_${local.tag_project}_ars_pip", allocation_method = "Static", sku = "Standard" }
   }
 }
 

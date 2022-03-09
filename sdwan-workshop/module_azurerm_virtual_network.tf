@@ -1,16 +1,16 @@
 locals {
   virtual_networks = {
     # Hub
-    "hub1" = { name = "hub1", address_space = ["10.10.0.0/16"], location = "eastus" }
+    "vnet_hub1" = { name = "vnet_hub1", address_space = ["10.10.0.0/16"], location = "eastus" }
 
     # Brances
-    "branch1" = { name = "branch1", address_space = ["172.16.0.0/16"], location = "eastus" }
-    "branch2" = { name = "branch2", address_space = ["172.17.0.0/16"], location = "eastus" }
-    "branch3" = { name = "branch3", address_space = ["172.18.0.0/16"], location = "southcentralus" }
+    "vnet_branch1" = { name = "vnet_branch1", address_space = ["172.16.0.0/16"], location = "eastus" }
+    "vnet_branch2" = { name = "vnet_branch2", address_space = ["172.17.0.0/16"], location = "eastus" }
+    "vnet_branch3" = { name = "vnet_branch3", address_space = ["172.18.0.0/16"], location = "southcentralus" }
 
     # Spokes
-    "spoke11" = { name = "spoke11", address_space = ["10.11.0.0/16"], location = "eastus" }
-    "spoke12" = { name = "spoke12", address_space = ["10.12.0.0/16"], location = "eastus" }
+    "vnet_spoke11" = { name = "vnet_spoke11", address_space = ["10.11.0.0/16"], location = "eastus" }
+    "vnet_spoke12" = { name = "vnet_spoke12", address_space = ["10.12.0.0/16"], location = "eastus" }
   }
 }
 module "module_azurerm_virtual_network" {
