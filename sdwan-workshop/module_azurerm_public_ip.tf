@@ -1,14 +1,21 @@
 locals {
   public_ips = {
-    "hub_elb_pip1" = { name = "pip_hub_elb_01", allocation_method = "Static", sku = "Standard" }
+    # Hub 1
+    "pip_hub_elb_01" = { name = "pip_hub_elb_01", allocation_method = "Static", sku = "Standard" }
 
+    # Branch 1
     "pip_br1_elb_01" = { name = "pip_br1_elb_01", allocation_method = "Static", sku = "Standard" }
     "pip_br1_elb_02" = { name = "pip_br1_elb_02", allocation_method = "Static", sku = "Standard" }
+
+    # Branch 2
     "pip_br2_elb_01" = { name = "pip_br2_elb_01", allocation_method = "Static", sku = "Standard" }
     "pip_br2_elb_02" = { name = "pip_br2_elb_02", allocation_method = "Static", sku = "Standard" }
-    "pip_br3_01"     = { name = "pip_br3_01", allocation_method = "Static", sku = "Standard" }
-    "pip_br3_02"     = { name = "pip_br3_02", allocation_method = "Static", sku = "Standard" }
 
+    # Branch 3
+    "pip_br3_01" = { name = "pip_br3_01", allocation_method = "Static", sku = "Standard" }
+    "pip_br3_02" = { name = "pip_br3_02", allocation_method = "Static", sku = "Standard" }
+
+    # Azure Route Server
     "pip_${local.tag_project}_ars" = { name = "pip_${local.tag_project}_ars_pip", allocation_method = "Static", sku = "Standard" }
   }
 }
