@@ -1,14 +1,14 @@
 locals {
 
   lb_probes = {
-    # Hub 1 LB Probe
+    # Hub 1
     "lb_probe_hub1_ext_lb_01" = { name = "lb_probe_hub1_ext_lb_01", loadbalancer_id = "lb_hub1_ext_01", port = "8008" }
 
-    # Branch 1 LB Probe
+    # Branch 1
     "lb_probe_br1_ext_lb_01" = { name = "lb_probe_br1_ext_lb_01", loadbalancer_id = "lb_branch1_ext_01", port = "8008" }
     "lb_probe_br1_int_lb_01" = { name = "lb_probe_br1_int_lb_01", loadbalancer_id = "lb_branch1_int_01", port = "8008" }
 
-    # Branch 2 LB Probe
+    # Branch 2
     "lb_probe_br2_ext_lb_01" = { name = "lb_probe_br2_ext_lb_01", loadbalancer_id = "lb_branch2_ext_01", port = "8008" }
     "lb_probe_br2_int_lb_01" = { name = "lb_probe_br2_int_lb_01", loadbalancer_id = "lb_branch2_int_01", port = "8008" }
 

@@ -1,10 +1,10 @@
 locals {
   network_security_rules = {
     # Hub
-    "hub1_pub_all_inbound"   = { name = "hub1_pub_all_inbound", network_security_group_name = "nsg_pub", priority = "100", direction = "Inbound", access = "Allow", protocol = "*"}
-    "hub1_pub_all_outbound"  = { name = "hub1_pub_all_outbound", network_security_group_name = "nsg_pub", priority = "100", direction = "Outbound", access = "Allow", protocol = "*"}
-    "hub1_priv_all_inbound"  = { name = "hub1_priv_all_inbound", network_security_group_name = "nsg_priv", priority = "100", direction = "Inbound", access = "Allow", protocol = "*"}
-    "hub1_priv_all_outbound" = { name = "hub1_priv_all_outbound", network_security_group_name = "nsg_priv", priority = "100", direction = "Outbound", access = "Allow", protocol = "*"}
+    "hub1_pub_all_inbound"   = { name = "hub1_pub_all_inbound", network_security_group_name = "nsg_pub", priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }
+    "hub1_pub_all_outbound"  = { name = "hub1_pub_all_outbound", network_security_group_name = "nsg_pub", priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
+    "hub1_priv_all_inbound"  = { name = "hub1_priv_all_inbound", network_security_group_name = "nsg_priv", priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }
+    "hub1_priv_all_outbound" = { name = "hub1_priv_all_outbound", network_security_group_name = "nsg_priv", priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
 
     # Branches
     "br1_all_inbound"  = { name = "br1_all_inbound", network_security_group_name = "nsg_br1", priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }

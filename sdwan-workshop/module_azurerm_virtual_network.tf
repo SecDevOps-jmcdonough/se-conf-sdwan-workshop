@@ -3,7 +3,7 @@ locals {
     # Hub
     "vnet_hub1" = { name = "vnet_hub1", address_space = ["10.10.0.0/16"], location = "eastus" }
 
-    # Brances
+    # Branches
     "vnet_branch1" = { name = "vnet_branch1", address_space = ["172.16.0.0/16"], location = "eastus" }
     "vnet_branch2" = { name = "vnet_branch2", address_space = ["172.17.0.0/16"], location = "eastus" }
     "vnet_branch3" = { name = "vnet_branch3", address_space = ["172.18.0.0/16"], location = "southcentralus" }
