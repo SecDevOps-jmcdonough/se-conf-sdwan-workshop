@@ -5,7 +5,7 @@ locals {
   tag         = var.TAG
 
   resource_group_name = "${var.username}-workshop-${var.TAG}"
-  location            = var.hubrglocation
+  location            = var.location
 
 }
 
