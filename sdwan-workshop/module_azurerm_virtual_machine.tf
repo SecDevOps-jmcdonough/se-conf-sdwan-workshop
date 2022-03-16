@@ -16,8 +16,8 @@ locals {
   }
 
   virtual_machines = {
-    "vm_fgt_1" = {
-      name              = "vm-fgt-1"
+    "vm_hub_fgt_1" = {
+      name              = "vm-hub-fgt-1"
       identity_identity = "SystemAssigned"
 
       availability_set_id = module.module_azurerm_availability_set["as_hub"].availability_set.id
@@ -50,12 +50,12 @@ locals {
       boot_diagnostics_enabled     = true
       boot_diagnostics_storage_uri = module.module_azurerm_storage_account["sthub1"].storage_account.primary_blob_endpoint
 
-      storage_os_disk_name              = "disk_os_fgt_1"
+      storage_os_disk_name              = "disk_os_hub_fgt_1"
       storage_os_disk_caching           = "ReadWrite"
       storage_os_disk_managed_disk_type = "Premium_LRS"
       storage_os_disk_create_option     = "FromImage"
 
-      storage_data_disk_name              = "disk_data_fgt_1"
+      storage_data_disk_name              = "disk_data_hub_fgt_1"
       storage_data_disk_managed_disk_type = "Premium_LRS"
       storage_data_disk_create_option     = "Empty"
       storage_data_disk_disk_size_gb      = "30"
@@ -95,8 +95,8 @@ locals {
 
       fgt_config_sdwan = true
     }
-    "vm_fgt_2" = {
-      name              = "vm-fgt-2"
+    "vm_hub_fgt_2" = {
+      name              = "vm-hub-fgt-2"
       identity_identity = "SystemAssigned"
 
       availability_set_id = module.module_azurerm_availability_set["as_hub"].availability_set.id
@@ -129,12 +129,12 @@ locals {
       boot_diagnostics_enabled     = true
       boot_diagnostics_storage_uri = module.module_azurerm_storage_account["sthub1"].storage_account.primary_blob_endpoint
 
-      storage_os_disk_name              = "disk_os_fgt_2"
+      storage_os_disk_name              = "disk_os_hub_fgt_2"
       storage_os_disk_caching           = "ReadWrite"
       storage_os_disk_managed_disk_type = "Premium_LRS"
       storage_os_disk_create_option     = "FromImage"
 
-      storage_data_disk_name              = "disk_data_fgt_2"
+      storage_data_disk_name              = "disk_data_hub_fgt_2"
       storage_data_disk_managed_disk_type = "Premium_LRS"
       storage_data_disk_create_option     = "Empty"
       storage_data_disk_disk_size_gb      = "30"
@@ -174,6 +174,87 @@ locals {
 
       fgt_config_sdwan = true
     }
+    /*"vm_br1_fgt_1" = {
+      name              = "vm-br1-fgt-1"
+      identity_identity = "SystemAssigned"
+
+      availability_set_id = module.module_azurerm_availability_set["as_br1"].availability_set.id
+      #availability_set_id = null
+      zones = null
+      #zones = ["1"]
+
+      delete_os_disk_on_termination    = true
+      delete_data_disks_on_termination = true
+
+      network_interface_ids        = [for nic in ["nic_br1_fortigate_1_1", "nic_br1_fortigate_1_2", "nic_br1_fortigate_1_3", "nic_br1_fortigate_1_4", "nic_br1_fortigate_1_5"] : module.module_azurerm_network_interface[nic].network_interface.id]
+      primary_network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_1"].network_interface.id
+
+      vm_size = "Standard_F8s"
+
+      storage_image_reference_publisher = local.vm_image["fortinet"].publisher
+      storage_image_reference_offer     = local.vm_image["fortinet"].offer
+      storage_image_reference_sku       = local.vm_image["fortinet"].sku
+      storage_image_reference_version   = local.vm_image["fortinet"].version
+
+      plan_publisher = local.vm_image["fortinet"].publisher
+      plan_product   = local.vm_image["fortinet"].offer
+      plan_name      = local.vm_image["fortinet"].sku
+
+      os_profile_admin_username = var.username
+      os_profile_admin_password = var.password
+
+      os_profile_linux_config_disable_password_authentication = false
+
+      boot_diagnostics_enabled     = true
+      boot_diagnostics_storage_uri = module.module_azurerm_storage_account["stbr1"].storage_account.primary_blob_endpoint
+
+      storage_os_disk_name              = "disk_os_br1_fgt_1"
+      storage_os_disk_caching           = "ReadWrite"
+      storage_os_disk_managed_disk_type = "Premium_LRS"
+      storage_os_disk_create_option     = "FromImage"
+
+      storage_data_disk_name              = "disk_data_br1_fgt_1"
+      storage_data_disk_managed_disk_type = "Premium_LRS"
+      storage_data_disk_create_option     = "Empty"
+      storage_data_disk_disk_size_gb      = "30"
+      storage_data_disk_lun               = "0"
+
+      # FortiGate Configuration
+      config_template = "./assets/fgt-br-userdata.tpl"
+      gui_theme       = "nutrino"
+      Port1IP         = module.module_azurerm_network_interface["nic_br1_fortigate_1_1"].network_interface.private_ip_address
+      Port1Alias      = "isp1"
+      Port2IP         = module.module_azurerm_network_interface["nic_br1_fortigate_1_2"].network_interface.private_ip_address
+      Port2Alias      = "priv"
+      Port3IP         = module.module_azurerm_network_interface["nic_br1_fortigate_1_3"].network_interface.private_ip_address
+      Port3Alias      = "isp2"
+      Port4IP         = module.module_azurerm_network_interface["nic_br1_fortigate_1_4"].network_interface.private_ip_address
+      Port4Alias      = "ha"
+      Port5Alias      = "mgmt"
+
+      port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefix)
+      port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefix)
+      port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefix)
+      port4subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_ha"].subnet.address_prefix)
+
+      fgt_external_gw = cidrhost(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefix, 1)
+      fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefix, 1)
+      fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.address_prefix, 1)
+
+      fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefix, 1)
+      isp2             = module.module_azurerm_network_interface["nic_br1_fortigate_1_3"].network_interface.name
+
+      fgt_ha_peerip   = module.module_azurerm_network_interface["nic_br1_fortigate_2_4"].network_interface.private_ip_address
+      fgt_ha_priority = "100"
+      vnet_network    = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0]
+
+      port_ha   = "port4"
+      port_mgmt = "port5"
+
+      fgt_config_sdwan = true
+      remotegw1        = module.module_azurerm_public_ip["pip_hub_elb_01"].public_ip.ip_address
+      remotegw2        = module.module_azurerm_public_ip["pip_hub_elb_01"].public_ip.ip_address
+    }*/
   }
 }
 

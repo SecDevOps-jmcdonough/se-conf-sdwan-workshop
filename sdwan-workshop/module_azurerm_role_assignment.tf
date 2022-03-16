@@ -1,7 +1,7 @@
 locals {
   role_assignments = {
-    "vm_fgt_1" = { role_definition_name = "Reader" }
-    "vm_fgt_2" = { role_definition_name = "Reader" }
+    "vm_hub_fgt_1" = { role_definition_name = "Reader" }
+    "vm_hub_fgt_2" = { role_definition_name = "Reader" }
   }
 }
 
