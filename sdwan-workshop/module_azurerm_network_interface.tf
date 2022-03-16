@@ -500,6 +500,88 @@ locals {
         }
       ]
     }
+    # Branch Linux VMs
+    "nic_br1_lnx_1_1" = {
+      name                          = "nic_br1_lnx_1_1"
+      subnet_name                   = "br1_protected"
+      enable_ip_forwarding          = false
+      enable_accelerated_networking = false
+
+      ip_configurations = [
+        {
+          name                          = "ipconfig1"
+          subnet_id                     = module.module_azurerm_subnet["br1_protected"].subnet.id
+          private_ip_address_allocation = "Static"
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_protected"].subnet.address_prefix, 4)
+          public_ip_address_id          = null
+        }
+      ]
+    }
+    "nic_br2_lnx_1_1" = {
+      name                          = "nic_br2_lnx_1_1"
+      subnet_name                   = "br2_protected"
+      enable_ip_forwarding          = false
+      enable_accelerated_networking = false
+
+      ip_configurations = [
+        {
+          name                          = "ipconfig1"
+          subnet_id                     = module.module_azurerm_subnet["br2_protected"].subnet.id
+          private_ip_address_allocation = "Static"
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_protected"].subnet.address_prefix, 4)
+          public_ip_address_id          = null
+        }
+      ]
+    }
+    "nic_br3_lnx_1_1" = {
+      name                          = "nic_br3_lnx_1_1"
+      subnet_name                   = "br3_protected"
+      enable_ip_forwarding          = false
+      enable_accelerated_networking = false
+
+      ip_configurations = [
+        {
+          name                          = "ipconfig1"
+          subnet_id                     = module.module_azurerm_subnet["br3_protected"].subnet.id
+          private_ip_address_allocation = "Static"
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br3_protected"].subnet.address_prefix, 4)
+          public_ip_address_id          = null
+        }
+      ]
+    }
+    # Spoke Linux VMs
+    "nic_spoke11_lnx_1_1" = {
+      name                          = "nic_spoke11_lnx_1_1"
+      subnet_name                   = "spoke11_subnet1"
+      enable_ip_forwarding          = false
+      enable_accelerated_networking = false
+
+      ip_configurations = [
+        {
+          name                          = "ipconfig1"
+          subnet_id                     = module.module_azurerm_subnet["spoke11_subnet1"].subnet.id
+          private_ip_address_allocation = "Static"
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["spoke11_subnet1"].subnet.address_prefix, 4)
+          public_ip_address_id          = null
+        }
+      ]
+    }
+    "nic_spoke12_lnx_1_1" = {
+      name                          = "nic_spoke12_lnx_1_1"
+      subnet_name                   = "spoke12_subnet1"
+      enable_ip_forwarding          = false
+      enable_accelerated_networking = false
+
+      ip_configurations = [
+        {
+          name                          = "ipconfig1"
+          subnet_id                     = module.module_azurerm_subnet["spoke12_subnet1"].subnet.id
+          private_ip_address_allocation = "Static"
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["spoke12_subnet1"].subnet.address_prefix, 4)
+          public_ip_address_id          = null
+        }
+      ]
+    }
   }
 }
 
