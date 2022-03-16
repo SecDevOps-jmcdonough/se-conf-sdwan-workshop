@@ -1,52 +1,115 @@
-output "Hub-fgt1https" {
-  value = format("https://%s:%s", azurerm_public_ip.hubpip["hub-pip1"].ip_address, var.hubextlbnat["fgt1https"].frontport)
+output "Hub1-fgt1https" {
+  value = format(
+    "https://%s:%s",
+    module.module_azurerm_public_ip["pip_hub_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["hub1_fgt1_https"].lb_nat_rule.frontend_port
+  )
 }
-output "Hub-fgt2https" {
-  value = format("https://%s:%s", azurerm_public_ip.hubpip["hub-pip1"].ip_address, var.hubextlbnat["fgt2https"].frontport)
+output "Hub1-fgt2https" {
+  value = format(
+    "https://%s:%s",
+    module.module_azurerm_public_ip["pip_hub_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["hub1_fgt2_https"].lb_nat_rule.frontend_port
+  )
 }
 
-output "Hub-fgt1ssh" {
-  value = format("ssh %s@%s:%s", var.username, azurerm_public_ip.hubpip["hub-pip1"].ip_address, var.hubextlbnat["fgt1ssh"].frontport)
+output "Hub1-fgt1ssh" {
+  value = format(
+    "ssh %s@%s:%s",
+    var.username,
+    module.module_azurerm_public_ip["pip_hub_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["hub1_fgt1_ssh"].lb_nat_rule.frontend_port
+  )
 }
-output "Hub-fgt2ssh" {
-  value = format("ssh %s@%s:%s", var.username, azurerm_public_ip.hubpip["hub-pip1"].ip_address, var.hubextlbnat["fgt2ssh"].frontport)
+output "Hub1-fgt2ssh" {
+  value = format(
+    "ssh %s@%s:%s",
+    var.username,
+    module.module_azurerm_public_ip["pip_hub_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["hub1_fgt2_ssh"].lb_nat_rule.frontend_port
+  )
 }
 
 
 output "BR1-fgt1https" {
-  value = format("https://%s:%s", azurerm_public_ip.branchpip["branch1-pip1"].ip_address, var.branchlbnatrules["br1fgt1https"].frontport)
+  value = format(
+    "https://%s:%s",
+    module.module_azurerm_public_ip["pip_br1_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["br1_fgt1_https"].lb_nat_rule.frontend_port
+  )
 }
 output "BR1-fgt2https" {
-  value = format("https://%s:%s", azurerm_public_ip.branchpip["branch1-pip1"].ip_address, var.branchlbnatrules["br1fgt2https"].frontport)
+  value = format(
+    "https://%s:%s",
+    module.module_azurerm_public_ip["pip_br1_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["br1_fgt2_https"].lb_nat_rule.frontend_port
+  )
 }
 
 output "BR1-fgt1ssh" {
-  value = format("ssh %s@%s:%s", var.username, azurerm_public_ip.branchpip["branch1-pip1"].ip_address, var.branchlbnatrules["br1fgt1ssh"].frontport)
+  value = format(
+    "ssh %s@%s:%s",
+    var.username,
+    module.module_azurerm_public_ip["pip_br1_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["br1_fgt1_ssh"].lb_nat_rule.frontend_port
+  )
 }
 output "BR1-fgt2ssh" {
-  value = format("ssh %s@%s:%s", var.username, azurerm_public_ip.branchpip["branch1-pip1"].ip_address, var.branchlbnatrules["br1fgt2ssh"].frontport)
+  value = format(
+    "ssh %s@%s:%s",
+    var.username,
+    module.module_azurerm_public_ip["pip_br1_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["br1_fgt2_ssh"].lb_nat_rule.frontend_port
+  )
 }
 
 output "BR2-fgt1https" {
-  value = format("https://%s:%s", azurerm_public_ip.branchpip["branch2-pip1"].ip_address, var.branchlbnatrules["br1fgt1https"].frontport)
+  value = format(
+    "https://%s:%s",
+    module.module_azurerm_public_ip["pip_br2_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["br2_fgt1_https"].lb_nat_rule.frontend_port
+  )
 }
 output "BR2-fgt2https" {
-  value = format("https://%s:%s", azurerm_public_ip.branchpip["branch2-pip1"].ip_address, var.branchlbnatrules["br2fgt2https"].frontport)
+  value = format(
+    "https://%s:%s",
+    module.module_azurerm_public_ip["pip_br2_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["br2_fgt2_https"].lb_nat_rule.frontend_port
+  )
 }
 
 output "BR2-fgt1ssh" {
-  value = format("ssh %s@%s:%s", var.username, azurerm_public_ip.branchpip["branch2-pip1"].ip_address, var.branchlbnatrules["br2fgt1ssh"].frontport)
+  value = format(
+    "ssh %s@%s:%s",
+    var.username,
+    module.module_azurerm_public_ip["pip_br2_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["br2_fgt1_ssh"].lb_nat_rule.frontend_port
+  )
 }
 output "BR2-fgt2ssh" {
-  value = format("ssh %s@%s:%s", var.username, azurerm_public_ip.branchpip["branch2-pip1"].ip_address, var.branchlbnatrules["br2fgt2ssh"].frontport)
+  value = format(
+    "ssh %s@%s:%s",
+    var.username,
+    module.module_azurerm_public_ip["pip_br2_elb_01"].public_ip.ip_address,
+    module.module_azurerm_lb_nat_rule["br2_fgt2_ssh"].lb_nat_rule.frontend_port
+  )
 }
 
 
 output "BR3-fgthttps" {
-  value = format("https://%s:34443", azurerm_public_ip.branchpip["branch3-pip1"].ip_address)
+  value = format(
+    "https://%s:%s",
+    module.module_azurerm_public_ip["pip_br3_01"].public_ip.ip_address,
+    "34443"
+  )
 }
 output "BR3-fgtssh" {
-  value = format("https://%s:3422", azurerm_public_ip.branchpip["branch3-pip1"].ip_address)
+  value = format(
+    "ssh %s@%s:%s",
+    var.username,
+    module.module_azurerm_public_ip["pip_br3_01"].public_ip.ip_address,
+    "3422"
+  )
 }
 
 
