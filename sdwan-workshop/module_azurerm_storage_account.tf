@@ -24,6 +24,18 @@ locals {
       account_tier             = "Standard"
       vnet_name                = "vnet_branch3"
     }
+    "stspk11" = {
+      name                     = "stspk11"
+      account_replication_type = "LRS"
+      account_tier             = "Standard"
+      vnet_name                = "vnet_spoke11"
+    }
+    "stspk12" = {
+      name                     = "stspk12"
+      account_replication_type = "LRS"
+      account_tier             = "Standard"
+      vnet_name                = "vnet_spoke12"
+    }
   }
 }
 
