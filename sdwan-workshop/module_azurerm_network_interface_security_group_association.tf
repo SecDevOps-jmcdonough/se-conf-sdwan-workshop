@@ -5,7 +5,7 @@ locals {
     "nic_hub1_fortigate_1_2" = { network_interface_id = "nic_hub1_fortigate_1_2", network_security_group_id = "nsg_priv" }
     "nic_hub1_fortigate_1_3" = { network_interface_id = "nic_hub1_fortigate_1_3", network_security_group_id = "nsg_priv" }
     "nic_hub1_fortigate_1_4" = { network_interface_id = "nic_hub1_fortigate_1_4", network_security_group_id = "nsg_pub" }
-    
+
     "nic_hub1_fortigate_2_1" = { network_interface_id = "nic_hub1_fortigate_2_1", network_security_group_id = "nsg_pub" }
     "nic_hub1_fortigate_2_2" = { network_interface_id = "nic_hub1_fortigate_2_2", network_security_group_id = "nsg_priv" }
     "nic_hub1_fortigate_2_3" = { network_interface_id = "nic_hub1_fortigate_2_3", network_security_group_id = "nsg_priv" }
