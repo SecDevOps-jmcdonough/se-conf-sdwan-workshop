@@ -8,8 +8,124 @@ locals {
       version   = "latest"
     }
   }
-
   linux_virtual_machines = {
+    "vm_br1_lnx_1" = {
+      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+
+      name = "${local.tag_project}-vm-br1-lnx-1"
+      size = "Standard_D2_v3"
+
+      availability_set_id   = null
+      network_interface_ids = [for nic in ["nic_br1_lnx_1_1"] : module.module_azurerm_network_interface[nic].network_interface.id]
+
+      admin_username = var.username
+      admin_password = var.password
+      computer_name  = "${local.tag_project}-vm-br1-lnx-1"
+
+      disable_password_authentication = false
+
+      os_disk_name                 = "${local.tag_project}-disk-br1-lnx-1-OS"
+      os_disk_caching              = "ReadWrite"
+      os_disk_storage_account_type = "Standard_LRS"
+
+      allow_extension_operations = true
+
+      storage_account_uri = module.module_azurerm_storage_account["stbr1"].storage_account.primary_blob_endpoint
+
+      identity = "SystemAssigned"
+
+      source_image_reference_publisher = local.vm_linux_image["Canonical"].publisher
+      source_image_reference_offer     = local.vm_linux_image["Canonical"].offer
+      source_image_reference_sku       = local.vm_linux_image["Canonical"].sku
+      source_image_reference_version   = local.vm_linux_image["Canonical"].version
+
+      custom_data = base64encode(templatefile("./assets/lnx-spoke.tpl", {}))
+
+      zone = null
+
+      tags = {
+        Project = local.project
+      }
+    }
+    "vm_br2_lnx_1" = {
+      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+
+      name = "${local.tag_project}-vm-br2-lnx-1"
+      size = "Standard_D2_v3"
+
+      availability_set_id   = null
+      network_interface_ids = [for nic in ["nic_br2_lnx_1_1"] : module.module_azurerm_network_interface[nic].network_interface.id]
+
+      admin_username = var.username
+      admin_password = var.password
+      computer_name  = "${local.tag_project}-vm-br2-lnx-1"
+
+      disable_password_authentication = false
+
+      os_disk_name                 = "${local.tag_project}-disk-br2-lnx-1-OS"
+      os_disk_caching              = "ReadWrite"
+      os_disk_storage_account_type = "Standard_LRS"
+
+      allow_extension_operations = true
+
+      storage_account_uri = module.module_azurerm_storage_account["stbr2"].storage_account.primary_blob_endpoint
+
+      identity = "SystemAssigned"
+
+      source_image_reference_publisher = local.vm_linux_image["Canonical"].publisher
+      source_image_reference_offer     = local.vm_linux_image["Canonical"].offer
+      source_image_reference_sku       = local.vm_linux_image["Canonical"].sku
+      source_image_reference_version   = local.vm_linux_image["Canonical"].version
+
+      custom_data = base64encode(templatefile("./assets/lnx-spoke.tpl", {}))
+
+      zone = null
+
+      tags = {
+        Project = local.project
+      }
+    }
+    "vm_br3_lnx_1" = {
+      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      location            = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
+
+      name = "${local.tag_project}-vm-br3-lnx-1"
+      size = "Standard_D2_v3"
+
+      availability_set_id   = null
+      network_interface_ids = [for nic in ["nic_br3_lnx_1_1"] : module.module_azurerm_network_interface[nic].network_interface.id]
+
+      admin_username = var.username
+      admin_password = var.password
+      computer_name  = "${local.tag_project}-vm-br3-lnx-1"
+
+      disable_password_authentication = false
+
+      os_disk_name                 = "${local.tag_project}-disk-br3-lnx-1-OS"
+      os_disk_caching              = "ReadWrite"
+      os_disk_storage_account_type = "Standard_LRS"
+
+      allow_extension_operations = true
+
+      storage_account_uri = module.module_azurerm_storage_account["stbr3"].storage_account.primary_blob_endpoint
+
+      identity = "SystemAssigned"
+
+      source_image_reference_publisher = local.vm_linux_image["Canonical"].publisher
+      source_image_reference_offer     = local.vm_linux_image["Canonical"].offer
+      source_image_reference_sku       = local.vm_linux_image["Canonical"].sku
+      source_image_reference_version   = local.vm_linux_image["Canonical"].version
+
+      custom_data = base64encode(templatefile("./assets/lnx-spoke.tpl", {}))
+
+      zone = null
+
+      tags = {
+        Project = local.project
+      }
+    }
     "vm_spoke11_lnx_1" = {
       resource_group_name = module.module_azurerm_resource_group.resource_group.name
       location            = module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.location

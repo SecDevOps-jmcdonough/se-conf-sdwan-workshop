@@ -2,6 +2,10 @@ locals {
   role_assignments = {
     "vm_hub_fgt_1" = { role_definition_name = "Reader" }
     "vm_hub_fgt_2" = { role_definition_name = "Reader" }
+    "vm_br1_fgt_1" = { role_definition_name = "Reader" }
+    "vm_br1_fgt_2" = { role_definition_name = "Reader" }
+    "vm_br2_fgt_1" = { role_definition_name = "Reader" }
+    "vm_br2_fgt_2" = { role_definition_name = "Reader" }
   }
 }
 

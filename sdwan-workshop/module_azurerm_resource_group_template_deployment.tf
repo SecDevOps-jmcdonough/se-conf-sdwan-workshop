@@ -25,7 +25,7 @@ locals {
             value = module.module_azurerm_network_interface["nic_hub1_fortigate_2_2"].network_interface.private_ip_address
           },
           "peerasn" = {
-            value = var.az_fgtasn
+            value = "64622"
           },
           "RouteServerPIPID" = {
             value = module.module_azurerm_public_ip["pip_${local.tag_project}_ars"].public_ip.id
