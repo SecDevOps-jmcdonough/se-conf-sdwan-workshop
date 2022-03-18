@@ -8,19 +8,21 @@ Content-Transfer-Encoding: 7bit
 Content-Disposition: attachment; filename="config"
 
 config system sdn-connector
-edit AzureSDN
-set type azure
-end
+    edit AzureSDN
+        set type azure
+    next
 end
 
 config system global
-set admin-https-ssl-versions tlsv1-2 tlsv1-3
-set admin-sport 34443
-set admin-ssh-port 3422
-set hostname ${fgt_id}
-set admintimeout 120
-set timezone 26
-set gui-theme neutrino
+    set admin-https-ssl-versions tlsv1-2 tlsv1-3
+    set admin-sport 34443
+    set admin-ssh-port 3422
+    set hostname ${fgt_id}
+    set admin-telnet disable
+    set admintimeout 120
+    set allow-traffic-redirect disable
+    set timezone 26
+    set gui-theme ${gui_theme}
 end
 
 config system settings
@@ -40,58 +42,58 @@ set alias ${Port2Alias}
 set mode static
 set ip ${Port2IP}/${port2subnetmask}
 set allowaccess ping https ssh fgfm probe-response
-next
-%{ if Port3IP != "" }
-edit port3
-set alias ${Port3Alias}
-set mode static
-set ip ${Port3IP}/${port3subnetmask}
-set allowaccess ping https ssh fgfm probe-response
-next
-%{ endif }
-%{ if Port4IP != "" }
-edit port4
-set alias ${Port4Alias}
-set mode static
-set ip ${Port4IP}/${port4subnetmask}
-set allowaccess ping https ssh fgfm probe-response
-next
-%{ endif }
-%{ if Port5Alias != "" }
-edit port5
-set alias ${Port5Alias}
-set mode dhcp
-set allowaccess ping https ssh fgfm probe-response
-next
-%{ endif }
+    next
+    %{ if Port3IP != "" }
+    edit port3
+    set alias ${Port3Alias}
+    set mode static
+    set ip ${Port3IP}/${port3subnetmask}
+    set allowaccess ping https ssh fgfm probe-response
+    next
+    %{ endif }
+    %{ if Port4IP != "" }
+    edit port4
+    set alias ${Port4Alias}
+    set mode static
+    set ip ${Port4IP}/${port4subnetmask}
+    set allowaccess ping https ssh fgfm probe-response
+    next
+    %{ endif }
+    %{ if Port5Alias != "" }
+    edit port5
+    set alias ${Port5Alias}
+    set mode dhcp
+    set allowaccess ping https ssh fgfm probe-response
+    next
+    %{ endif }
 end
 
 config system vdom-exception
-edit 0
-set object system.interface
-next
-edit 0
-set object firewall.ippool
-next
+    edit 0
+        set object system.interface
+    next
+    edit 0
+        set object firewall.ippool
+    next
 end
 
 config router static
-    edit 0
-        set gateway ${fgt_external_gw}
+    edit 1
+        set gateway ${fgt_external_gw1}
         set device port1
     next
-    edit 0
+    edit 2
         set dst ${vnet_network}
         set gateway ${fgt_internal_gw}
         set device port2
     next
-    edit 0
+    edit 3
     set dst 168.63.129.16 255.255.255.255
-    set gateway ${fgt_external_gw}
+    set gateway ${fgt_external_gw1}
     set device port1
     next
 
-    edit 0
+    edit 4
     set dst 168.63.129.16 255.255.255.255
     set gateway ${fgt_internal_gw}
     set device port2
@@ -105,6 +107,7 @@ config system admin
     next
 end
 %{ endif }
+
 %{ if fgt_config_ha }
 config system ha
     set group-name AzureHA
@@ -126,7 +129,7 @@ config system ha
 end
 %{ endif }
 
-%{ if fgt_config_autoscale }
+%{ if fgt_config_autoscale == true }
 config system auto-scale
 set status enable
 set role ${role}
@@ -408,7 +411,9 @@ config firewall policy
         set nat enable
     next    
 end
+
 %{ endif }
+
 
 
 %{ if fgt_license_file != "" }

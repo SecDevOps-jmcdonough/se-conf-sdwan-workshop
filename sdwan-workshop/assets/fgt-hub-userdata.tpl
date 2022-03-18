@@ -8,12 +8,11 @@ Content-Transfer-Encoding: 7bit
 Content-Disposition: attachment; filename="config"
 
 config system sdn-connector
-	edit AzureSDN
+    edit AzureSDN
         set type azure
-	end
+    next
 end
 
-config system global
 config system global
     set admin-https-ssl-versions tlsv1-2 tlsv1-3
     set admin-sport 34443
@@ -23,6 +22,7 @@ config system global
     set admintimeout 120
     set allow-traffic-redirect disable
     set timezone 26
+    set gui-theme ${gui_theme}
 end
 
 config system settings
@@ -65,13 +65,14 @@ config system interface
 end
 
 config system vdom-exception
-edit 0
-set object system.interface
-next
-edit 0
-set object firewall.ippool
-next
+    edit 0
+        set object system.interface
+    next
+    edit 0
+        set object firewall.ippool
+    next
 end
+
 config router static
     edit 1
         set dst 168.63.129.16 255.255.255.255
@@ -120,7 +121,7 @@ config system ha
 end
 %{ endif }
 
-%{ if fgt_config_autoscale }
+%{ if fgt_config_autoscale == true }
 config system auto-scale
 set status enable
 set role ${role}
