@@ -1,10 +1,10 @@
 locals {
-  project_tag = "${var.username}-workshop-${var.TAG}"
-  tag_project = "${var.TAG}-${var.username}-workshop"
+  project_tag = "${var.username}-workshop-${var.tag}"
+  tag_project = "${var.tag}-${var.username}-workshop"
   project     = "${var.username}-workshop"
-  tag         = var.TAG
+  tag         = var.tag
 
-  resource_group_name = "${var.username}-workshop-${var.TAG}"
+  resource_group_name = "${var.username}-workshop-${var.tag}"
   location            = var.location
 
 }

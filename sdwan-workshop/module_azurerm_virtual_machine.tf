@@ -783,7 +783,7 @@ module "module_azurerm_virtual_machine" {
 
   source = "../azure/rm/azurerm_virtual_machine"
 
-  resource_group_name = module.module_azurerm_resource_group.resource_group.name
+  resource_group_name = each.value.resource_group_name
   location            = each.value.location
   name                = each.value.name
 

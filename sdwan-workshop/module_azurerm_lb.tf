@@ -2,10 +2,10 @@ locals {
 
   lbs = {
     "lb_hub1_ext_01" = {
-      name                = "lb_hub1_ext_01"
-      sku                 = "standard"
       resource_group_name = module.module_azurerm_resource_group.resource_group.name
       location            = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
+      name                = "lb_hub1_ext_01"
+      sku                 = "standard"
       frontend_ip_configurations = [
         {
           name                 = "pip_hub_elb_01"
@@ -14,10 +14,10 @@ locals {
       ]
     }
     "lb_branch1_ext_01" = {
-      name                = "lb_branch1_ext_01"
-      sku                 = "standard"
       resource_group_name = module.module_azurerm_resource_group.resource_group.name
       location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+      name                = "lb_branch1_ext_01"
+      sku                 = "standard"
       frontend_ip_configurations = [
         {
           name                 = "pip_br1_elb_01"
@@ -30,10 +30,10 @@ locals {
       ]
     }
     "lb_branch2_ext_01" = {
-      name                = "lb_branch2_ext_01"
-      sku                 = "standard"
       resource_group_name = module.module_azurerm_resource_group.resource_group.name
       location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+      name                = "lb_branch2_ext_01"
+      sku                 = "standard"
       frontend_ip_configurations = [
         {
           name                 = "pip_br2_elb_01"
@@ -46,10 +46,10 @@ locals {
       ]
     }
     "lb_branch1_int_01" = {
-      name                = "lb_branch1_int_01"
-      sku                 = "standard"
       resource_group_name = module.module_azurerm_resource_group.resource_group.name
       location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+      name                = "lb_branch1_int_01"
+      sku                 = "standard"
       frontend_ip_configurations = [
         {
           name                          = "lb_branch1_int_fe_ip_01"
@@ -62,10 +62,10 @@ locals {
       ]
     }
     "lb_branch2_int_01" = {
-      name                = "lb_branch2_int_01"
-      sku                 = "standard"
       resource_group_name = module.module_azurerm_resource_group.resource_group.name
       location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+      name                = "lb_branch2_int_01"
+      sku                 = "standard"
       frontend_ip_configurations = [
         {
           name                          = "lb_branch2_int_fe_ip_01"

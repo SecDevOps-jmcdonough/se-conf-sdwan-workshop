@@ -1,15 +1,16 @@
 locals {
   resource_group_template_deployments = {
     "sdwan_workshop_ars" = {
-      name            = "sdwan_workshop_ars"
-      deployment_mode = "Incremental"
-      debug_level     = "requestContent, responseContent"
+      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      name                = "sdwan_workshop_ars"
+      deployment_mode     = "Incremental"
+      debug_level         = "requestContent, responseContent"
       parameters_content = jsonencode(
         {
           "project" = {
             value = local.project
           },
-          "TAG" = {
+          "tag" = {
             value = local.project
           },
           "location" = {
@@ -43,7 +44,7 @@ locals {
                       "description": "Project name"
                   }
               },
-              "TAG": {
+              "tag": {
                   "type": "string",
                   "metadata": {
                       "description": "Prefix"
@@ -87,9 +88,9 @@ locals {
               }   
           },
           "variables": {
-              "fgRouteServerName": "[concat(parameters('project'),'-',parameters('TAG'),'-RouteServer')]",
-              "ARSpeer1": "[concat(parameters('TAG'),'-fgt-1')]",
-              "ARSpeer2": "[concat(parameters('TAG'),'-fgt-2')]"
+              "fgRouteServerName": "[concat(parameters('project'),'-',parameters('tag'),'-RouteServer')]",
+              "ARSpeer1": "[concat(parameters('tag'),'-fgt-1')]",
+              "ARSpeer2": "[concat(parameters('tag'),'-fgt-2')]"
           },
           "resources": [
               {
@@ -154,7 +155,7 @@ module "module_azurerm_resource_group_template_deployment" {
 
   source = "../azure/rm/azurerm_resource_group_template_deployment"
 
-  resource_group_name = module.module_azurerm_resource_group.resource_group.name
+  resource_group_name = each.value.resource_group_name
 
   name = each.value.name
 

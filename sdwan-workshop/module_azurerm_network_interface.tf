@@ -2,8 +2,9 @@ locals {
   network_interfaces = {
     # Hub 1
     "nic_hub1_fortigate_1_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_hub1_fortigate_1_1"
-      subnet_name                   = "hub1_fgt_public"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["hub1_fgt_public"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -18,8 +19,9 @@ locals {
       ]
     }
     "nic_hub1_fortigate_1_2" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_hub1_fortigate_1_2"
-      subnet_name                   = "hub1_fgt_private"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["hub1_fgt_private"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -34,8 +36,9 @@ locals {
       ]
     }
     "nic_hub1_fortigate_1_3" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_hub1_fortigate_1_3"
-      subnet_name                   = "hub1_fgt_ha"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["hub1_fgt_ha"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -50,8 +53,9 @@ locals {
       ]
     }
     "nic_hub1_fortigate_1_4" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_hub1_fortigate_1_4"
-      subnet_name                   = "hub1_fgt_mgmt"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -66,8 +70,9 @@ locals {
       ]
     }
     "nic_hub1_fortigate_2_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_hub1_fortigate_2_1"
-      subnet_name                   = "hub1_fgt_public"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["hub1_fgt_public"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -82,8 +87,9 @@ locals {
       ]
     }
     "nic_hub1_fortigate_2_2" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_hub1_fortigate_2_2"
-      subnet_name                   = "hub1_fgt_private"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["hub1_fgt_private"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -98,8 +104,9 @@ locals {
       ]
     }
     "nic_hub1_fortigate_2_3" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_hub1_fortigate_2_3"
-      subnet_name                   = "hub1_fgt_ha"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["hub1_fgt_ha"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -114,8 +121,9 @@ locals {
       ]
     }
     "nic_hub1_fortigate_2_4" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_hub1_fortigate_2_4"
-      subnet_name                   = "hub1_fgt_mgmt"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -131,8 +139,9 @@ locals {
     }
     # Branch 1
     "nic_br1_fortigate_1_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_fortigate_1_1"
-      subnet_name                   = "br1_fgt_pub1"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_pub1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -147,8 +156,9 @@ locals {
       ]
     }
     "nic_br1_fortigate_1_2" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_fortigate_1_2"
-      subnet_name                   = "br1_fgt_priv"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_priv"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -163,8 +173,9 @@ locals {
       ]
     }
     "nic_br1_fortigate_1_3" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_fortigate_1_3"
-      subnet_name                   = "br1_fgt_pub2"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_pub2"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -179,8 +190,9 @@ locals {
       ]
     }
     "nic_br1_fortigate_1_4" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_fortigate_1_4"
-      subnet_name                   = "br1_fgt_ha"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_ha"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -195,8 +207,9 @@ locals {
       ]
     }
     "nic_br1_fortigate_1_5" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_fortigate_1_5"
-      subnet_name                   = "br1_fgt_mgmt"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -211,8 +224,9 @@ locals {
       ]
     }
     "nic_br1_fortigate_2_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_fortigate_2_1"
-      subnet_name                   = "br1_fgt_pub1"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_pub1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -227,8 +241,9 @@ locals {
       ]
     }
     "nic_br1_fortigate_2_2" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_fortigate_2_2"
-      subnet_name                   = "br1_fgt_priv"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_priv"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -243,8 +258,9 @@ locals {
       ]
     }
     "nic_br1_fortigate_2_3" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_fortigate_2_3"
-      subnet_name                   = "br1_fgt_pub2"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_pub2"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -259,8 +275,9 @@ locals {
       ]
     }
     "nic_br1_fortigate_2_4" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_fortigate_2_4"
-      subnet_name                   = "br1_fgt_ha"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_ha"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -275,8 +292,9 @@ locals {
       ]
     }
     "nic_br1_fortigate_2_5" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_fortigate_2_5"
-      subnet_name                   = "br1_fgt_mgmt"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -292,8 +310,9 @@ locals {
     }
     # Branch 2
     "nic_br2_fortigate_1_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_fortigate_1_1"
-      subnet_name                   = "br2_fgt_pub1"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_pub1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -308,8 +327,9 @@ locals {
       ]
     }
     "nic_br2_fortigate_1_2" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_fortigate_1_2"
-      subnet_name                   = "br2_fgt_priv"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_priv"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -324,8 +344,9 @@ locals {
       ]
     }
     "nic_br2_fortigate_1_3" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_fortigate_1_3"
-      subnet_name                   = "br2_fgt_pub2"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_pub2"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -340,8 +361,9 @@ locals {
       ]
     }
     "nic_br2_fortigate_1_4" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_fortigate_1_4"
-      subnet_name                   = "br2_fgt_ha"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_ha"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -356,8 +378,9 @@ locals {
       ]
     }
     "nic_br2_fortigate_1_5" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_fortigate_1_5"
-      subnet_name                   = "br2_fgt_mgmt"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -372,8 +395,9 @@ locals {
       ]
     }
     "nic_br2_fortigate_2_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_fortigate_2_1"
-      subnet_name                   = "br2_fgt_pub1"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_pub1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -388,8 +412,9 @@ locals {
       ]
     }
     "nic_br2_fortigate_2_2" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_fortigate_2_2"
-      subnet_name                   = "br2_fgt_priv"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_priv"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -404,8 +429,9 @@ locals {
       ]
     }
     "nic_br2_fortigate_2_3" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_fortigate_2_3"
-      subnet_name                   = "br2_fgt_pub2"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_pub2"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -420,8 +446,9 @@ locals {
       ]
     }
     "nic_br2_fortigate_2_4" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_fortigate_2_4"
-      subnet_name                   = "br2_fgt_ha"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_ha"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -436,8 +463,9 @@ locals {
       ]
     }
     "nic_br2_fortigate_2_5" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_fortigate_2_5"
-      subnet_name                   = "br2_fgt_mgmt"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -453,8 +481,9 @@ locals {
     }
     # Branch 3
     "nic_br3_fortigate_1_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br3_fortigate_1_1"
-      subnet_name                   = "br3_fgt_pub1"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br3_fgt_pub1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -469,8 +498,9 @@ locals {
       ]
     }
     "nic_br3_fortigate_1_2" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br3_fortigate_1_2"
-      subnet_name                   = "br3_fgt_priv"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br3_fgt_priv"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -485,8 +515,9 @@ locals {
       ]
     }
     "nic_br3_fortigate_1_3" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br3_fortigate_1_3"
-      subnet_name                   = "br3_fgt_pub2"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br3_fgt_pub2"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
       enable_accelerated_networking = true
 
@@ -502,8 +533,9 @@ locals {
     }
     # Branch Linux VMs
     "nic_br1_lnx_1_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br1_lnx_1_1"
-      subnet_name                   = "br1_protected"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_protected"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = false
       enable_accelerated_networking = false
 
@@ -518,8 +550,9 @@ locals {
       ]
     }
     "nic_br2_lnx_1_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br2_lnx_1_1"
-      subnet_name                   = "br2_protected"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_protected"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = false
       enable_accelerated_networking = false
 
@@ -534,8 +567,9 @@ locals {
       ]
     }
     "nic_br3_lnx_1_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_br3_lnx_1_1"
-      subnet_name                   = "br3_protected"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br3_protected"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = false
       enable_accelerated_networking = false
 
@@ -551,8 +585,9 @@ locals {
     }
     # Spoke Linux VMs
     "nic_spoke11_lnx_1_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_spoke11_lnx_1_1"
-      subnet_name                   = "spoke11_subnet1"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["spoke11_subnet1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = false
       enable_accelerated_networking = false
 
@@ -567,8 +602,9 @@ locals {
       ]
     }
     "nic_spoke12_lnx_1_1" = {
+      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
       name                          = "nic_spoke12_lnx_1_1"
-      subnet_name                   = "spoke12_subnet1"
+      location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["spoke12_subnet1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = false
       enable_accelerated_networking = false
 
@@ -590,8 +626,8 @@ module "module_azurerm_network_interface" {
 
   source = "../azure/rm/azurerm_network_interface"
 
-  resource_group_name           = module.module_azurerm_resource_group.resource_group.name
-  location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet[each.value.subnet_name].subnet.virtual_network_name].virtual_network.location
+  resource_group_name           = each.value.resource_group_name
+  location                      = each.value.location
   name                          = each.value.name
   enable_ip_forwarding          = each.value.enable_ip_forwarding
   enable_accelerated_networking = each.value.enable_accelerated_networking

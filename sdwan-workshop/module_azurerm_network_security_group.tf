@@ -1,13 +1,13 @@
 locals {
   network_security_groups = {
     # Hub
-    "nsg_pub"  = { name = "nsg_pub", vnet_name = "vnet_hub1" }
-    "nsg_priv" = { name = "nsg_priv", vnet_name = "vnet_hub1" }
+    "nsg_pub"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "nsg_pub", vnet_name = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location }
+    "nsg_priv" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "nsg_priv", vnet_name = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location }
 
     # Branches
-    "nsg_br1" = { name = "nsg_br1", vnet_name = "vnet_branch1" }
-    "nsg_br2" = { name = "nsg_br2", vnet_name = "vnet_branch2" }
-    "nsg_br3" = { name = "nsg_br3", vnet_name = "vnet_branch3" }
+    "nsg_br1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "nsg_br1", vnet_name = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location }
+    "nsg_br2" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "nsg_br2", vnet_name = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location }
+    "nsg_br3" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "nsg_br3", vnet_name = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location }
   }
 }
 
@@ -16,8 +16,8 @@ module "module_azurerm_network_security_group" {
 
   source = "../azure/rm/azurerm_network_security_group"
 
-  resource_group_name = module.module_azurerm_resource_group.resource_group.name
-  location            = module.module_azurerm_virtual_network[each.value.vnet_name].virtual_network.location
+  resource_group_name = each.value.resource_group_name
+  location            = each.value.vnet_name
   name                = each.value.name
 }
 

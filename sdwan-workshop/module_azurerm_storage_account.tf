@@ -1,40 +1,46 @@
 locals {
   storage_accounts = {
     "sthub1" = {
-      name                     = "sthub1"
+      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      location                 = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
+      name                     = format("%s%s", "sthub1", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
       account_tier             = "Standard"
-      vnet_name                = "vnet_hub1"
     }
     "stbr1" = {
-      name                     = "stbr1"
+      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      location                 = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+      name                     = format("%s%s", "stbr1", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
       account_tier             = "Standard"
-      vnet_name                = "vnet_branch1"
     }
     "stbr2" = {
-      name                     = "stbr2"
+      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      location                 = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+      name                     = format("%s%s", "stbr2", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
       account_tier             = "Standard"
-      vnet_name                = "vnet_branch2"
     }
     "stbr3" = {
-      name                     = "stbr3"
+      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      location                 = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
+      name                     = format("%s%s", "stbr3", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
       account_tier             = "Standard"
-      vnet_name                = "vnet_branch3"
     }
     "stspk11" = {
-      name                     = "stspk11"
+      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      location                 = module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.location
+      name                     = format("%s%s", "stspk11", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
       account_tier             = "Standard"
-      vnet_name                = "vnet_spoke11"
     }
     "stspk12" = {
-      name                     = "stspk12"
+      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      location                 = module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.location
+      name                     = format("%s%s", "stspk12", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
       account_tier             = "Standard"
-      vnet_name                = "vnet_spoke12"
     }
   }
 }
@@ -44,9 +50,10 @@ module "module_azurerm_storage_account" {
 
   source = "../azure/rm/azurerm_storage_account"
 
-  resource_group_name      = module.module_azurerm_resource_group.resource_group.name
-  location                 = module.module_azurerm_virtual_network[each.value.vnet_name].virtual_network.location
-  name                     = format("%s%s", each.value.name, "${random_id.random_id.hex}")
+  resource_group_name = each.value.resource_group_name
+  location            = each.value.location
+
+  name                     = each.value.name
   account_replication_type = each.value.account_replication_type
   account_tier             = each.value.account_tier
 }
