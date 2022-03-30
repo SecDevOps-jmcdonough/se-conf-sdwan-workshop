@@ -1,5 +1,5 @@
 locals {
-  virtual_networks = merge(local.hub_vnets, local.branch_vnets, local.spoke_vnets)
+  virtual_networks = merge(local.hub_virtual_networks, local.branch_virtual_networks, local.spoke_virtual_networks)
 }
 
 module "module_azurerm_virtual_network" {

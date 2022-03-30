@@ -1,6 +1,4 @@
 locals {
-
-
   linux_virtual_machines = merge(local.branch_linux_virtual_machines, local.spoke_linux_virtual_machines)
 }
 

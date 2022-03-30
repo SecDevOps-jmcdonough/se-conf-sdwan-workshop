@@ -1,5 +1,5 @@
 locals {
-  spoke_vnets = {
+  spoke_virtual_networks = {
     "vnet_spoke11" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "eastus", name = "vnet_spoke11", address_space = ["10.11.0.0/16"] }
     "vnet_spoke12" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "eastus", name = "vnet_spoke12", address_space = ["10.12.0.0/16"] }
   }

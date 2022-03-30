@@ -1,5 +1,5 @@
 locals {
-  branch_vnets = {
+  branch_virtual_networks = {
     "vnet_branch1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "eastus", name = "vnet_branch1", address_space = ["172.16.0.0/16"] }
     "vnet_branch2" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "eastus", name = "vnet_branch2", address_space = ["172.17.0.0/16"] }
     "vnet_branch3" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "southcentralus", name = "vnet_branch3", address_space = ["172.18.0.0/16"] }

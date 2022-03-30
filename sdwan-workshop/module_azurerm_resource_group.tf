@@ -6,7 +6,6 @@ locals {
 
   resource_group_name = "${var.username}-workshop-${var.tag}"
   location            = var.location
-
 }
 
 module "module_azurerm_resource_group" {

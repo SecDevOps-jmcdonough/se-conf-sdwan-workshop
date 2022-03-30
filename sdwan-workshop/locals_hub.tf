@@ -1,5 +1,5 @@
 locals {
-  hub_vnets = {
+  hub_virtual_networks = {
     "vnet_hub1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "eastus", name = "vnet_hub1", address_space = ["10.10.0.0/16"] }
   }
 
