@@ -243,6 +243,13 @@ locals {
     "nic_hub1_fortigate_2_4" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
   }
 
+  hub_subnet_network_security_group_associations = {
+    "hub1_fgt_public"  = { subnet_id = module.module_azurerm_subnet["hub1_fgt_public"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
+    "hub1_fgt_private" = { subnet_id = module.module_azurerm_subnet["hub1_fgt_private"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.id }
+    "hub1_fgt_ha"      = { subnet_id = module.module_azurerm_subnet["hub1_fgt_ha"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.id }
+    "hub1_fgt_mgmt"    = { subnet_id = module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
+  }
+
   hub_storage_accounts = {
     "sthub1" = {
       resource_group_name      = module.module_azurerm_resource_group.resource_group.name

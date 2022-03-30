@@ -12,5 +12,5 @@ module "module_azurerm_network_interface_security_group_association" {
 }
 
 output "network_interface_security_group_associations" {
-  value = module.module_azurerm_network_interface_security_group_association[*]
+  value =  var.enable_module_output ? module.module_azurerm_network_interface_security_group_association[*] : null
 }

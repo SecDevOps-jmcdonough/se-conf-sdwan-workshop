@@ -13,3 +13,9 @@ variable "tag" {
   description = "Prefix tag for created ressources"
   type        = string
 }
+
+variable "enable_module_output" {
+  description = "Enable output from modules"
+  type = bool
+  default = false
+}

@@ -20,5 +20,5 @@ module "module_azurerm_availability_set" {
 }
 
 output "availability_sets" {
-  value = module.module_azurerm_availability_set[*]
+  value =  var.enable_module_output ? module.module_azurerm_availability_set[*] : null
 }

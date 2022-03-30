@@ -24,6 +24,6 @@ resource "random_id" "random_id" {
 }
 
 output "storage_accounts" {
-  value     = module.module_azurerm_storage_account[*]
+  value     =  var.enable_module_output ? module.module_azurerm_storage_account[*] : null
   sensitive = true
 }

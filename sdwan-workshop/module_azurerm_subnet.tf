@@ -15,5 +15,5 @@ module "module_azurerm_subnet" {
 }
 
 output "subnets" {
-  value = module.module_azurerm_subnet[*]
+  value = var.enable_module_output ? module.module_azurerm_subnet[*] : null
 }

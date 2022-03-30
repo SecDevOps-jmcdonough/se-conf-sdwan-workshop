@@ -19,5 +19,5 @@ module "module_azurerm_route_table" {
 }
 
 output "route_tables" {
-  value = module.module_azurerm_route_table[*]
+  value =  var.enable_module_output ? module.module_azurerm_route_table[*] : null
 }

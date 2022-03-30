@@ -17,5 +17,5 @@ module "module_azurerm_resource_group" {
 }
 
 output "resource_group" {
-  value = module.module_azurerm_resource_group
+  value =  var.enable_module_output ? module.module_azurerm_resource_group : null
 }

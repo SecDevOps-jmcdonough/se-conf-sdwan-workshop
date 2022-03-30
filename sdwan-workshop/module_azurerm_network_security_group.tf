@@ -13,5 +13,5 @@ module "module_azurerm_network_security_group" {
 }
 
 output "network_security_groups" {
-  value = module.module_azurerm_network_security_group[*]
+  value =  var.enable_module_output ? module.module_azurerm_network_security_group[*] : null
 }

@@ -21,5 +21,5 @@ module "module_azurerm_lb_rule" {
 }
 
 output "lb_rules" {
-  value = module.module_azurerm_lb_rule[*]
+  value =  var.enable_module_output ? module.module_azurerm_lb_rule[*] : null
 }

@@ -171,5 +171,5 @@ module "module_azurerm_resource_group_template_deployment" {
 }
 
 output "resource_group_template_deployments" {
-  value = module.module_azurerm_resource_group_template_deployment[*]
+  value =  var.enable_module_output ? module.module_azurerm_resource_group_template_deployment[*] : null
 }

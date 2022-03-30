@@ -711,36 +711,58 @@ locals {
   }
 
   branch_network_interface_security_group_associations = {
+    ## Branch 1
+    #"nic_br1_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    #"nic_br1_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    #"nic_br1_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    #"nic_br1_fortigate_1_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    #"nic_br1_fortigate_1_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+
+    #"nic_br1_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    #"nic_br1_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    #"nic_br1_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    #"nic_br1_fortigate_2_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    #"nic_br1_fortigate_2_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+
+    ## Branch 2
+    #"nic_br2_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    #"nic_br2_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    #"nic_br2_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    #"nic_br2_fortigate_1_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    #"nic_br2_fortigate_1_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+
+    #"nic_br2_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    #"nic_br2_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    #"nic_br2_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    #"nic_br2_fortigate_2_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    #"nic_br2_fortigate_2_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+
+    ## Branch 3
+    #"nic_br3_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br3_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
+    #"nic_br3_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br3_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
+    #"nic_br3_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br3_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
+  }
+
+  branch_subnet_network_security_group_associations = {
     # Branch 1
-    "nic_br1_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "nic_br1_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "nic_br1_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "nic_br1_fortigate_1_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "nic_br1_fortigate_1_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-
-    "nic_br1_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "nic_br1_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "nic_br1_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "nic_br1_fortigate_2_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "nic_br1_fortigate_2_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-
+    "br1_fgt_pub1"  = { subnet_id = module.module_azurerm_subnet["br1_fgt_pub1"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    "br1_fgt_pub2"  = { subnet_id = module.module_azurerm_subnet["br1_fgt_pub2"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    "br1_fgt_priv"  = { subnet_id = module.module_azurerm_subnet["br1_fgt_priv"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    "br1_fgt_ha"    = { subnet_id = module.module_azurerm_subnet["br1_fgt_ha"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    "br1_fgt_mgmt"  = { subnet_id = module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
+    "br1_protected" = { subnet_id = module.module_azurerm_subnet["br1_protected"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
     # Branch 2
-    "nic_br2_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "nic_br2_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "nic_br2_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "nic_br2_fortigate_1_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "nic_br2_fortigate_1_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-
-    "nic_br2_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "nic_br2_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "nic_br2_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "nic_br2_fortigate_2_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "nic_br2_fortigate_2_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-
+    "br2_fgt_pub1"  = { subnet_id = module.module_azurerm_subnet["br2_fgt_pub1"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    "br2_fgt_pub2"  = { subnet_id = module.module_azurerm_subnet["br2_fgt_pub2"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    "br2_fgt_priv"  = { subnet_id = module.module_azurerm_subnet["br2_fgt_priv"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    "br2_fgt_ha"    = { subnet_id = module.module_azurerm_subnet["br2_fgt_ha"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    "br2_fgt_mgmt"  = { subnet_id = module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
+    "br2_protected" = { subnet_id = module.module_azurerm_subnet["br2_protected"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
     # Branch 3
-    "nic_br3_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br3_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
-    "nic_br3_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br3_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
-    "nic_br3_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br3_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
+    "br3_fgt_pub1"  = { subnet_id = module.module_azurerm_subnet["br3_fgt_pub1"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
+    "br3_fgt_pub2"  = { subnet_id = module.module_azurerm_subnet["br3_fgt_pub2"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
+    "br3_fgt_priv"  = { subnet_id = module.module_azurerm_subnet["br3_fgt_priv"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
+    "br3_protected" = { subnet_id = module.module_azurerm_subnet["br3_protected"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
   }
 
   branch_storage_accounts = {

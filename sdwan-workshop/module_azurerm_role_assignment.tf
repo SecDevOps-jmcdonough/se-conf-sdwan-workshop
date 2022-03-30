@@ -13,5 +13,5 @@ module "module_azurerm_role_assignment" {
 }
 
 output "role_assignments" {
-  value = module.module_azurerm_role_assignment[*]
+  value =  var.enable_module_output ? module.module_azurerm_role_assignment[*] : null
 }

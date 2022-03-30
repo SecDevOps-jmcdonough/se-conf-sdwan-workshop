@@ -19,5 +19,5 @@ module "module_azurerm_virtual_network" {
 }
 
 output "virtual_networks" {
-  value = module.module_azurerm_virtual_network[*]
+  value = var.enable_module_output ? module.module_azurerm_virtual_network[*] : null
 }

@@ -18,5 +18,5 @@ module "module_azurerm_lb_outbound_rule" {
 }
 
 output "lb_outbound_rules" {
-  value = module.module_azurerm_lb_outbound_rule[*]
+  value =  var.enable_module_output ? module.module_azurerm_lb_outbound_rule[*] : null
 }

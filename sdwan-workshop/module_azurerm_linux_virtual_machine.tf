@@ -46,6 +46,6 @@ module "module_azurerm_linux_virtual_machine" {
 }
 
 output "virtual_linux_machines" {
-  value     = module.module_azurerm_virtual_machine[*]
+  value     =  var.enable_module_output ? module.module_azurerm_virtual_machine[*] : null
   sensitive = true
 }
