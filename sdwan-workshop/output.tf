@@ -95,7 +95,6 @@ output "BR2-fgt2ssh" {
   )
 }
 
-
 output "BR3-fgthttps" {
   value = format(
     "https://%s:%s",
@@ -111,8 +110,6 @@ output "BR3-fgtssh" {
     "3422"
   )
 }
-
-
 
 output "username" {
   value = format("username: %s", var.username)

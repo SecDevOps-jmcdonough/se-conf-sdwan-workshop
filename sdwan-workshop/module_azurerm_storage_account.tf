@@ -1,48 +1,5 @@
 locals {
-  storage_accounts = {
-    "sthub1" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
-      location                 = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
-      name                     = format("%s%s", "sthub1", "${random_id.random_id.hex}")
-      account_replication_type = "LRS"
-      account_tier             = "Standard"
-    }
-    "stbr1" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
-      location                 = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
-      name                     = format("%s%s", "stbr1", "${random_id.random_id.hex}")
-      account_replication_type = "LRS"
-      account_tier             = "Standard"
-    }
-    "stbr2" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
-      location                 = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
-      name                     = format("%s%s", "stbr2", "${random_id.random_id.hex}")
-      account_replication_type = "LRS"
-      account_tier             = "Standard"
-    }
-    "stbr3" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
-      location                 = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
-      name                     = format("%s%s", "stbr3", "${random_id.random_id.hex}")
-      account_replication_type = "LRS"
-      account_tier             = "Standard"
-    }
-    "stspk11" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
-      location                 = module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.location
-      name                     = format("%s%s", "stspk11", "${random_id.random_id.hex}")
-      account_replication_type = "LRS"
-      account_tier             = "Standard"
-    }
-    "stspk12" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
-      location                 = module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.location
-      name                     = format("%s%s", "stspk12", "${random_id.random_id.hex}")
-      account_replication_type = "LRS"
-      account_tier             = "Standard"
-    }
-  }
+  storage_accounts = merge(local.hub_storage_accounts, local.branch_storage_accounts, local.spoke_storage_accounts)
 }
 
 module "module_azurerm_storage_account" {

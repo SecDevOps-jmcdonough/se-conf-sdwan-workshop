@@ -1,16 +1,5 @@
 locals {
-
-  route_tables = {
-    "rt_hub1_fgt_public"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "rt_hub1_fgt_public", vnet_name = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location, disable_bgp_route_propagation = "false" }
-    "rt_hub1_fgt_private" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "rt_hub1_fgt_private", vnet_name = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location, disable_bgp_route_propagation = "true" }
-    "rt_hub1_fgt_ha"      = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "rt_hub1_fgt_ha", vnet_name = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location, disable_bgp_route_propagation = "true" }
-    "rt_hub1_fgt_mgmt"    = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "rt_hub1_fgt_mgmt", vnet_name = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location, disable_bgp_route_propagation = "false" }
-
-
-    "rt_br1_protected" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "rt_br1_protected", vnet_name = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location, disable_bgp_route_propagation = "false" }
-    "rt_br2_protected" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "rt_br2_protected", vnet_name = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location, disable_bgp_route_propagation = "false" }
-    "rt_br3_protected" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "rt_br3_protected", vnet_name = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location, disable_bgp_route_propagation = "false" }
-  }
+  route_tables = merge(local.hub_route_tables, local.branch_route_tables)
 }
 
 module "module_azurerm_route_table" {

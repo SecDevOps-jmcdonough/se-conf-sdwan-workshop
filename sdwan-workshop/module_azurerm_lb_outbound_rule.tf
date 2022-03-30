@@ -1,37 +1,5 @@
 locals {
-  lb_outbound_rules = {
-    # Hub
-
-    # Branches
-    "br1_lb_outbound_rule_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_lb_outbound_rule_01", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, protocol = "All", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id,
-      frontend_ip_configurations = [
-        {
-          name = "pip_br1_elb_01"
-        }
-      ]
-    }
-    "br1_lb_outbound_rule_02" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_lb_outbound_rule_02", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, protocol = "All", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id,
-      frontend_ip_configurations = [
-        {
-          name = "pip_br1_elb_02"
-        }
-      ]
-    }
-    "br2_lb_outbound_rule_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_lb_outbound_rule_01", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, protocol = "All", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id,
-      frontend_ip_configurations = [
-        {
-          name = "pip_br2_elb_01"
-        }
-      ]
-    }
-    "br2_lb_outbound_rule_02" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_lb_outbound_rule_02", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, protocol = "All", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id,
-      frontend_ip_configurations = [
-        {
-          name = "pip_br2_elb_02"
-        }
-      ]
-    }
-  }
+  lb_outbound_rules = merge(local.hub_lb_outbound_rules, local.branch_lb_outbound_rules)
 }
 
 module "module_azurerm_lb_outbound_rule" {

@@ -1,11 +1,5 @@
 locals {
-  availability_sets = {
-
-    "as_hub" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location, name = "as_hub", platform_update_domain_count = "2", platform_fault_domain_count = "2", proximity_placement_group_id = null, managed = true }
-    "as_br1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location, name = "as_br1", platform_update_domain_count = "2", platform_fault_domain_count = "2", proximity_placement_group_id = null, managed = true }
-    "as_br2" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location, name = "as_br2", platform_update_domain_count = "2", platform_fault_domain_count = "2", proximity_placement_group_id = null, managed = true }
-
-  }
+  availability_sets = merge(local.hub_availability_sets, local.branch_availability_sets)
 }
 
 module "module_azurerm_availability_set" {

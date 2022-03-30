@@ -1,19 +1,5 @@
 locals {
-  network_security_rules = {
-    # Hub
-    "hub1_pub_all_inbound"   = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "hub1_pub_all_inbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.name, priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }
-    "hub1_pub_all_outbound"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "hub1_pub_all_outbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.name, priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
-    "hub1_priv_all_inbound"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "hub1_priv_all_inbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.name, priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }
-    "hub1_priv_all_outbound" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "hub1_priv_all_outbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.name, priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
-
-    # Branches
-    "br1_all_inbound"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_all_inbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.name, priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }
-    "br1_all_outbound" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_all_outbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.name, priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
-    "br2_all_inbound"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_all_inbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.name, priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }
-    "br2_all_outbound" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_all_outbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.name, priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
-    "br3_all_inbound"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br3_all_inbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.name, priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }
-    "br3_all_outbound" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br3_all_outbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.name, priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
-  }
+  network_security_rules = merge(local.hub_network_security_rules, local.branch_network_security_rules)
 }
 
 module "module_azurerm_network_security_rule" {

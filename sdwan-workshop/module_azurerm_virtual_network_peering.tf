@@ -1,15 +1,5 @@
 locals {
-
-  virtual_network_peerings = {
-    # Hub 1
-    "hub1_to_spoke11" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "hub1_to_spoke11", virtual_network_name = "vnet_hub1", remote_virtual_network_id = module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.id, allow_virtual_network_access = true, allow_forwarded_traffic = true, use_remote_gateways = null, allow_gateway_transit = true }
-    "hub1_to_spoke12" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "hub1_to_spoke12", virtual_network_name = "vnet_hub1", remote_virtual_network_id = module.module_azurerm_virtual_network["vnet_spoke12"].virtual_network.id, allow_virtual_network_access = true, allow_forwarded_traffic = true, use_remote_gateways = null, allow_gateway_transit = true }
-
-
-    # Spokes
-    "spoke11_to_hub1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "spoke11_to_hub1", virtual_network_name = "vnet_spoke11", remote_virtual_network_id = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.id, allow_virtual_network_access = true, allow_forwarded_traffic = true, use_remote_gateways = true, allow_gateway_transit = null }
-    "spoke12_to_hub1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "spoke12_to_hub1", virtual_network_name = "vnet_spoke12", remote_virtual_network_id = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.id, allow_virtual_network_access = true, allow_forwarded_traffic = true, use_remote_gateways = true, allow_gateway_transit = null }
-  }
+  virtual_network_peerings = merge(local.hub_virtual_network_peerings, local.spoke_virtual_network_peerings)
 }
 
 module "module_azurerm_virtual_network_peering" {

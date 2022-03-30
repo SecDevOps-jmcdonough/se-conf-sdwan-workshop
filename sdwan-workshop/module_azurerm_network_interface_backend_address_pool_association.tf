@@ -1,24 +1,5 @@
 locals {
-  network_interface_backend_address_pool_associations = {
-
-    # Hub 1
-
-    # Branch 1
-    "nic_br1_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_1"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id }
-    "nic_br1_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_2"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_int_01_01"].lb_backend_address_pool.id }
-    "nic_br1_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_3"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id }
-    "nic_br1_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_1"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id }
-    "nic_br1_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_2"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_int_01_01"].lb_backend_address_pool.id }
-    "nic_br1_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_3"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id }
-
-    # Branch 2
-    "nic_br2_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_1"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id }
-    "nic_br2_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_2"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_int_01_01"].lb_backend_address_pool.id }
-    "nic_br2_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_3"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id }
-    "nic_br2_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_1"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id }
-    "nic_br2_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_2"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_int_01_01"].lb_backend_address_pool.id }
-    "nic_br2_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_3"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id }
-  }
+  network_interface_backend_address_pool_associations = merge(local.hub_network_interface_backend_address_pool_associations, local.branch_network_interface_backend_address_pool_associations)
 }
 
 module "module_azurerm_network_interface_backend_address_pool_association" {
