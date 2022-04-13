@@ -232,15 +232,15 @@ locals {
   }
 
   hub_network_interface_security_group_associations = {
-    "nic_hub1_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
-    "nic_hub1_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.id }
-    "nic_hub1_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.id }
-    "nic_hub1_fortigate_1_4" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_1_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
+    # "nic_hub1_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
+    # "nic_hub1_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.id }
+    # "nic_hub1_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.id }
+    # "nic_hub1_fortigate_1_4" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_1_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
 
-    "nic_hub1_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
-    "nic_hub1_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.id }
-    "nic_hub1_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.id }
-    "nic_hub1_fortigate_2_4" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
+    # "nic_hub1_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
+    # "nic_hub1_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.id }
+    # "nic_hub1_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.id }
+    # "nic_hub1_fortigate_2_4" = { network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id }
   }
 
   hub_subnet_network_security_group_associations = {
