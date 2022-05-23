@@ -19,5 +19,5 @@ module "module_azurerm_network_security_rule" {
 }
 
 output "network_security_rules" {
-  value =  var.enable_module_output ? module.module_azurerm_network_security_rule[*] : null
+  value = var.enable_module_output ? module.module_azurerm_network_security_rule[*] : null
 }

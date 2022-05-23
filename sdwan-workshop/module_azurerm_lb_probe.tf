@@ -16,5 +16,5 @@ module "module_azurerm_lb_probe" {
 }
 
 output "lb_probes" {
-  value =  var.enable_module_output ? module.module_azurerm_lb_probe[*] : null
+  value = var.enable_module_output ? module.module_azurerm_lb_probe[*] : null
 }

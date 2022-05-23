@@ -17,5 +17,5 @@ module "module_azurerm_network_interface" {
 }
 
 output "network_interfaces" {
-  value =  var.enable_module_output ? module.module_azurerm_network_interface[*] : null
+  value = var.enable_module_output ? module.module_azurerm_network_interface[*] : null
 }

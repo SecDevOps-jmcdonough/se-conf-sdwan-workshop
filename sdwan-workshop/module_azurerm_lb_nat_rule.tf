@@ -19,5 +19,5 @@ module "module_azurerm_lb_nat_rule" {
 }
 
 output "lb_nat_rules" {
-  value =  var.enable_module_output ? module.module_azurerm_lb_nat_rule[*] : null
+  value = var.enable_module_output ? module.module_azurerm_lb_nat_rule[*] : null
 }

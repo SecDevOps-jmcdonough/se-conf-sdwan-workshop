@@ -1,32 +1,127 @@
 locals {
   branch_virtual_networks = {
-    "vnet_branch1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "eastus", name = "vnet_branch1", address_space = ["172.16.0.0/16"] }
-    "vnet_branch2" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "eastus", name = "vnet_branch2", address_space = ["172.17.0.0/16"] }
-    "vnet_branch3" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "southcentralus", name = "vnet_branch3", address_space = ["172.18.0.0/16"] }
+    "vnet_branch1" = {
+      resource_group_name = local.resource_group_name
+      location            = "eastus"
+      name                = "vnet_branch1"
+      address_space       = ["172.16.0.0/16"]
+    }
+    "vnet_branch2" = {
+      resource_group_name = local.resource_group_name
+      location            = "eastus"
+      name                = "vnet_branch2"
+      address_space       = ["172.17.0.0/16"]
+    }
+    "vnet_branch3" = {
+      resource_group_name = local.resource_group_name
+      location            = "southcentralus"
+      name                = "vnet_branch3"
+      address_space       = ["172.18.0.0/16"]
+    }
   }
 
   branch_subnets = {
     # Branch 1
-    "br1_fgt_pub1"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_fgt_pub1", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 1)], vnet_name = "vnet_branch1" }
-    "br1_fgt_pub2"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_fgt_pub2", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 11)], vnet_name = "vnet_branch1" }
-    "br1_fgt_priv"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_fgt_priv", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 2)], vnet_name = "vnet_branch1" }
-    "br1_fgt_ha"    = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_fgt_ha", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 3)], vnet_name = "vnet_branch1" }
-    "br1_fgt_mgmt"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_fgt_mgmt", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 4)], vnet_name = "vnet_branch1" }
-    "br1_protected" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_protected", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 5)], vnet_name = "vnet_branch1" }
+    "br1_fgt_pub1" = {
+      resource_group_name = local.resource_group_name
+      name                = "br1_fgt_pub1"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 1)]
+      vnet_name           = "vnet_branch1"
+    }
+    "br1_fgt_pub2" = {
+      resource_group_name = local.resource_group_name
+      name                = "br1_fgt_pub2"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 11)],
+      vnet_name           = "vnet_branch1"
+    }
+    "br1_fgt_priv" = {
+      resource_group_name = local.resource_group_name
+      name                = "br1_fgt_priv"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 2)]
+      vnet_name           = "vnet_branch1"
+    }
+    "br1_fgt_ha" = {
+      resource_group_name = local.resource_group_name
+      name                = "br1_fgt_ha"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 3)]
+      vnet_name           = "vnet_branch1"
+    }
+    "br1_fgt_mgmt" = {
+      resource_group_name = local.resource_group_name
+      name                = "br1_fgt_mgmt"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 4)]
+      vnet_name           = "vnet_branch1"
+    }
+    "br1_protected" = {
+      resource_group_name = local.resource_group_name
+      name                = "br1_protected"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.address_space[0], 8, 5)]
+      vnet_name           = "vnet_branch1"
+    }
 
     # Branch 2
-    "br2_fgt_pub1"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_fgt_pub1", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 1)], vnet_name = "vnet_branch2" }
-    "br2_fgt_pub2"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_fgt_pub2", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 11)], vnet_name = "vnet_branch2" }
-    "br2_fgt_priv"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_fgt_priv", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 2)], vnet_name = "vnet_branch2" }
-    "br2_fgt_ha"    = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_fgt_ha", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 3)], vnet_name = "vnet_branch2" }
-    "br2_fgt_mgmt"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_fgt_mgmt", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 4)], vnet_name = "vnet_branch2" }
-    "br2_protected" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_protected", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 5)], vnet_name = "vnet_branch2" }
+    "br2_fgt_pub1" = {
+      resource_group_name = local.resource_group_name
+      name                = "br2_fgt_pub1"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 1)]
+      vnet_name           = "vnet_branch2"
+    }
+    "br2_fgt_pub2" = {
+      resource_group_name = local.resource_group_name
+      name                = "br2_fgt_pub2"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 11)]
+      vnet_name           = "vnet_branch2"
+    }
+    "br2_fgt_priv" = {
+      resource_group_name = local.resource_group_name
+      name                = "br2_fgt_priv"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 2)]
+      vnet_name           = "vnet_branch2"
+    }
+    "br2_fgt_ha" = {
+      resource_group_name = local.resource_group_name
+      name                = "br2_fgt_ha"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 3)]
+      vnet_name           = "vnet_branch2"
+    }
+    "br2_fgt_mgmt" = {
+      resource_group_name = local.resource_group_name
+      name                = "br2_fgt_mgmt"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 4)]
+      vnet_name           = "vnet_branch2"
+    }
+    "br2_protected" = {
+      resource_group_name = local.resource_group_name
+      name                = "br2_protected"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.address_space[0], 8, 5)]
+      vnet_name           = "vnet_branch2"
+    }
 
     # Branch 3
-    "br3_fgt_pub1"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br3_fgt_pub1", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.address_space[0], 8, 1)], vnet_name = "vnet_branch3" }
-    "br3_fgt_pub2"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br3_fgt_pub2", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.address_space[0], 8, 11)], vnet_name = "vnet_branch3" }
-    "br3_fgt_priv"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br3_fgt_priv", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.address_space[0], 8, 2)], vnet_name = "vnet_branch3" }
-    "br3_protected" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br3_protected", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.address_space[0], 8, 5)], vnet_name = "vnet_branch3" }
+    "br3_fgt_pub1" = {
+      resource_group_name = local.resource_group_name
+      name                = "br3_fgt_pub1"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.address_space[0], 8, 1)]
+      vnet_name           = "vnet_branch3"
+    }
+    "br3_fgt_pub2" = {
+      resource_group_name = local.resource_group_name
+      name                = "br3_fgt_pub2"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.address_space[0], 8, 11)]
+      vnet_name           = "vnet_branch3"
+    }
+    "br3_fgt_priv" = {
+      resource_group_name = local.resource_group_name
+      name                = "br3_fgt_priv"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.address_space[0], 8, 2)]
+      vnet_name           = "vnet_branch3"
+    }
+    "br3_protected" = {
+      resource_group_name = local.resource_group_name
+      name                = "br3_protected"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.address_space[0], 8, 5)]
+      vnet_name           = "vnet_branch3"
+    }
   }
 
   branch_virtual_network_peerings = {
@@ -36,7 +131,7 @@ locals {
   branch_network_interfaces = {
     # Branch 1
     "nic_br1_fortigate_1_1" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_fortigate_1_1"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_pub1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -53,7 +148,7 @@ locals {
       ]
     }
     "nic_br1_fortigate_1_2" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_fortigate_1_2"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_priv"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -70,7 +165,7 @@ locals {
       ]
     }
     "nic_br1_fortigate_1_3" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_fortigate_1_3"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_pub2"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -87,7 +182,7 @@ locals {
       ]
     }
     "nic_br1_fortigate_1_4" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_fortigate_1_4"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_ha"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -104,7 +199,7 @@ locals {
       ]
     }
     "nic_br1_fortigate_1_5" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_fortigate_1_5"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -121,7 +216,7 @@ locals {
       ]
     }
     "nic_br1_fortigate_2_1" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_fortigate_2_1"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_pub1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -138,7 +233,7 @@ locals {
       ]
     }
     "nic_br1_fortigate_2_2" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_fortigate_2_2"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_priv"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -155,7 +250,7 @@ locals {
       ]
     }
     "nic_br1_fortigate_2_3" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_fortigate_2_3"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_pub2"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -172,7 +267,7 @@ locals {
       ]
     }
     "nic_br1_fortigate_2_4" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_fortigate_2_4"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_ha"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -189,7 +284,7 @@ locals {
       ]
     }
     "nic_br1_fortigate_2_5" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_fortigate_2_5"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -207,7 +302,7 @@ locals {
     }
     # Branch 2
     "nic_br2_fortigate_1_1" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_fortigate_1_1"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_pub1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -224,7 +319,7 @@ locals {
       ]
     }
     "nic_br2_fortigate_1_2" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_fortigate_1_2"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_priv"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -241,7 +336,7 @@ locals {
       ]
     }
     "nic_br2_fortigate_1_3" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_fortigate_1_3"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_pub2"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -258,7 +353,7 @@ locals {
       ]
     }
     "nic_br2_fortigate_1_4" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_fortigate_1_4"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_ha"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -275,7 +370,7 @@ locals {
       ]
     }
     "nic_br2_fortigate_1_5" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_fortigate_1_5"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -292,7 +387,7 @@ locals {
       ]
     }
     "nic_br2_fortigate_2_1" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_fortigate_2_1"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_pub1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -309,7 +404,7 @@ locals {
       ]
     }
     "nic_br2_fortigate_2_2" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_fortigate_2_2"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_priv"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -326,7 +421,7 @@ locals {
       ]
     }
     "nic_br2_fortigate_2_3" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_fortigate_2_3"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_pub2"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -343,7 +438,7 @@ locals {
       ]
     }
     "nic_br2_fortigate_2_4" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_fortigate_2_4"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_ha"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -360,7 +455,7 @@ locals {
       ]
     }
     "nic_br2_fortigate_2_5" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_fortigate_2_5"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -378,7 +473,7 @@ locals {
     }
     # Branch 3
     "nic_br3_fortigate_1_1" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br3_fortigate_1_1"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br3_fgt_pub1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -395,7 +490,7 @@ locals {
       ]
     }
     "nic_br3_fortigate_1_2" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br3_fortigate_1_2"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br3_fgt_priv"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -412,7 +507,7 @@ locals {
       ]
     }
     "nic_br3_fortigate_1_3" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br3_fortigate_1_3"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br3_fgt_pub2"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = true
@@ -430,7 +525,7 @@ locals {
     }
     # Branch Linux VMs
     "nic_br1_lnx_1_1" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br1_lnx_1_1"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br1_protected"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = false
@@ -447,7 +542,7 @@ locals {
       ]
     }
     "nic_br2_lnx_1_1" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br2_lnx_1_1"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br2_protected"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = false
@@ -464,7 +559,7 @@ locals {
       ]
     }
     "nic_br3_lnx_1_1" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_br3_lnx_1_1"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["br3_protected"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = false
@@ -484,26 +579,74 @@ locals {
 
   branch_public_ips = {
     # Branch 1
-    "pip_br1_elb_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "pip_br1_elb_01", location = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location, allocation_method = "Static", sku = "Standard" }
-    "pip_br1_elb_02" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "pip_br1_elb_02", location = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location, allocation_method = "Static", sku = "Standard" }
-
-    # Branch 2
-    "pip_br2_elb_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "pip_br2_elb_01", location = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location, allocation_method = "Static", sku = "Standard" }
-    "pip_br2_elb_02" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "pip_br2_elb_02", location = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location, allocation_method = "Static", sku = "Standard" }
-
-    # Branch 3
-    "pip_br3_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "pip_br3_01", location = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location, allocation_method = "Static", sku = "Standard" }
-    "pip_br3_02" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "pip_br3_02", location = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location, allocation_method = "Static", sku = "Standard" }
+    "pip_br1_elb_01" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br1_elb_01"
+      location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    "pip_br1_elb_02" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br1_elb_02"
+      location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    "pip_br2_elb_01" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br2_elb_01"
+      location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    "pip_br2_elb_02" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br2_elb_02"
+      location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    "pip_br3_01" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br3_01"
+      location            = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    "pip_br3_02" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br3_02"
+      location            = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
   }
 
   branch_availability_sets = {
-    "as_br1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location, name = "as_br1", platform_update_domain_count = "2", platform_fault_domain_count = "2", proximity_placement_group_id = null, managed = true }
-    "as_br2" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location, name = "as_br2", platform_update_domain_count = "2", platform_fault_domain_count = "2", proximity_placement_group_id = null, managed = true }
+    "as_br1" = {
+      resource_group_name          = local.resource_group_name
+      location                     = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+      name                         = "as_br1"
+      platform_update_domain_count = "2"
+      platform_fault_domain_count  = "2"
+      proximity_placement_group_id = null
+      managed                      = true
+    }
+    "as_br2" = {
+      resource_group_name          = local.resource_group_name
+      location                     = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+      name                         = "as_br2"
+      platform_update_domain_count = "2"
+      platform_fault_domain_count  = "2"
+      proximity_placement_group_id = null
+      managed                      = true
+    }
   }
 
   branch_lbs = {
     "lb_branch1_ext_01" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
       name                = "lb_branch1_ext_01"
       sku                 = "standard"
@@ -519,7 +662,7 @@ locals {
       ]
     }
     "lb_branch2_ext_01" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
       name                = "lb_branch2_ext_01"
       sku                 = "standard"
@@ -535,7 +678,7 @@ locals {
       ]
     }
     "lb_branch1_int_01" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
       name                = "lb_branch1_int_01"
       sku                 = "standard"
@@ -551,7 +694,7 @@ locals {
       ]
     }
     "lb_branch2_int_01" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
       name                = "lb_branch2_int_01"
       sku                 = "standard"
@@ -569,55 +712,146 @@ locals {
   }
 
   branch_lb_backend_address_pools = {
-    # Branch 1
-    "lb_pool_br1_ext_01_01" = { name = "lb_pool_br1_ext_01_01", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id }
-    "lb_pool_br1_ext_01_02" = { name = "lb_pool_br1_ext_01_02", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id }
-    "lb_pool_br1_int_01_01" = { name = "lb_pool_br1_int_01_01", loadbalancer_id = module.module_azurerm_lb["lb_branch1_int_01"].lb.id }
-
-    # Branch 2
-    "lb_pool_br2_ext_01_01" = { name = "llb_pool_br2_ext_01_01", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id }
-    "lb_pool_br2_ext_01_02" = { name = "llb_pool_br2_ext_01_02", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id }
-    "lb_pool_br2_int_01_01" = { name = "llb_pool_br2_int_01_01", loadbalancer_id = module.module_azurerm_lb["lb_branch2_int_01"].lb.id }
+    "lb_pool_br1_ext_01_01" = {
+      name            = "lb_pool_br1_ext_01_01"
+      loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+    }
+    "lb_pool_br1_ext_01_02" = {
+      name            = "lb_pool_br1_ext_01_02"
+      loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+    }
+    "lb_pool_br1_int_01_01" = {
+      name            = "lb_pool_br1_int_01_01"
+      loadbalancer_id = module.module_azurerm_lb["lb_branch1_int_01"].lb.id
+    }
+    "lb_pool_br2_ext_01_01" = {
+      name            = "lb_pool_br2_ext_01_01"
+      loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+    }
+    "lb_pool_br2_ext_01_02" = {
+      name            = "lb_pool_br2_ext_01_02"
+      loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+    }
+    "lb_pool_br2_int_01_01" = {
+      name            = "lb_pool_br2_int_01_01"
+      loadbalancer_id = module.module_azurerm_lb["lb_branch2_int_01"].lb.id
+    }
   }
 
   branch_lb_nat_rules = {
     # Branch 1
-    "br1_fgt1_https" = { name = "br1_fgt1_https", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, protocol = "Tcp", frontend_port = "1443", backend_port = "34443", frontend_ip_configuration_name = "pip_br1_elb_01" }
-    "br1_fgt2_https" = { name = "br1_fgt2_https", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, protocol = "Tcp", frontend_port = "2443", backend_port = "34443", frontend_ip_configuration_name = "pip_br1_elb_01" }
-    "br1_fgt1_ssh"   = { name = "br1_fgt1_ssh", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, protocol = "Tcp", frontend_port = "1422", backend_port = "3422", frontend_ip_configuration_name = "pip_br1_elb_01" }
-    "br1_fgt2_ssh"   = { name = "br1_fgt2_ssh", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, protocol = "Tcp", frontend_port = "2422", backend_port = "3422", frontend_ip_configuration_name = "pip_br1_elb_01" }
+    "br1_fgt1_https" = {
+      name                           = "br1_fgt1_https"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      protocol                       = "Tcp"
+      frontend_port                  = "1443"
+      backend_port                   = "34443"
+      frontend_ip_configuration_name = "pip_br1_elb_01"
+    }
+    "br1_fgt2_https" = {
+      name                           = "br1_fgt2_https"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      protocol                       = "Tcp"
+      frontend_port                  = "2443"
+      backend_port                   = "34443"
+      frontend_ip_configuration_name = "pip_br1_elb_01"
+    }
+    "br1_fgt1_ssh" = {
+      name                           = "br1_fgt1_ssh"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      protocol                       = "Tcp"
+      frontend_port                  = "1422"
+      backend_port                   = "3422"
+      frontend_ip_configuration_name = "pip_br1_elb_01"
+    }
+    "br1_fgt2_ssh" = {
+      name                           = "br1_fgt2_ssh"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      protocol                       = "Tcp"
+      frontend_port                  = "2422"
+      backend_port                   = "3422"
+      frontend_ip_configuration_name = "pip_br1_elb_01"
+    }
 
     # Branch 2
-    "br2_fgt1_https" = { name = "br2_fgt1_https", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, protocol = "Tcp", frontend_port = "1443", backend_port = "34443", frontend_ip_configuration_name = "pip_br2_elb_01" }
-    "br2_fgt2_https" = { name = "br2_fgt2_https", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, protocol = "Tcp", frontend_port = "2443", backend_port = "34443", frontend_ip_configuration_name = "pip_br2_elb_01" }
-    "br2_fgt1_ssh"   = { name = "br2_fgt1_ssh", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, protocol = "Tcp", frontend_port = "1422", backend_port = "3422", frontend_ip_configuration_name = "pip_br2_elb_01" }
-    "br2_fgt2_ssh"   = { name = "br2_fgt2_ssh", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, protocol = "Tcp", frontend_port = "2422", backend_port = "3422", frontend_ip_configuration_name = "pip_br2_elb_01" }
+    "br2_fgt1_https" = {
+      name                          = "br2_fgt1_https"
+      loadbalancer_id               = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      protocol                      = "Tcp"
+      frontend_port                 = "1443"
+      backend_port                  = "34443",
+      rontend_ip_configuration_name = "pip_br2_elb_01"
+    }
+    "br2_fgt2_https" = {
+      name                          = "br2_fgt2_https"
+      loadbalancer_id               = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      protocol                      = "Tcp"
+      frontend_port                 = "2443"
+      backend_port                  = "34443",
+      rontend_ip_configuration_name = "pip_br2_elb_01"
+    }
+    "br2_fgt1_ssh" = {
+      name                           = "br2_fgt1_ssh"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      protocol                       = "Tcp"
+      frontend_port                  = "1422"
+      backend_port                   = "3422"
+      frontend_ip_configuration_name = "pip_br2_elb_01"
+    }
+    "br2_fgt2_ssh" = {
+      name                           = "br2_fgt2_ssh"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      protocol                       = "Tcp"
+      frontend_port                  = "2422"
+      backend_port                   = "3422"
+      frontend_ip_configuration_name = "pip_br2_elb_01"
+    }
   }
 
   branch_lb_outbound_rules = {
     # Branches
-    "br1_lb_outbound_rule_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_lb_outbound_rule_01", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, protocol = "All", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id,
+    "br1_lb_outbound_rule_01" = {
+      resource_group_name     = local.resource_group_name
+      name                    = "br1_lb_outbound_rule_01"
+      loadbalancer_id         = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      protocol                = "All"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id
       frontend_ip_configurations = [
         {
           name = "pip_br1_elb_01"
         }
       ]
     }
-    "br1_lb_outbound_rule_02" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_lb_outbound_rule_02", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, protocol = "All", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id,
+    "br1_lb_outbound_rule_02" = {
+      resource_group_name     = local.resource_group_name
+      name                    = "br1_lb_outbound_rule_02"
+      loadbalancer_id         = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      protocol                = "All"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id
       frontend_ip_configurations = [
         {
           name = "pip_br1_elb_02"
         }
       ]
     }
-    "br2_lb_outbound_rule_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_lb_outbound_rule_01", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, protocol = "All", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id,
+    "br2_lb_outbound_rule_01" = {
+      resource_group_name     = local.resource_group_name
+      name                    = "br2_lb_outbound_rule_01"
+      loadbalancer_id         = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      protocol                = "All"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id
       frontend_ip_configurations = [
         {
           name = "pip_br2_elb_01"
         }
       ]
     }
-    "br2_lb_outbound_rule_02" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_lb_outbound_rule_02", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, protocol = "All", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id,
+    "br2_lb_outbound_rule_02" = {
+      resource_group_name     = local.resource_group_name
+      name                    = "br2_lb_outbound_rule_02"
+      loadbalancer_id         = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      protocol                = "All"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id
       frontend_ip_configurations = [
         {
           name = "pip_br2_elb_02"
@@ -626,162 +860,434 @@ locals {
     }
   }
 
-  branch_lb_probes = { # Branch 1
-    "lb_probe_br1_ext_lb_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_probe_br1_ext_lb_01", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, port = "8008" }
-    "lb_probe_br1_int_lb_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_probe_br1_int_lb_01", loadbalancer_id = module.module_azurerm_lb["lb_branch1_int_01"].lb.id, port = "8008" }
-
-    # Branch 2
-    "lb_probe_br2_ext_lb_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_probe_br2_ext_lb_01", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, port = "8008" }
-    "lb_probe_br2_int_lb_01" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_probe_br2_int_lb_01", loadbalancer_id = module.module_azurerm_lb["lb_branch2_int_01"].lb.id, port = "8008" }
+  branch_lb_probes = {
+    "lb_probe_br1_ext_lb_01" = {
+      resource_group_name = local.resource_group_name
+      name                = "lb_probe_br1_ext_lb_01"
+      loadbalancer_id     = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      port                = "8008"
+    }
+    "lb_probe_br1_int_lb_01" = {
+      resource_group_name = local.resource_group_name
+      name                = "lb_probe_br1_int_lb_01"
+      loadbalancer_id     = module.module_azurerm_lb["lb_branch1_int_01"].lb.id
+      port                = "8008"
+    }
+    "lb_probe_br2_ext_lb_01" = {
+      resource_group_name = local.resource_group_name
+      name                = "lb_probe_br2_ext_lb_01"
+      loadbalancer_id     = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      port                = "8008"
+    }
+    "lb_probe_br2_int_lb_01" = {
+      resource_group_name = local.resource_group_name
+      name                = "lb_probe_br2_int_lb_01"
+      loadbalancer_id     = module.module_azurerm_lb["lb_branch2_int_01"].lb.id
+      port                = "8008"
+    }
   }
 
   branch_lb_rules = {
     # Branch 1
     # External
-    "lb_rule_br1_ext_udp_500_isp1"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_rule_br1_ext_udp_500_isp1", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, frontend_ip_configuration_name = "pip_br1_elb_01", protocol = "Udp", frontend_port = "500", backend_port = "500", backend_address_pool_ids = [module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id], probe_id = module.module_azurerm_lb_probe["lb_probe_br1_ext_lb_01"].lb_probe.id, disable_outbound_snat = true }
-    "lb_rule_br1_ext_udp_4500_isp1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_rule_br1_ext_udp_4500_isp1", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, frontend_ip_configuration_name = "pip_br1_elb_01", protocol = "Udp", frontend_port = "4500", backend_port = "4500", backend_address_pool_ids = [module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id], probe_id = module.module_azurerm_lb_probe["lb_probe_br1_ext_lb_01"].lb_probe.id, disable_outbound_snat = true }
-    "lb_rule_br1_ext_udp_500_isp2"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_rule_br1_ext_udp_500_isp2", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, frontend_ip_configuration_name = "pip_br1_elb_02", protocol = "Udp", frontend_port = "500", backend_port = "500", backend_address_pool_ids = [module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id], probe_id = module.module_azurerm_lb_probe["lb_probe_br1_ext_lb_01"].lb_probe.id, disable_outbound_snat = true }
-    "lb_rule_br1_ext_udp_4500_isp2" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_rule_br1_ext_udp_4500_isp2", loadbalancer_id = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id, frontend_ip_configuration_name = "pip_br1_elb_02", protocol = "Udp", frontend_port = "4500", backend_port = "4500", backend_address_pool_ids = [module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id], probe_id = module.module_azurerm_lb_probe["lb_probe_br1_ext_lb_01"].lb_probe.id, disable_outbound_snat = true }
+    "lb_rule_br1_ext_udp_500_isp1" = {
+      resource_group_name            = local.resource_group_name
+      name                           = "lb_rule_br1_ext_udp_500_isp1"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      frontend_ip_configuration_name = "pip_br1_elb_01"
+      protocol                       = "Udp"
+      frontend_port                  = "500"
+      backend_port                   = "500"
+      backend_address_pool_ids       = [module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id]
+      probe_id                       = module.module_azurerm_lb_probe["lb_probe_br1_ext_lb_01"].lb_probe.id
+      disable_outbound_snat          = true
+    }
+    "lb_rule_br1_ext_udp_4500_isp1" = {
+      resource_group_name            = local.resource_group_name
+      name                           = "lb_rule_br1_ext_udp_4500_isp1"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      frontend_ip_configuration_name = "pip_br1_elb_01"
+      protocol                       = "Udp"
+      frontend_port                  = "4500"
+      backend_port                   = "4500"
+      backend_address_pool_ids       = [module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id]
+      probe_id                       = module.module_azurerm_lb_probe["lb_probe_br1_ext_lb_01"].lb_probe.id
+      disable_outbound_snat          = true
+    }
+    "lb_rule_br1_ext_udp_500_isp2" = {
+      resource_group_name            = local.resource_group_name
+      name                           = "lb_rule_br1_ext_udp_500_isp2"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      frontend_ip_configuration_name = "pip_br1_elb_02"
+      protocol                       = "Udp"
+      frontend_port                  = "500"
+      backend_port                   = "500"
+      backend_address_pool_ids       = [module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id]
+      probe_id                       = module.module_azurerm_lb_probe["lb_probe_br1_ext_lb_01"].lb_probe.id
+      disable_outbound_snat          = true
+    }
+    "lb_rule_br1_ext_udp_4500_isp2" = {
+      resource_group_name            = local.resource_group_name
+      name                           = "lb_rule_br1_ext_udp_4500_isp2"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
+      frontend_ip_configuration_name = "pip_br1_elb_02"
+      protocol                       = "Udp"
+      frontend_port                  = "4500"
+      backend_port                   = "4500"
+      backend_address_pool_ids       = [module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id]
+      probe_id                       = module.module_azurerm_lb_probe["lb_probe_br1_ext_lb_01"].lb_probe.id
+      disable_outbound_snat          = true
+    }
 
     # Internal
-    "lb_rule_br1_int_fgt_haports" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_rule_br1_int_fgt_haports", loadbalancer_id = module.module_azurerm_lb["lb_branch1_int_01"].lb.id, frontend_ip_configuration_name = "lb_branch1_int_fe_ip_01", protocol = "All", frontend_port = "0", backend_port = "0", backend_address_pool_ids = [module.module_azurerm_lb_backend_address_pool["lb_pool_br1_int_01_01"].lb_backend_address_pool.id], probe_id = module.module_azurerm_lb_probe["lb_probe_br1_int_lb_01"].lb_probe.id, disable_outbound_snat = true }
+    "lb_rule_br1_int_fgt_haports" = {
+      resource_group_name            = local.resource_group_name
+      name                           = "lb_rule_br1_int_fgt_haports"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch1_int_01"].lb.id
+      frontend_ip_configuration_name = "lb_branch1_int_fe_ip_01"
+      protocol                       = "All"
+      frontend_port                  = "0"
+      backend_port                   = "0"
+      backend_address_pool_ids       = [module.module_azurerm_lb_backend_address_pool["lb_pool_br1_int_01_01"].lb_backend_address_pool.id]
+      probe_id                       = module.module_azurerm_lb_probe["lb_probe_br1_int_lb_01"].lb_probe.id
+      disable_outbound_snat          = true
+    }
 
     # Branch 2
     # External
-    "lb_rule_br2_ext_udp_500_isp1"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_rule_br2_ext_udp_500_isp1", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, frontend_ip_configuration_name = "pip_br2_elb_01", protocol = "Udp", frontend_port = "500", backend_port = "500", backend_address_pool_ids = [module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id], probe_id = module.module_azurerm_lb_probe["lb_probe_br2_ext_lb_01"].lb_probe.id, disable_outbound_snat = true }
-    "lb_rule_br2_ext_udp_4500_isp1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_rule_br2_ext_udp_4500_isp1", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, frontend_ip_configuration_name = "pip_br2_elb_01", protocol = "Udp", frontend_port = "4500", backend_port = "4500", backend_address_pool_ids = [module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id], probe_id = module.module_azurerm_lb_probe["lb_probe_br2_ext_lb_01"].lb_probe.id, disable_outbound_snat = true }
-    "lb_rule_br2_ext_udp_500_isp2"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_rule_br2_ext_udp_500_isp2", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, frontend_ip_configuration_name = "pip_br2_elb_02", protocol = "Udp", frontend_port = "500", backend_port = "500", backend_address_pool_ids = [module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id], probe_id = module.module_azurerm_lb_probe["lb_probe_br2_ext_lb_01"].lb_probe.id, disable_outbound_snat = true }
-    "lb_rule_br2_ext_udp_4500_isp2" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_rule_br2_ext_udp_4500_isp2", loadbalancer_id = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id, frontend_ip_configuration_name = "pip_br2_elb_02", protocol = "Udp", frontend_port = "4500", backend_port = "4500", backend_address_pool_ids = [module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id], probe_id = module.module_azurerm_lb_probe["lb_probe_br2_ext_lb_01"].lb_probe.id, disable_outbound_snat = true }
+    "lb_rule_br2_ext_udp_500_isp1" = {
+      resource_group_name            = local.resource_group_name
+      name                           = "lb_rule_br2_ext_udp_500_isp1"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      frontend_ip_configuration_name = "pip_br2_elb_01"
+      protocol                       = "Udp"
+      frontend_port                  = "500"
+      backend_port                   = "500"
+      backend_address_pool_ids       = [module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id]
+      probe_id                       = module.module_azurerm_lb_probe["lb_probe_br2_ext_lb_01"].lb_probe.id
+      disable_outbound_snat          = true
+    }
+    "lb_rule_br2_ext_udp_4500_isp1" = {
+      resource_group_name            = local.resource_group_name
+      name                           = "lb_rule_br2_ext_udp_4500_isp1"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      frontend_ip_configuration_name = "pip_br2_elb_01"
+      protocol                       = "Udp"
+      frontend_port                  = "4500"
+      backend_port                   = "4500"
+      backend_address_pool_ids       = [module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id]
+      probe_id                       = module.module_azurerm_lb_probe["lb_probe_br2_ext_lb_01"].lb_probe.id
+      disable_outbound_snat          = true
+    }
+    "lb_rule_br2_ext_udp_500_isp2" = {
+      resource_group_name            = local.resource_group_name
+      name                           = "lb_rule_br2_ext_udp_500_isp2"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      frontend_ip_configuration_name = "pip_br2_elb_02"
+      protocol                       = "Udp"
+      frontend_port                  = "500"
+      backend_port                   = "500"
+      backend_address_pool_ids       = [module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id]
+      probe_id                       = module.module_azurerm_lb_probe["lb_probe_br2_ext_lb_01"].lb_probe.id
+      disable_outbound_snat          = true
+    }
+    "lb_rule_br2_ext_udp_4500_isp2" = {
+      resource_group_name            = local.resource_group_name
+      name                           = "lb_rule_br2_ext_udp_4500_isp2"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      frontend_ip_configuration_name = "pip_br2_elb_02"
+      protocol                       = "Udp"
+      frontend_port                  = "4500"
+      backend_port                   = "4500"
+      backend_address_pool_ids       = [module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id]
+      probe_id                       = module.module_azurerm_lb_probe["lb_probe_br2_ext_lb_01"].lb_probe.id
+      disable_outbound_snat          = true
+    }
 
     # Internal
-    "lb_rule_br2_int_fgt_haports" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "lb_rule_br2_int_fgt_haports", loadbalancer_id = module.module_azurerm_lb["lb_branch2_int_01"].lb.id, frontend_ip_configuration_name = "lb_branch2_int_fe_ip_01", protocol = "All", frontend_port = "0", backend_port = "0", backend_address_pool_ids = [module.module_azurerm_lb_backend_address_pool["lb_pool_br2_int_01_01"].lb_backend_address_pool.id], probe_id = module.module_azurerm_lb_probe["lb_probe_br2_int_lb_01"].lb_probe.id, disable_outbound_snat = true }
+    "lb_rule_br2_int_fgt_haports" = {
+      resource_group_name            = local.resource_group_name
+      name                           = "lb_rule_br2_int_fgt_haports"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch2_int_01"].lb.id
+      frontend_ip_configuration_name = "lb_branch2_int_fe_ip_01"
+      protocol                       = "All"
+      frontend_port                  = "0"
+      backend_port                   = "0"
+      backend_address_pool_ids       = [module.module_azurerm_lb_backend_address_pool["lb_pool_br2_int_01_01"].lb_backend_address_pool.id]
+      probe_id                       = module.module_azurerm_lb_probe["lb_probe_br2_int_lb_01"].lb_probe.id
+      disable_outbound_snat          = true
+    }
   }
 
   branch_network_interface_backend_address_pool_associations = {
     # Branch 1
-    "nic_br1_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_1"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id }
-    "nic_br1_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_2"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_int_01_01"].lb_backend_address_pool.id }
-    "nic_br1_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_3"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id }
-    "nic_br1_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_1"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id }
-    "nic_br1_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_2"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_int_01_01"].lb_backend_address_pool.id }
-    "nic_br1_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_3"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id }
-
-    # Branch 2
-    "nic_br2_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_1"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id }
-    "nic_br2_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_2"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_int_01_01"].lb_backend_address_pool.id }
-    "nic_br2_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_3"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id }
-    "nic_br2_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_1"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id }
-    "nic_br2_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_2"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_int_01_01"].lb_backend_address_pool.id }
-    "nic_br2_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_3"].network_interface.id, ip_configuration_name = "ipconfig1", backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id }
+    "nic_br1_fortigate_1_1" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br1_fortigate_1_1"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id
+    }
+    "nic_br1_fortigate_1_2" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br1_fortigate_1_2"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_int_01_01"].lb_backend_address_pool.id
+    }
+    "nic_br1_fortigate_1_3" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br1_fortigate_1_3"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id
+    }
+    "nic_br1_fortigate_2_1" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br1_fortigate_2_1"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_01"].lb_backend_address_pool.id
+    }
+    "nic_br1_fortigate_2_2" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br1_fortigate_2_2"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_int_01_01"].lb_backend_address_pool.id
+    }
+    "nic_br1_fortigate_2_3" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br1_fortigate_2_3"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br1_ext_01_02"].lb_backend_address_pool.id
+    }
+    "nic_br2_fortigate_1_1" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br2_fortigate_1_1"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id
+    }
+    "nic_br2_fortigate_1_2" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br2_fortigate_1_2"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_int_01_01"].lb_backend_address_pool.id
+    }
+    "nic_br2_fortigate_1_3" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br2_fortigate_1_3"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id
+    }
+    "nic_br2_fortigate_2_1" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br2_fortigate_2_1"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_01"].lb_backend_address_pool.id
+    }
+    "nic_br2_fortigate_2_2" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br2_fortigate_2_2"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_int_01_01"].lb_backend_address_pool.id
+    }
+    "nic_br2_fortigate_2_3" = {
+      network_interface_id    = module.module_azurerm_network_interface["nic_br2_fortigate_2_3"].network_interface.id
+      ip_configuration_name   = "ipconfig1"
+      backend_address_pool_id = module.module_azurerm_lb_backend_address_pool["lb_pool_br2_ext_01_02"].lb_backend_address_pool.id
+    }
   }
 
   branch_network_interface_nat_rule_associations = {
-    # Branch 1
-    "br1_fgt1_https" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_5"].network_interface.id, ip_configuration_name = "ipconfig1", nat_rule_id = module.module_azurerm_lb_nat_rule["br1_fgt1_https"].lb_nat_rule.id }
-    "br1_fgt2_https" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_5"].network_interface.id, ip_configuration_name = "ipconfig1", nat_rule_id = module.module_azurerm_lb_nat_rule["br1_fgt2_https"].lb_nat_rule.id }
-    "br1_fgt1_ssh"   = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_5"].network_interface.id, ip_configuration_name = "ipconfig1", nat_rule_id = module.module_azurerm_lb_nat_rule["br1_fgt1_ssh"].lb_nat_rule.id }
-    "br1_fgt2_ssh"   = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_5"].network_interface.id, ip_configuration_name = "ipconfig1", nat_rule_id = module.module_azurerm_lb_nat_rule["br1_fgt2_ssh"].lb_nat_rule.id }
-
-    # Branch 2
-    "br2_fgt1_https" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_5"].network_interface.id, ip_configuration_name = "ipconfig1", nat_rule_id = module.module_azurerm_lb_nat_rule["br2_fgt1_https"].lb_nat_rule.id }
-    "br2_fgt2_https" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_5"].network_interface.id, ip_configuration_name = "ipconfig1", nat_rule_id = module.module_azurerm_lb_nat_rule["br2_fgt2_https"].lb_nat_rule.id }
-    "br2_fgt1_ssh"   = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_5"].network_interface.id, ip_configuration_name = "ipconfig1", nat_rule_id = module.module_azurerm_lb_nat_rule["br2_fgt1_ssh"].lb_nat_rule.id }
-    "br2_fgt2_ssh"   = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_5"].network_interface.id, ip_configuration_name = "ipconfig1", nat_rule_id = module.module_azurerm_lb_nat_rule["br2_fgt2_ssh"].lb_nat_rule.id }
+    "br1_fgt1_https" = {
+      network_interface_id  = module.module_azurerm_network_interface["nic_br1_fortigate_1_5"].network_interface.id
+      ip_configuration_name = "ipconfig1"
+      nat_rule_id           = module.module_azurerm_lb_nat_rule["br1_fgt1_https"].lb_nat_rule.id
+    }
+    "br1_fgt2_https" = {
+      network_interface_id  = module.module_azurerm_network_interface["nic_br1_fortigate_2_5"].network_interface.id
+      ip_configuration_name = "ipconfig1"
+      nat_rule_id           = module.module_azurerm_lb_nat_rule["br1_fgt2_https"].lb_nat_rule.id
+    }
+    "br1_fgt1_ssh" = {
+      network_interface_id  = module.module_azurerm_network_interface["nic_br1_fortigate_1_5"].network_interface.id
+      ip_configuration_name = "ipconfig1"
+      nat_rule_id           = module.module_azurerm_lb_nat_rule["br1_fgt1_ssh"].lb_nat_rule.id
+    }
+    "br1_fgt2_ssh" = {
+      network_interface_id  = module.module_azurerm_network_interface["nic_br1_fortigate_2_5"].network_interface.id
+      ip_configuration_name = "ipconfig1"
+      nat_rule_id           = module.module_azurerm_lb_nat_rule["br1_fgt2_ssh"].lb_nat_rule.id
+    }
+    "br2_fgt1_https" = {
+      network_interface_id  = module.module_azurerm_network_interface["nic_br2_fortigate_1_5"].network_interface.id
+      ip_configuration_name = "ipconfig1"
+      nat_rule_id           = module.module_azurerm_lb_nat_rule["br2_fgt1_https"].lb_nat_rule.id
+    }
+    "br2_fgt2_https" = {
+      network_interface_id  = module.module_azurerm_network_interface["nic_br2_fortigate_2_5"].network_interface.id
+      ip_configuration_name = "ipconfig1"
+      nat_rule_id           = module.module_azurerm_lb_nat_rule["br2_fgt2_https"].lb_nat_rule.id
+    }
+    "br2_fgt1_ssh" = {
+      network_interface_id  = module.module_azurerm_network_interface["nic_br2_fortigate_1_5"].network_interface.id
+      ip_configuration_name = "ipconfig1"
+      nat_rule_id           = module.module_azurerm_lb_nat_rule["br2_fgt1_ssh"].lb_nat_rule.id
+    }
+    "br2_fgt2_ssh" = {
+      network_interface_id  = module.module_azurerm_network_interface["nic_br2_fortigate_2_5"].network_interface.id
+      ip_configuration_name = "ipconfig1"
+      nat_rule_id           = module.module_azurerm_lb_nat_rule["br2_fgt2_ssh"].lb_nat_rule.id
+    }
   }
 
   branch_network_security_groups = {
-    # Branch 1
-    "nsg_br1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "nsg_br1", vnet_name = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location }
-    # Branch 2
-    "nsg_br2" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "nsg_br2", vnet_name = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location }
-    # Branch 3
-    "nsg_br3" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "nsg_br3", vnet_name = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location }
+    "nsg_br1" = {
+      resource_group_name = local.resource_group_name
+      name                = "nsg_br1"
+      vnet_name           = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+    }
+    "nsg_br2" = {
+      resource_group_name = local.resource_group_name
+      name                = "nsg_br2"
+      vnet_name           = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+    }
+    "nsg_br3" = {
+      resource_group_name = local.resource_group_name
+      name                = "nsg_br3"
+      vnet_name           = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
+    }
   }
 
   branch_network_security_rules = {
-    # Branch 1
-    "br1_all_inbound"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_all_inbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.name, priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }
-    "br1_all_outbound" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br1_all_outbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.name, priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
-    # Branch 2
-    "br2_all_inbound"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_all_inbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.name, priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }
-    "br2_all_outbound" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br2_all_outbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.name, priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
-    # Branch 3
-    "br3_all_inbound"  = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br3_all_inbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.name, priority = "100", direction = "Inbound", access = "Allow", protocol = "*" }
-    "br3_all_outbound" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "br3_all_outbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.name, priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
+    "br1_all_inbound" = {
+      resource_group_name         = local.resource_group_name
+      name                        = "br1_all_inbound"
+      network_security_group_name = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.name
+      priority                    = "100"
+      direction                   = "Inbound"
+      access                      = "Allow"
+      protocol                    = "*"
+    }
+    "br1_all_outbound" = {
+      resource_group_name         = local.resource_group_name
+      name                        = "br1_all_outbound"
+      network_security_group_name = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.name
+      priority                    = "100"
+      direction                   = "Outbound"
+      access                      = "Allow"
+      protocol                    = "*"
+    }
+    "br2_all_inbound" = {
+      resource_group_name         = local.resource_group_name
+      name                        = "br2_all_inbound"
+      network_security_group_name = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.name
+      priority                    = "100"
+      direction                   = "Inbound"
+      access                      = "Allow"
+      protocol                    = "*"
+    }
+    "br2_all_outbound" = {
+      resource_group_name         = local.resource_group_name
+      name                        = "br2_all_outbound"
+      network_security_group_name = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.name
+      priority                    = "100"
+      direction                   = "Outbound"
+      access                      = "Allow"
+      protocol                    = "*"
+    }
+    "br3_all_inbound" = {
+      resource_group_name         = local.resource_group_name
+      name                        = "br3_all_inbound"
+      network_security_group_name = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.name
+      priority                    = "100"
+      direction                   = "Inbound"
+      access                      = "Allow"
+      protocol                    = "*"
+    }
+    "br3_all_outbound" = {
+      resource_group_name         = local.resource_group_name
+      name                        = "br3_all_outbound"
+      network_security_group_name = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.name
+      priority                    = "100"
+      direction                   = "Outbound"
+      access                      = "Allow"
+      protocol                    = "*"
+    }
   }
 
   branch_network_interface_security_group_associations = {
-    # # Branch 1
-    # "nic_br1_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    # "nic_br1_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    # "nic_br1_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    # "nic_br1_fortigate_1_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    # "nic_br1_fortigate_1_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_1_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-
-    # "nic_br1_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    # "nic_br1_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    # "nic_br1_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    # "nic_br1_fortigate_2_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    # "nic_br1_fortigate_2_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br1_fortigate_2_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-
-    # # Branch 2
-    # "nic_br2_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    # "nic_br2_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    # "nic_br2_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    # "nic_br2_fortigate_1_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    # "nic_br2_fortigate_1_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_1_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-
-    # "nic_br2_fortigate_2_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    # "nic_br2_fortigate_2_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    # "nic_br2_fortigate_2_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    # "nic_br2_fortigate_2_4" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_4"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    # "nic_br2_fortigate_2_5" = { network_interface_id = module.module_azurerm_network_interface["nic_br2_fortigate_2_5"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-
-    # # Branch 3
-    # "nic_br3_fortigate_1_1" = { network_interface_id = module.module_azurerm_network_interface["nic_br3_fortigate_1_1"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
-    # "nic_br3_fortigate_1_2" = { network_interface_id = module.module_azurerm_network_interface["nic_br3_fortigate_1_2"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
-    # "nic_br3_fortigate_1_3" = { network_interface_id = module.module_azurerm_network_interface["nic_br3_fortigate_1_3"].network_interface.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
   }
 
   branch_subnet_network_security_group_associations = {
-    # Branch 1
-    "br1_fgt_pub1"  = { subnet_id = module.module_azurerm_subnet["br1_fgt_pub1"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "br1_fgt_pub2"  = { subnet_id = module.module_azurerm_subnet["br1_fgt_pub2"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "br1_fgt_priv"  = { subnet_id = module.module_azurerm_subnet["br1_fgt_priv"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "br1_fgt_ha"    = { subnet_id = module.module_azurerm_subnet["br1_fgt_ha"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "br1_fgt_mgmt"  = { subnet_id = module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    "br1_protected" = { subnet_id = module.module_azurerm_subnet["br1_protected"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id }
-    # Branch 2
-    "br2_fgt_pub1"  = { subnet_id = module.module_azurerm_subnet["br2_fgt_pub1"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "br2_fgt_pub2"  = { subnet_id = module.module_azurerm_subnet["br2_fgt_pub2"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "br2_fgt_priv"  = { subnet_id = module.module_azurerm_subnet["br2_fgt_priv"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "br2_fgt_ha"    = { subnet_id = module.module_azurerm_subnet["br2_fgt_ha"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "br2_fgt_mgmt"  = { subnet_id = module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    "br2_protected" = { subnet_id = module.module_azurerm_subnet["br2_protected"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id }
-    # Branch 3
-    "br3_fgt_pub1"  = { subnet_id = module.module_azurerm_subnet["br3_fgt_pub1"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
-    "br3_fgt_pub2"  = { subnet_id = module.module_azurerm_subnet["br3_fgt_pub2"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
-    "br3_fgt_priv"  = { subnet_id = module.module_azurerm_subnet["br3_fgt_priv"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
-    "br3_protected" = { subnet_id = module.module_azurerm_subnet["br3_protected"].subnet.id, network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id }
+    "br1_fgt_pub1" = {
+      subnet_id                 = module.module_azurerm_subnet["br1_fgt_pub1"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id
+    }
+    "br1_fgt_pub2" = {
+      subnet_id                 = module.module_azurerm_subnet["br1_fgt_pub2"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id
+    }
+    "br1_fgt_priv" = {
+      subnet_id                 = module.module_azurerm_subnet["br1_fgt_priv"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id
+    }
+    "br1_fgt_ha" = {
+      subnet_id                 = module.module_azurerm_subnet["br1_fgt_ha"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id
+    }
+    "br1_fgt_mgmt" = {
+      subnet_id                 = module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id
+    }
+    "br1_protected" = {
+      subnet_id                 = module.module_azurerm_subnet["br1_protected"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br1"].network_security_group.id
+    }
+    "br2_fgt_pub1" = {
+      subnet_id                 = module.module_azurerm_subnet["br2_fgt_pub1"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id
+    }
+    "br2_fgt_pub2" = {
+      subnet_id                 = module.module_azurerm_subnet["br2_fgt_pub2"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id
+    }
+    "br2_fgt_priv" = {
+      subnet_id                 = module.module_azurerm_subnet["br2_fgt_priv"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id
+    }
+    "br2_fgt_ha" = {
+      subnet_id                 = module.module_azurerm_subnet["br2_fgt_ha"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id
+    }
+    "br2_fgt_mgmt" = {
+      subnet_id                 = module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id
+    }
+    "br2_protected" = {
+      subnet_id                 = module.module_azurerm_subnet["br2_protected"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br2"].network_security_group.id
+    }
+    "br3_fgt_pub1" = {
+      subnet_id                 = module.module_azurerm_subnet["br3_fgt_pub1"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id
+    }
+    "br3_fgt_pub2" = {
+      subnet_id                 = module.module_azurerm_subnet["br3_fgt_pub2"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id
+    }
+    "br3_fgt_priv" = {
+      subnet_id                 = module.module_azurerm_subnet["br3_fgt_priv"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id
+    }
+    "br3_protected" = {
+      subnet_id                 = module.module_azurerm_subnet["br3_protected"].subnet.id
+      network_security_group_id = module.module_azurerm_network_security_group["nsg_br3"].network_security_group.id
+    }
   }
 
   branch_storage_accounts = {
     "stbr1" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name      = local.resource_group_name
       location                 = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
       name                     = format("%s%s", "stbr1", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
       account_tier             = "Standard"
     }
     "stbr2" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name      = local.resource_group_name
       location                 = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
       name                     = format("%s%s", "stbr2", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
       account_tier             = "Standard"
     }
     "stbr3" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name      = local.resource_group_name
       location                 = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
       name                     = format("%s%s", "stbr3", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
@@ -790,21 +1296,39 @@ locals {
   }
 
   branch_route_tables = {
-    # Branch 1
-    "rt_br1_protected" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "rt_br1_protected", vnet_name = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location, disable_bgp_route_propagation = "false" }
-    # Branch 2
-    "rt_br2_protected" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "rt_br2_protected", vnet_name = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location, disable_bgp_route_propagation = "false" }
-    # Branch 3
-    "rt_br3_protected" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "rt_br3_protected", vnet_name = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location, disable_bgp_route_propagation = "false" }
+    "rt_br1_protected" = {
+      resource_group_name           = local.resource_group_name
+      name                          = "rt_br1_protected"
+      vnet_name                     = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+      disable_bgp_route_propagation = "false"
+    }
+    "rt_br2_protected" = {
+      resource_group_name           = local.resource_group_name
+      name                          = "rt_br2_protected"
+      vnet_name                     = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+      disable_bgp_route_propagation = "false"
+    }
+    "rt_br3_protected" = {
+      resource_group_name           = local.resource_group_name
+      name                          = "rt_br3_protected"
+      vnet_name                     = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
+      disable_bgp_route_propagation = "false"
+    }
   }
 
   branch_subnet_route_table_associations = {
-    # Branch 1
-    "br1_protected" = { subnet_id = module.module_azurerm_subnet["br1_protected"].subnet.id, route_table_id = module.module_azurerm_route_table["rt_br1_protected"].route_table.id }
-    # Branch 2
-    "br2_protected" = { subnet_id = module.module_azurerm_subnet["br2_protected"].subnet.id, route_table_id = module.module_azurerm_route_table["rt_br2_protected"].route_table.id }
-    # Branch 3
-    "br3_protected" = { subnet_id = module.module_azurerm_subnet["br3_protected"].subnet.id, route_table_id = module.module_azurerm_route_table["rt_br3_protected"].route_table.id }
+    "br1_protected" = {
+      subnet_id      = module.module_azurerm_subnet["br1_protected"].subnet.id
+      route_table_id = module.module_azurerm_route_table["rt_br1_protected"].route_table.id
+    }
+    "br2_protected" = {
+      subnet_id      = module.module_azurerm_subnet["br2_protected"].subnet.id
+      route_table_id = module.module_azurerm_route_table["rt_br2_protected"].route_table.id
+    }
+    "br3_protected" = {
+      subnet_id      = module.module_azurerm_subnet["br3_protected"].subnet.id
+      route_table_id = module.module_azurerm_route_table["rt_br3_protected"].route_table.id
+    }
   }
 
   # Only define in one locals_XXX.tf file
@@ -819,7 +1343,7 @@ locals {
 
   branch_linux_virtual_machines = {
     "vm_br1_lnx_1" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
 
       name = "${local.tag_project}-vm-br1-lnx-1"
@@ -858,7 +1382,7 @@ locals {
       }
     }
     "vm_br2_lnx_1" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
 
       name = "${local.tag_project}-vm-br2-lnx-1"
@@ -897,7 +1421,7 @@ locals {
       }
     }
     "vm_br3_lnx_1" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
 
       name = "${local.tag_project}-vm-br3-lnx-1"
@@ -939,7 +1463,7 @@ locals {
 
   branch_virtual_machines = {
     "vm_br1_fgt_1" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
 
       name              = "${local.tag_project}-vm-br1-fgt-1"
@@ -1050,7 +1574,7 @@ locals {
       )
     }
     "vm_br1_fgt_2" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
 
       name              = "${local.tag_project}-vm-br1-fgt-2"
@@ -1161,7 +1685,7 @@ locals {
       )
     }
     "vm_br2_fgt_1" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
 
       name              = "${local.tag_project}-vm-br2-fgt-1"
@@ -1272,7 +1796,7 @@ locals {
       )
     }
     "vm_br2_fgt_2" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
 
       name              = "${local.tag_project}-vm-br2-fgt-2"
@@ -1383,7 +1907,7 @@ locals {
       )
     }
     "vm_br3_fgt_1" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
 
       name              = "${local.tag_project}-vm-br3-fgt-1"
@@ -1498,10 +2022,30 @@ locals {
   }
 
   branch_role_assignments = {
-    "vm_br1_fgt_1" = { scope = module.module_azurerm_resource_group.resource_group.id, role_definition_name = "Reader", principal_id = module.module_azurerm_virtual_machine["vm_br1_fgt_1"].virtual_machine.identity[0].principal_id }
-    "vm_br1_fgt_2" = { scope = module.module_azurerm_resource_group.resource_group.id, role_definition_name = "Reader", principal_id = module.module_azurerm_virtual_machine["vm_br1_fgt_2"].virtual_machine.identity[0].principal_id }
-    "vm_br2_fgt_1" = { scope = module.module_azurerm_resource_group.resource_group.id, role_definition_name = "Reader", principal_id = module.module_azurerm_virtual_machine["vm_br2_fgt_1"].virtual_machine.identity[0].principal_id }
-    "vm_br2_fgt_2" = { scope = module.module_azurerm_resource_group.resource_group.id, role_definition_name = "Reader", principal_id = module.module_azurerm_virtual_machine["vm_br2_fgt_2"].virtual_machine.identity[0].principal_id }
-    "vm_br3_fgt_1" = { scope = module.module_azurerm_resource_group.resource_group.id, role_definition_name = "Reader", principal_id = module.module_azurerm_virtual_machine["vm_br3_fgt_1"].virtual_machine.identity[0].principal_id }
+    "vm_br1_fgt_1" = {
+      scope                = module.module_azurerm_resource_group.resource_group.id
+      role_definition_name = "Reader"
+      principal_id         = module.module_azurerm_virtual_machine["vm_br1_fgt_1"].virtual_machine.identity[0].principal_id
+    }
+    "vm_br1_fgt_2" = {
+      scope                = module.module_azurerm_resource_group.resource_group.id
+      role_definition_name = "Reader"
+      principal_id         = module.module_azurerm_virtual_machine["vm_br1_fgt_2"].virtual_machine.identity[0].principal_id
+    }
+    "vm_br2_fgt_1" = {
+      scope                = module.module_azurerm_resource_group.resource_group.id
+      role_definition_name = "Reader"
+      principal_id         = module.module_azurerm_virtual_machine["vm_br2_fgt_1"].virtual_machine.identity[0].principal_id
+    }
+    "vm_br2_fgt_2" = {
+      scope                = module.module_azurerm_resource_group.resource_group.id
+      role_definition_name = "Reader"
+      principal_id         = module.module_azurerm_virtual_machine["vm_br2_fgt_2"].virtual_machine.identity[0].principal_id
+    }
+    "vm_br3_fgt_1" = {
+      scope                = module.module_azurerm_resource_group.resource_group.id
+      role_definition_name = "Reader"
+      principal_id         = module.module_azurerm_virtual_machine["vm_br3_fgt_1"].virtual_machine.identity[0].principal_id
+    }
   }
 }

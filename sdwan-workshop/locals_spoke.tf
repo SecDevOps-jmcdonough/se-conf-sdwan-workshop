@@ -1,25 +1,62 @@
 locals {
   spoke_virtual_networks = {
-    "vnet_spoke11" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "eastus", name = "vnet_spoke11", address_space = ["10.11.0.0/16"] }
-    "vnet_spoke12" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, location = "eastus", name = "vnet_spoke12", address_space = ["10.12.0.0/16"] }
+    "vnet_spoke11" = {
+      resource_group_name = local.resource_group_name
+      location            = "eastus"
+      name                = "vnet_spoke11"
+      address_space       = ["10.11.0.0/16"]
+    }
+    "vnet_spoke12" = {
+      resource_group_name = local.resource_group_name
+      location            = "eastus"
+      name                = "vnet_spoke12"
+      address_space       = ["10.12.0.0/16"]
+    }
   }
+
   spoke_subnets = {
-    # Spoke 11
-    "spoke11_subnet1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "spoke11_subnet1", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.address_space[0], 8, 0)], vnet_name = "vnet_spoke11" }
-    # Spoke 12
-    "spoke12_subnet1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "spoke12_subnet1", address_prefixes = [cidrsubnet(module.module_azurerm_virtual_network["vnet_spoke12"].virtual_network.address_space[0], 8, 0)], vnet_name = "vnet_spoke12" }
+    "spoke11_subnet1" = {
+      resource_group_name = local.resource_group_name
+      name                = "spoke11_subnet1"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.address_space[0], 8, 0)]
+      vnet_name           = "vnet_spoke11"
+    }
+    "spoke12_subnet1" = {
+      resource_group_name = local.resource_group_name
+      name                = "spoke12_subnet1"
+      address_prefixes    = [cidrsubnet(module.module_azurerm_virtual_network["vnet_spoke12"].virtual_network.address_space[0], 8, 0)]
+      vnet_name           = "vnet_spoke12"
+    }
   }
 
   spoke_virtual_network_peerings = {
     # Spokes
-    "spoke11_to_hub1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "spoke11_to_hub1", virtual_network_name = "vnet_spoke11", remote_virtual_network_id = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.id, allow_virtual_network_access = true, allow_forwarded_traffic = true, use_remote_gateways = true, allow_gateway_transit = null }
-    "spoke12_to_hub1" = { resource_group_name = module.module_azurerm_resource_group.resource_group.name, name = "spoke12_to_hub1", virtual_network_name = "vnet_spoke12", remote_virtual_network_id = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.id, allow_virtual_network_access = true, allow_forwarded_traffic = true, use_remote_gateways = true, allow_gateway_transit = null }
+    "spoke11_to_hub1" = {
+      resource_group_name          = local.resource_group_name
+      name                         = "spoke11_to_hub1"
+      virtual_network_name         = "vnet_spoke11"
+      remote_virtual_network_id    = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.id
+      allow_virtual_network_access = true
+      allow_forwarded_traffic      = true
+      use_remote_gateways          = true
+      allow_gateway_transit        = null
+    }
+    "spoke12_to_hub1" = {
+      resource_group_name          = local.resource_group_name
+      name                         = "spoke12_to_hub1"
+      virtual_network_name         = "vnet_spoke12"
+      remote_virtual_network_id    = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.id
+      allow_virtual_network_access = true
+      allow_forwarded_traffic      = true
+      use_remote_gateways          = true
+      allow_gateway_transit        = null
+    }
   }
 
   spoke_network_interfaces = {
     # Spoke Linux VMs
     "nic_spoke11_lnx_1_1" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_spoke11_lnx_1_1"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["spoke11_subnet1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = false
@@ -36,7 +73,7 @@ locals {
       ]
     }
     "nic_spoke12_lnx_1_1" = {
-      resource_group_name           = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name           = local.resource_group_name
       name                          = "nic_spoke12_lnx_1_1"
       location                      = module.module_azurerm_virtual_network[module.module_azurerm_subnet["spoke12_subnet1"].subnet.virtual_network_name].virtual_network.location
       enable_ip_forwarding          = false
@@ -56,14 +93,14 @@ locals {
 
   spoke_storage_accounts = {
     "stspk11" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name      = local.resource_group_name
       location                 = module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.location
       name                     = format("%s%s", "stspk11", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
       account_tier             = "Standard"
     }
     "stspk12" = {
-      resource_group_name      = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name      = local.resource_group_name
       location                 = module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.location
       name                     = format("%s%s", "stspk12", "${random_id.random_id.hex}")
       account_replication_type = "LRS"
@@ -73,7 +110,7 @@ locals {
 
   spoke_linux_virtual_machines = {
     "vm_spoke11_lnx_1" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.location
 
       name = "${local.tag_project}-vm-spoke11-lnx-1"
@@ -112,7 +149,7 @@ locals {
       }
     }
     "vm_spoke12_lnx_1" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_spoke12"].virtual_network.location
 
       name = "${local.tag_project}-vm-spoke12-lnx-1"

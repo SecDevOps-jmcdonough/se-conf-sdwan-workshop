@@ -19,5 +19,5 @@ module "module_azurerm_public_ip" {
 }
 
 output "public_ips" {
-  value =  var.enable_module_output ? module.module_azurerm_public_ip[*] : null
+  value = var.enable_module_output ? module.module_azurerm_public_ip[*] : null
 }

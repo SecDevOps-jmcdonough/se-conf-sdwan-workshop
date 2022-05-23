@@ -16,6 +16,6 @@ variable "tag" {
 
 variable "enable_module_output" {
   description = "Enable output from modules"
-  type = bool
-  default = false
+  type        = bool
+  default     = true
 }

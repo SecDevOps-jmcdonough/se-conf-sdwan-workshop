@@ -13,5 +13,5 @@ module "module_azurerm_network_interface_backend_address_pool_association" {
 }
 
 output "network_interface_backend_address_pool_association" {
-  value =  var.enable_module_output ? module.module_azurerm_network_interface_backend_address_pool_association[*] : null
+  value = var.enable_module_output ? module.module_azurerm_network_interface_backend_address_pool_association[*] : null
 }

@@ -13,5 +13,5 @@ module "module_azurerm_network_interface_nat_rule_association" {
 }
 
 output "network_interface_nat_rule_associations" {
-  value =  var.enable_module_output ? module.module_azurerm_network_interface_nat_rule_association[*] : null
+  value = var.enable_module_output ? module.module_azurerm_network_interface_nat_rule_association[*] : null
 }

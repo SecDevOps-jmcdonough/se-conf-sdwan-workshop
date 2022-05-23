@@ -24,5 +24,5 @@ module "module_azurerm_virtual_network_peering" {
 }
 
 output "virtual_network_peerings" {
-  value =  var.enable_module_output ? module.module_azurerm_virtual_network_peering[*] : null
+  value = var.enable_module_output ? module.module_azurerm_virtual_network_peering[*] : null
 }

@@ -12,5 +12,5 @@ module "module_azurerm_lb_backend_address_pool" {
 }
 
 output "lb_backend_address_pools" {
-  value =  var.enable_module_output ? module.module_azurerm_lb_backend_address_pool[*] : null
+  value = var.enable_module_output ? module.module_azurerm_lb_backend_address_pool[*] : null
 }

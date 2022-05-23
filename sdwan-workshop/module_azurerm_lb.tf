@@ -20,5 +20,5 @@ module "module_azurerm_lb" {
 }
 
 output "lbs" {
-  value =  var.enable_module_output ? module.module_azurerm_lb[*] : null
+  value = var.enable_module_output ? module.module_azurerm_lb[*] : null
 }

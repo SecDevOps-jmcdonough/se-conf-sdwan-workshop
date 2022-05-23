@@ -63,6 +63,6 @@ resource "random_string" "random_string" {
 }
 
 output "virtual_machines" {
-  value     =  var.enable_module_output ? module.module_azurerm_virtual_machine[*] : null
+  value     = var.enable_module_output ? module.module_azurerm_virtual_machine[*] : null
   sensitive = true
 }
