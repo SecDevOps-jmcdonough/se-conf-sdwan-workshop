@@ -1,8 +1,19 @@
+locals {
+  project = "${var.username}-workshop"
+  create_rg = false
+}
+
 //############################ Create Resource Group ##################
 
 resource "azurerm_resource_group" "hubrg" {
-  name     = "${var.project}-${var.TAG}"
+  count = local.create_rg ? 1 : 0
+
+  name     = "${local.project}-${var.TAG}"
   location = var.hubrglocation
+}
+
+data "azurerm_resource_group" "hubrg" {
+  name = "${local.project}-${var.TAG}"
 }
 
 
@@ -10,13 +21,13 @@ resource "azurerm_resource_group" "hubrg" {
 
 resource "azurerm_virtual_network" "Hubs" {
   for_each            = var.az_hubs
-  name                = "${var.project}-${var.TAG}-${each.value.name}"
+  name                = "${local.project}-${var.TAG}-${each.value.name}"
   location            = each.value.location
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name = data.azurerm_resource_group.hubrg.name
   address_space       = [each.value.cidr]
 
   tags = {
-    Project = "${var.project}"
+    Project = "${local.project}"
     Role    = "${var.TAG}"
   }
 }
@@ -26,8 +37,8 @@ resource "azurerm_virtual_network" "Hubs" {
 resource "azurerm_subnet" "hubsubnets" {
   for_each = var.az_hubsubnetscidrs
 
-  name                 = each.value.name == "RouteServerSubnet" ? "${each.value.name}" : "${var.TAG}-${var.project}-subnet-${each.value.name}"
-  resource_group_name  = azurerm_resource_group.hubrg.name
+  name                 = each.value.name == "RouteServerSubnet" ? "${each.value.name}" : "${var.TAG}-${local.project}-subnet-${each.value.name}"
+  resource_group_name  = data.azurerm_resource_group.hubrg.name
   address_prefixes     = [each.value.cidr]
   virtual_network_name = azurerm_virtual_network.Hubs[each.value.vnet].name
 
@@ -37,14 +48,14 @@ resource "azurerm_subnet" "hubsubnets" {
 resource "azurerm_route_table" "hubvnet_route_tables" {
   for_each = var.vnetroutetables
 
-  name                = "${var.TAG}-${var.project}-${each.value.name}"
+  name                = "${var.TAG}-${local.project}-${each.value.name}"
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name = data.azurerm_resource_group.hubrg.name
 
   disable_bgp_route_propagation = each.value.disablepropagation
   //disable_bgp_route_propagation = false
   tags = {
-    Project = "${var.project}"
+    Project = "${local.project}"
   }
 }
 
@@ -62,16 +73,16 @@ resource "azurerm_subnet_route_table_association" "vnet_rt_assoc" {
 resource "azurerm_network_security_group" "fgt_nsgs" {
   for_each = var.nsgs
 
-  name                = "${var.TAG}-${var.project}-${each.value.vnet}-${each.value.name}"
+  name                = "${var.TAG}-${local.project}-${each.value.vnet}-${each.value.name}"
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name = data.azurerm_resource_group.hubrg.name
 }
 
 resource "azurerm_network_security_rule" "fgt_nsg_rules" {
   for_each = var.nsgrules
 
   name                        = each.value.rulename
-  resource_group_name         = azurerm_resource_group.hubrg.name
+  resource_group_name         = data.azurerm_resource_group.hubrg.name
   network_security_group_name = azurerm_network_security_group.fgt_nsgs[each.value.nsgname].name
   priority                    = each.value.priority
   direction                   = each.value.direction
@@ -91,7 +102,7 @@ resource "azurerm_network_interface" "hub1fgt1nics" {
   for_each                      = var.hub1fgt1
   name                          = "${each.value.vnet}-${each.value.vmname}-${each.value.name}"
   location                      = azurerm_virtual_network.Hubs[each.value.vnet].location
-  resource_group_name           = azurerm_resource_group.hubrg.name
+  resource_group_name           = data.azurerm_resource_group.hubrg.name
   enable_ip_forwarding          = true
   enable_accelerated_networking = true
 
@@ -111,7 +122,7 @@ resource "azurerm_network_interface" "hub1fgt2nics" {
   for_each                      = var.hub1fgt2
   name                          = "${each.value.vnet}-${each.value.vmname}-${each.value.name}"
   location                      = azurerm_virtual_network.Hubs[each.value.vnet].location
-  resource_group_name           = azurerm_resource_group.hubrg.name
+  resource_group_name           = data.azurerm_resource_group.hubrg.name
   enable_ip_forwarding          = true
   enable_accelerated_networking = false
 
@@ -193,9 +204,9 @@ data "template_file" "hub1fgt1_customdata" {
 }
 
 resource "azurerm_virtual_machine" "hub1fgt1" {
-  name                         = "${var.TAG}-${var.project}-hub1-fgt1"
+  name                         = "${var.TAG}-${local.project}-hub1-fgt1"
   location                     = azurerm_virtual_network.Hubs["hub1"].location
-  resource_group_name          = azurerm_resource_group.hubrg.name
+  resource_group_name          = data.azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.hub1fgt1nics : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.hub1fgt1nics)[*].id, 0)
   vm_size                      = var.az_fgt_vmsize
@@ -218,21 +229,21 @@ resource "azurerm_virtual_machine" "hub1fgt1" {
   }
 
   storage_os_disk {
-    name              = "${var.TAG}-${var.project}-hub1-fgt1_OSDisk"
+    name              = "${var.TAG}-${local.project}-hub1-fgt1_OSDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "${var.TAG}-${var.project}-hub1-fgt1_DataDisk"
+    name              = "${var.TAG}-${local.project}-hub1-fgt1_DataDisk"
     managed_disk_type = "Premium_LRS"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "20"
   }
   os_profile {
-    computer_name  = "${var.TAG}-${var.project}-hub1-fgt1"
+    computer_name  = "${var.TAG}-${local.project}-hub1-fgt1"
     admin_username = var.username
     admin_password = var.password
     custom_data    = data.template_file.hub1fgt1_customdata.rendered
@@ -243,13 +254,13 @@ resource "azurerm_virtual_machine" "hub1fgt1" {
   }
 
   tags = {
-    Project = "${var.project}"
+    Project = "${local.project}"
   }
 
 }
 ///////////////IAM////////////////
 resource "azurerm_role_assignment" "hub1fgt1_reader" {
-  scope                = azurerm_resource_group.hubrg.id
+  scope                = data.azurerm_resource_group.hubrg.id
   role_definition_name = "Reader"
   principal_id         = azurerm_virtual_machine.hub1fgt1.identity[0].principal_id
   depends_on = [
@@ -307,9 +318,9 @@ data "template_file" "hub1fgt2_customdata" {
 }
 
 resource "azurerm_virtual_machine" "hub1fgt2" {
-  name                         = "${var.TAG}-${var.project}-hub1-fgt2"
+  name                         = "${var.TAG}-${local.project}-hub1-fgt2"
   location                     = azurerm_virtual_network.Hubs["hub1"].location
-  resource_group_name          = azurerm_resource_group.hubrg.name
+  resource_group_name          = data.azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.hub1fgt2nics : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.hub1fgt2nics)[*].id, 0)
   vm_size                      = var.az_fgt_vmsize
@@ -332,21 +343,21 @@ resource "azurerm_virtual_machine" "hub1fgt2" {
   }
 
   storage_os_disk {
-    name              = "${var.TAG}-${var.project}-hub1-fgt2_OSDisk"
+    name              = "${var.TAG}-${local.project}-hub1-fgt2_OSDisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   storage_data_disk {
-    name              = "${var.TAG}-${var.project}-hub1-fgt2_DataDisk"
+    name              = "${var.TAG}-${local.project}-hub1-fgt2_DataDisk"
     managed_disk_type = "Premium_LRS"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "20"
   }
   os_profile {
-    computer_name  = "${var.TAG}-${var.project}-hub1-fgt2"
+    computer_name  = "${var.TAG}-${local.project}-hub1-fgt2"
     admin_username = var.username
     admin_password = var.password
     custom_data    = data.template_file.hub1fgt2_customdata.rendered
@@ -357,13 +368,13 @@ resource "azurerm_virtual_machine" "hub1fgt2" {
   }
 
   tags = {
-    Project = "${var.project}"
+    Project = "${local.project}"
   }
 
 }
 ///////////////IAM////////////////
 resource "azurerm_role_assignment" "hub1fgt2_reader" {
-  scope                = azurerm_resource_group.hubrg.id
+  scope                = data.azurerm_resource_group.hubrg.id
   role_definition_name = "Reader"
   principal_id         = azurerm_virtual_machine.hub1fgt2.identity[0].principal_id
   depends_on = [
@@ -377,23 +388,23 @@ resource "azurerm_role_assignment" "hub1fgt2_reader" {
 
 resource "azurerm_public_ip" "hubpip" {
   for_each            = var.hubpublicip
-  name                = "${var.TAG}-${var.project}-${each.value.name}"
+  name                = "${var.TAG}-${local.project}-${each.value.name}"
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name = data.azurerm_resource_group.hubrg.name
   allocation_method   = "Static"
   sku                 = "Standard"
 
   tags = {
-    Project = "${var.project}"
+    Project = "${local.project}"
   }
 
 }
 
 resource "azurerm_lb" "hub1extlb" {
   for_each            = var.hubextlb
-  name                = "${var.TAG}-${var.project}-${each.value.name}"
+  name                = "${var.TAG}-${local.project}-${each.value.name}"
   location            = azurerm_virtual_network.Hubs[each.value.vnet].location
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name = data.azurerm_resource_group.hubrg.name
   sku                 = "Standard"
 
   frontend_ip_configuration {
@@ -402,7 +413,7 @@ resource "azurerm_lb" "hub1extlb" {
 
   }
   tags = {
-    Project = "${var.project}"
+    Project = "${local.project}"
   }
 }
 
@@ -410,7 +421,7 @@ resource "azurerm_lb" "hub1extlb" {
 resource "azurerm_lb_nat_rule" "fgttfaccess" {
   for_each = var.hubextlbnat
 
-  resource_group_name            = azurerm_resource_group.hubrg.name
+  resource_group_name            = data.azurerm_resource_group.hubrg.name
   loadbalancer_id                = azurerm_lb.hub1extlb[each.value.lb].id
   name                           = each.value.name
   protocol                       = each.value.protocol
@@ -431,7 +442,7 @@ resource "azurerm_network_interface_nat_rule_association" "fgtmastertfaccess" {
 resource "azurerm_lb_probe" "hubelbprobe" {
   for_each = var.hubextlb
 
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name = data.azurerm_resource_group.hubrg.name
   loadbalancer_id     = azurerm_lb.hub1extlb[each.key].id
   name                = "${each.value.name}-probe"
   port                = each.value.probe
@@ -448,14 +459,14 @@ resource "azurerm_lb_backend_address_pool" "hublbbackend" {
 
 
 resource "azurerm_public_ip" "arspip" {
-  name                = "${var.TAG}-${var.project}-arspip"
+  name                = "${var.TAG}-${local.project}-arspip"
   location            = azurerm_virtual_network.Hubs["hub1"].location
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name = data.azurerm_resource_group.hubrg.name
   allocation_method   = "Static"
   sku                 = "Standard"
 
   tags = {
-    Project = "${var.project}"
+    Project = "${local.project}"
   }
 
 }
@@ -467,12 +478,12 @@ resource "azurerm_resource_group_template_deployment" "AzureRouteServer" {
   }
 
   name                = "SDWAN-WOrkshop-ARS"
-  resource_group_name = azurerm_resource_group.hubrg.name
+  resource_group_name = data.azurerm_resource_group.hubrg.name
   deployment_mode     = "Incremental"
   debug_level         = "requestContent, responseContent"
   parameters_content = jsonencode({
     "project" = {
-      value = var.project
+      value = local.project
     },
     "TAG" = {
       value = var.TAG
