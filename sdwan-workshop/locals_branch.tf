@@ -741,6 +741,7 @@ locals {
   branch_lb_nat_rules = {
     # Branch 1
     "br1_fgt1_https" = {
+      resource_group_name = local.resource_group_name
       name                           = "br1_fgt1_https"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -749,6 +750,7 @@ locals {
       frontend_ip_configuration_name = "pip_br1_elb_01"
     }
     "br1_fgt2_https" = {
+      resource_group_name = local.resource_group_name
       name                           = "br1_fgt2_https"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -757,6 +759,7 @@ locals {
       frontend_ip_configuration_name = "pip_br1_elb_01"
     }
     "br1_fgt1_ssh" = {
+      resource_group_name = local.resource_group_name
       name                           = "br1_fgt1_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -765,6 +768,7 @@ locals {
       frontend_ip_configuration_name = "pip_br1_elb_01"
     }
     "br1_fgt2_ssh" = {
+      resource_group_name = local.resource_group_name
       name                           = "br1_fgt2_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -775,22 +779,25 @@ locals {
 
     # Branch 2
     "br2_fgt1_https" = {
+      resource_group_name = local.resource_group_name
       name                          = "br2_fgt1_https"
       loadbalancer_id               = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
       protocol                      = "Tcp"
       frontend_port                 = "1443"
       backend_port                  = "34443",
-      rontend_ip_configuration_name = "pip_br2_elb_01"
+      frontend_ip_configuration_name = "pip_br2_elb_01"
     }
     "br2_fgt2_https" = {
+      resource_group_name = local.resource_group_name
       name                          = "br2_fgt2_https"
       loadbalancer_id               = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
       protocol                      = "Tcp"
       frontend_port                 = "2443"
       backend_port                  = "34443",
-      rontend_ip_configuration_name = "pip_br2_elb_01"
+      frontend_ip_configuration_name = "pip_br2_elb_01"
     }
     "br2_fgt1_ssh" = {
+      resource_group_name = local.resource_group_name
       name                           = "br2_fgt1_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -799,6 +806,7 @@ locals {
       frontend_ip_configuration_name = "pip_br2_elb_01"
     }
     "br2_fgt2_ssh" = {
+      resource_group_name = local.resource_group_name
       name                           = "br2_fgt2_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -2023,27 +2031,27 @@ locals {
 
   branch_role_assignments = {
     "vm_br1_fgt_1" = {
-      scope                = module.module_azurerm_resource_group.resource_group.id
+      scope                = data.azurerm_resource_group.resource_group.id
       role_definition_name = "Reader"
       principal_id         = module.module_azurerm_virtual_machine["vm_br1_fgt_1"].virtual_machine.identity[0].principal_id
     }
     "vm_br1_fgt_2" = {
-      scope                = module.module_azurerm_resource_group.resource_group.id
+      scope                = data.azurerm_resource_group.resource_group.id
       role_definition_name = "Reader"
       principal_id         = module.module_azurerm_virtual_machine["vm_br1_fgt_2"].virtual_machine.identity[0].principal_id
     }
     "vm_br2_fgt_1" = {
-      scope                = module.module_azurerm_resource_group.resource_group.id
+      scope                = data.azurerm_resource_group.resource_group.id
       role_definition_name = "Reader"
       principal_id         = module.module_azurerm_virtual_machine["vm_br2_fgt_1"].virtual_machine.identity[0].principal_id
     }
     "vm_br2_fgt_2" = {
-      scope                = module.module_azurerm_resource_group.resource_group.id
+      scope                = data.azurerm_resource_group.resource_group.id
       role_definition_name = "Reader"
       principal_id         = module.module_azurerm_virtual_machine["vm_br2_fgt_2"].virtual_machine.identity[0].principal_id
     }
     "vm_br3_fgt_1" = {
-      scope                = module.module_azurerm_resource_group.resource_group.id
+      scope                = data.azurerm_resource_group.resource_group.id
       role_definition_name = "Reader"
       principal_id         = module.module_azurerm_virtual_machine["vm_br3_fgt_1"].virtual_machine.identity[0].principal_id
     }

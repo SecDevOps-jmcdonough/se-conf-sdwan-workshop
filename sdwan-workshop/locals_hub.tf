@@ -1,4 +1,11 @@
 locals {
+  project_tag = "${var.username}-workshop-${var.tag}"
+  tag_project = "${var.tag}-${var.username}-workshop"
+  project     = "${var.username}-workshop"
+  tag         = var.tag
+
+  resource_group_name = "${var.username}-workshop-${var.tag}"
+  location            = var.location
 
   hub_virtual_networks = {
     "vnet_hub1" = {
@@ -218,7 +225,7 @@ locals {
     # Azure Route Server
     "pip_${local.tag_project}_ars" = {
       resource_group_name = local.resource_group_name
-      location            = module.module_azurerm_resource_group.resource_group.location
+      location            = local.location
       name                = "pip_${local.tag_project}_ars_pip"
       allocation_method   = "Static"
       sku                 = "Standard"
@@ -263,6 +270,7 @@ locals {
   hub_lb_nat_rules = {
     # Hub 1
     "hub1_fgt1_https" = {
+      resource_group_name = local.resource_group_name
       name                           = "hub1_fgt1_https"
       loadbalancer_id                = module.module_azurerm_lb["lb_hub1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -271,6 +279,7 @@ locals {
       frontend_ip_configuration_name = "pip_hub_elb_01"
     }
     "hub1_fgt2_https" = {
+      resource_group_name = local.resource_group_name
       name                           = "hub1_fgt2_https"
       loadbalancer_id                = module.module_azurerm_lb["lb_hub1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -279,6 +288,7 @@ locals {
       frontend_ip_configuration_name = "pip_hub_elb_01"
     }
     "hub1_fgt1_ssh" = {
+      resource_group_name = local.resource_group_name
       name                           = "hub1_fgt1_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_hub1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -287,6 +297,7 @@ locals {
       frontend_ip_configuration_name = "pip_hub_elb_01"
     }
     "hub1_fgt2_ssh" = {
+      resource_group_name = local.resource_group_name
       name                           = "hub1_fgt2_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_hub1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -634,12 +645,12 @@ locals {
 
   hub_role_assignments = {
     "vm_hub_fgt_1" = {
-      scope                = module.module_azurerm_resource_group.resource_group.id
+      scope                = data.azurerm_resource_group.resource_group.id
       role_definition_name = "Reader"
       principal_id         = module.module_azurerm_virtual_machine["vm_hub_fgt_1"].virtual_machine.identity[0].principal_id
     }
     "vm_hub_fgt_2" = {
-      scope                = module.module_azurerm_resource_group.resource_group.id
+      scope                = data.azurerm_resource_group.resource_group.id
       role_definition_name = "Reader"
       principal_id         = module.module_azurerm_virtual_machine["vm_hub_fgt_2"].virtual_machine.identity[0].principal_id
     }

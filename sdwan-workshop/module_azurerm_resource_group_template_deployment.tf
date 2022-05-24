@@ -1,7 +1,7 @@
 locals {
   resource_group_template_deployments = {
     "sdwan_workshop_ars" = {
-      resource_group_name = module.module_azurerm_resource_group.resource_group.name
+      resource_group_name = local.resource_group_name
       name                = "sdwan_workshop_ars"
       deployment_mode     = "Incremental"
       debug_level         = "requestContent, responseContent"

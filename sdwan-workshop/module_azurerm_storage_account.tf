@@ -7,7 +7,7 @@ module "module_azurerm_storage_account" {
 
   source = "../azure/rm/azurerm_storage_account"
 
-  resource_group_name = each.value.resource_group_name
+  resource_group_name = local.resource_group_name
   location            = each.value.location
 
   name                     = each.value.name
@@ -17,7 +17,7 @@ module "module_azurerm_storage_account" {
 
 resource "random_id" "random_id" {
   keepers = {
-    resource_group_name = module.module_azurerm_resource_group.resource_group.name
+    resource_group_name = local.resource_group_name
   }
 
   byte_length = 8

@@ -1,0 +1,11 @@
+module "module_azurerm_resource_group" {
+
+  source = "../azure/rm/azurerm_resource_group"
+
+  name     = local.resource_group_name
+  location = local.location
+}
+
+output "resource_group" {
+  value = var.enable_module_output ? module.module_azurerm_resource_group : null
+}

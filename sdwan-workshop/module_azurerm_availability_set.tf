@@ -7,7 +7,7 @@ module "module_azurerm_availability_set" {
 
   source = "../azure/rm/azurerm_availability_set"
 
-  resource_group_name = each.value.resource_group_name
+  resource_group_name = local.resource_group_name
   location            = each.value.location
 
   name = each.value.name

@@ -7,7 +7,7 @@ module "module_azurerm_lb_nat_rule" {
 
   source = "../azure/rm/azurerm_lb_nat_rule"
 
-  resource_group_name = module.module_azurerm_resource_group.resource_group.name
+  resource_group_name = each.value.resource_group_name
 
   name                           = each.value.name
   loadbalancer_id                = each.value.loadbalancer_id
