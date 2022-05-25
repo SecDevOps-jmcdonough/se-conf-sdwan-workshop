@@ -298,9 +298,11 @@ az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan -
 #### Task 1 - Create a route in the UDR
 
 * Click on the Branch1 private route table **studentXX-sdwan-workshop-branch1_rt**
-* Add a default route for `0.0.0.0/0` that points to the **Internal Load balancer listener**
+* Add a default route for `0.0.0.0/0` that points to the Branch1 **Internal Load balancer listener IP**
 * Repeat the previous step for the **Branch2** and **Branch3** Route Tables
   * Be sure to use the correct IP as the next hop, that is the correct Internal Load balancer listener IP or FortiGate internal interface. Hint: is the next hop a load balancer or a stand-alone FortiGate
+
+    ![add udr](images/add-defaultroutebranch1.jpg)
 
     ![udr](images/defaultroutebranch1.jpg)
 
@@ -357,6 +359,8 @@ az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan -
 
 * Check if an ADVPN shortcut has been created
 
+![advpn check](images/advpn-check.jpg)
+
 ### Chapter 5 - QUIZ
 
 * Why has the Azure Route Server (ARS) injected Branch site CIDRs to the Spoke VNET protected subnet but not the FortiGate private subnet?
@@ -376,7 +380,7 @@ az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan -
 ### Task 1 - Generate ICMP traffic
 
 * Connect to the Branch1 Linux Host via the serial console - **studentXX-sdwan-workshop-br1lnx1**
-* Ping a resource in a remote branch site - **sdwan-student05-workshop-spoke11-subnet1-lnx**
+* Ping a resource in a remote branch site - **sdwan-studentXX-workshop-spoke11-subnet1-lnx**
   * `ping 10.11.1.4`
   * Let the ping run
 
@@ -391,8 +395,6 @@ az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan -
 * Monitor the number of **lost Pings** and the **failover time**
 * How long did it take?
 * Have the VPNs to the Hub been renegotiated upon failover or maintained?
-
-    ![failover](images/defaultroutebranch1.jpg)
 
 ### Task 3 - Generate TCP traffic
 
@@ -443,15 +445,23 @@ az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan -
 * Create your vWAN and the vWAN Hub using the CLI command below
 * The variable `${USER}` in the commands reads your username from the environment
 
-   ```bash
+    ```bash
     az network vwan create --name sdwan-${USER}-workshop-vwan --resource-group  ${USER}-workshop-sdwan --location eastus --type Standard
+    ```
+
+    ```PowerShell
+    az network vwan create --name sdwan-$env:USER-workshop-vwan --resource-group  $env:USER-workshop-sdwan --location eastus --type Standard
     ```
 
     > If you are prompted to install the extension `virtual-wan` answer `Y`
 
     ```bash
     az network vhub create --address-prefix 10.14.0.0/16 --name ${USER}-eastushub --resource-group ${USER}-workshop-sdwan --vwan sdwan-${USER}-workshop-vwan --location eastus --sku Standard
-   ```
+    ```
+
+    ```PowerShell
+    az network vhub create --address-prefix 10.14.0.0/16 --name $env:USER-eastushub --resource-group $env:USER-workshop-sdwan --vwan sdwan-$env:USER-workshop-vwan --location eastus --sku Standard
+    ```
 
     ![vwan1](images/vwan1.jpg)
 
@@ -469,7 +479,7 @@ az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan -
 
 ### Task 2 - Routing and VNET connection Configuration
 
-* Go to your resource Group and then click on the Hub VNET - **student61-workshop-sdwan-hub1**
+* Go to your resource Group and then click on the Hub VNET - **studentXX-workshop-sdwan-hub1**
 * Delete the Hub to Spoke VNET peerings (Please delete both Spoke11 and Spoke12 peerings)
 
     ![peeringdelete.jpg](images/peeringdelete.jpg)
@@ -500,13 +510,15 @@ az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan -
 
     * Repeat the same for Spoke12
 
-    * Repeat the same for FGT VNET connection, attach it to the FGT-VNET Route Table.
+    * Repeat the same for FGT VNET connection, attach it to the FGT-VNET Route Table but do not propagate to other Route Tables.
+
+      ![vwanconnection3](images/vnetconnection3.jpg)
+
       * Is the connection for FGT VNET created?
       * Why not?
 
     * Locate your own Azure Route Server and delete it
 
-      ![findars](images/findars.jpg)
       ![deletears](images/deletears.jpg)
 
     * Try now to connect the FGT VNET to the vWAN Hub, attach it to the FGT-VNET Route Table.
@@ -559,8 +571,6 @@ az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan -
     * Configure the Hub FGT to advertise Spoke11 and Spoke12 CIDRs to the Branches
       * On the Hub FGT, add Static Routes to Spoke11 and Spoke12. **What would be the next-hop ?**
       * Add Spoke11 and Spoke12 to the list of networks under BGP configuration
-
-      ![bgp1](images/bgp1.jpg)
 
         ```bash
         config network
