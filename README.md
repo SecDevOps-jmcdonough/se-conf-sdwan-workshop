@@ -38,8 +38,8 @@
 
     ![cloudshell6](images/cloudshell-06.jpg)
 * Select
-  * Use existing Resource Group  - select **your resource group** - studentXX
-  * Use existing Storage account - it ***should*** auto populate
+  * Use existing Resource Group  - it ***should*** auto populate with studentXX-workshop-sdwan
+  * Use existing Storage account - it ***should*** auto populate with setrainstudentXX######## (######## is a random string)
   * Use existing File Share  - type **cloudshell**
 
     ![cloudshell7](images/cloudshell-07.jpg)
@@ -54,16 +54,17 @@
 
     ![gitclone](images/git-clone.jpg)
 
-* Change to the azure folder `cd ./se-conf-sdwan-workshop/azure/`
-* Edit the `terraform.tfvars` file - `vi terraform.tfvars`
-  * Modify the `project` and `username` variables based on the assigned username - studentXX
-  
-    ![rgcustom](images/rg-customname.jpg)
-
-* Run `terraform init`
-* Run `terraform plan`
-* Run `terraform apply` and then answer `yes`
-  * This command can also be run as `terraform apply -auto-approve` which removes the need to type yes
+* Change to the se-summit folder `cd ./se-conf-sdwan-workshop/se-summit/`
+* Initialize Terraform
+  * Run `terraform init`
+* Create Terraform Plan
+  * bash run `terraform plan -var="username=${USER}"`
+  * pwsh run `terraform plan -var="username=$env:USER"`
+* Apply Terraform Plan
+  * bash run `terraform apply -var="username=${USER}"` and then answer `yes`
+    * This command can also be run as `terraform apply -var="username=${USER}" -auto-approve` which removes the need to type yes
+  * pwsh run `terraform apply -var="username=$env:USER"` and then answer `yes`
+    * This command can also be run as `terraform apply -var="username=$env:USER" -auto-approve` which removes the need to type yes
 
 * At the end of this step you should have the following architecture
 
@@ -75,7 +76,7 @@
 
     ![output](images/output.jpg)
 
-* Terraform output can be redisplayed at any point as long as you are in the `./se-conf-sdwan-workshop/azure/` directory, by using the command
+* Terraform output can be redisplayed at any point as long as you are in the `./se-conf-sdwan-workshop/se-summit/` directory, by using the command
   * `terraform output`
 
 * Connect to the Branch sites FortiGates and check the VPN status. If they are down try to bring them UP.
@@ -115,7 +116,7 @@
 
 ### Task 3 - Hub and Branch VPN Connectivity Verifications
 
-* Verify that the FortiGate are responding to Azure Load Balancer Health Checks
+* Verify that the FortiGates are responding to Azure Load Balancer Health Checks
   * Click on the Hub External Load balancer
   * Click on Insights - Click the "Refresh" button a few times, eventually (~30 seconds) the FortiGate reachability will be indicated.
 
@@ -169,21 +170,27 @@
 ### Task 2 - Check Azure Route Server Configuration and Learned Routes
 
 * Go to Azure Route Server
-  * The Route Server ***is not*** contained within your Resource Group, search for Route Server in the top of teh screen search field, then select "Route Server" under Services.
+  * **studentXX-workshop-sdwan-RouteServer** contained within your Resource Group.
 
     ![routeserver](images/routeserver.jpg)
 
-* Click on your Azure Route Server **studentXX-workshop-sdwan-RouteServer** (replace studentXX with your username)
 * Click on Peers on the left side of the menu, verify the connection to the Hub FortiGates
 * List the routes learned by Azure Route Server, run the commands below from your Azure Cloud Shell
-* The variable `${USER}` in the commands reads your username from the environment
+* For bash the variable `${USER}` in the commands reads your username from the environment
+* For pwsh the variable `$env:USER` in the commands reads your username from the environment
+
+Bash
 
 ```bash
 az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --routeserver ${USER}-workshop-sdwan-RouteServer --name sdwan-fgt1
+az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --routeserver ${USER}-workshop-sdwan-RouteServer --name sdwan-fgt2
 ```
 
-```bash
-az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --routeserver ${USER}-workshop-sdwan-RouteServer --name sdwan-fgt2
+PowerShell
+
+```PowerShell
+az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan --routeserver $env:USER-workshop-sdwan-RouteServer --name sdwan-fgt1
+az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan --routeserver $env:USER-workshop-sdwan-RouteServer --name sdwan-fgt2
 ```
 
 > The passive FortiGate will produce empty output
@@ -207,12 +214,23 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
     * FGT Branch3 is able to retrieve the filters, why that is not the case for the FortiGates behind Load Balancers?
     * FGT Branch3 is standalone, all other FortiGates are in A-P HA, how does that affect traffic to retrieve SDN filters?
-    * Pools and Rules
+    * Hub External Load Balancer needs a management nic backend pool and a TCP rule any port suffices. This rule is about letting TCP traffic out. The External Load Balancer will let the response traffic back in because the traffic originated internally.
 
-* On the Hub FortiGate, create a dynamic object that resolves to the Spoke VNETs VMs
-* On the Hub FortiGate, use the object created above on policy3 to restrict traffic coming from the Branches
+    ![sdn fail](images/sdn-fail.jpg)
 
-    ![policy3](images/policy3.jpg)
+    ![mgmt be pool](images/mgmt-backend-pool.jpg)
+
+    ![mgmt be pool list](images/mgmt-backend-pool-list.jpg)
+
+    ![tcp rule](images/tcp-rule.jpg)
+
+* On the Hub FortiGate, create a dynamic address object named `Spoke_VNETs` that resolves to the Spoke VNETs VMs
+
+    ![Dynamic Address Object](images/dynamic-address-object.jpg)
+
+* On the Hub FortiGate, use the object created above on the `Branch to Cloud` policy to restrict traffic coming from the Branches
+
+    ![Branch to Cloud Policy](images/policy3.jpg)
 
 ### Task 4 - Traffic generation
 
@@ -260,8 +278,8 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 ### Chapter 4 - QUIZ
 
 * What was missing to allow the FortiGates to retrieve SDN connector filters?
-* Why is the FortiGate only able to retrieve the SDN connector filters of its own Resource Group?
-* Why is the Branch FortiGate able to reach the remote Spoke VNETs VMs (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch FortiGate cannot?
+* Why is the FortiGate only able to retrieve the SDN connector filters in its own Resource Group?
+* Why is the Branch FortiGate able to reach the remote Spoke VNETs VMs (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch1 FortiGate cannot?
 * FortiGates at Branch1 and Branch2 site are both behind Azure Load Balancers (behind NAT). Will Branch1 to Branch2 traffic successfully establish an ADVPN shortcut?
 
 </details>
