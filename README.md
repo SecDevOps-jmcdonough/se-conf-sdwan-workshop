@@ -124,7 +124,7 @@
 
     ![vpn](images/vpnup.jpg)
 
-* Verify that the BGP peering with the hub is UP and that the Branch FortiGate learned the Hub and other Branches' CIDRs
+* Verify that the BGP peering with the hub is UP and that the Branch FortiGate learned the Hub and other Branches' CIDRs `get router info routing-table all`
 
 * At the end of this step you should have the following architecture
 
@@ -195,6 +195,13 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 * Is your Hub FortiGate able to see the Dynamic filters ?
   * **Troubleshoot and Make the required changes to allow the FortiGate to retrieve the SDN filters.**
+
+    * Hub FortiGate debug the Azure SDN Connector
+
+      ```bash
+      diagnose debug application azd -1
+      diagnose debug enable
+      ```
 
   * Hints:
 
@@ -430,17 +437,21 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 ### Task 1 - Deployment
 
-* Create your vWAN and the vWAN Hub using the CLI command below
+* Create your vWAN and the vWAN Hub using the CLI commands below. Use the Hub FortiGate location for the VWAN location.
+  * You can find the location of your Hub FortiGates with this Azure CLI Command
+
+  `az vm show -g ${USER}-workshop-sdwan -n sdwan-${USER}-workshop-hub1-fgt1 -o table`
+
 * The variable `${USER}` in the commands reads your username from the environment
 
     ```bash
-    az network vwan create --name sdwan-${USER}-workshop-vwan --resource-group  ${USER}-workshop-sdwan --location eastus --type Standard
+    az network vwan create --name sdwan-${USER}-workshop-vwan --resource-group  ${USER}-workshop-sdwan --location your-hub-location --type Standard
     ```
 
     > If you are prompted to install the extension `virtual-wan` answer `Y`
 
     ```bash
-    az network vhub create --address-prefix 10.14.0.0/16 --name ${USER}-eastushub --resource-group ${USER}-workshop-sdwan --vwan sdwan-${USER}-workshop-vwan --location eastus --sku Standard
+    az network vhub create --address-prefix 10.14.0.0/16 --name ${USER}-vwanhub --resource-group ${USER}-workshop-sdwan --vwan sdwan-${USER}-workshop-vwan --location your-hub-location --sku Standard
     ```
 
     ![vwan1](images/vwan1.jpg)
