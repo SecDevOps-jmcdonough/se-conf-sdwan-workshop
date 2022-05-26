@@ -58,13 +58,11 @@
 * Initialize Terraform
   * Run `terraform init`
 * Create Terraform Plan
-  * bash run `terraform plan -var="username=${USER}"`
-  * pwsh run `terraform plan -var="username=$env:USER"`
+  * Run `terraform plan -var="username=${USER}"`
+
 * Apply Terraform Plan
   * bash run `terraform apply -var="username=${USER}"` and then answer `yes`
     * This command can also be run as `terraform apply -var="username=${USER}" -auto-approve` which removes the need to type yes
-  * pwsh run `terraform apply -var="username=$env:USER"` and then answer `yes`
-    * This command can also be run as `terraform apply -var="username=$env:USER" -auto-approve` which removes the need to type yes
 
 * At the end of this step you should have the following architecture
 
@@ -176,21 +174,11 @@
 
 * Click on Peers on the left side of the menu, verify the connection to the Hub FortiGates
 * List the routes learned by Azure Route Server, run the commands below from your Azure Cloud Shell
-* For bash the variable `${USER}` in the commands reads your username from the environment
-* For pwsh the variable `$env:USER` in the commands reads your username from the environment
-
-Bash
+* The variable `${USER}` in the commands reads your username from the environment
 
 ```bash
 az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --routeserver ${USER}-workshop-sdwan-RouteServer --name sdwan-fgt1
 az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --routeserver ${USER}-workshop-sdwan-RouteServer --name sdwan-fgt2
-```
-
-PowerShell
-
-```PowerShell
-az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan --routeserver $env:USER-workshop-sdwan-RouteServer --name sdwan-fgt1
-az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan --routeserver $env:USER-workshop-sdwan-RouteServer --name sdwan-fgt2
 ```
 
 > The passive FortiGate will produce empty output
@@ -449,18 +437,10 @@ az network routeserver peering list-learned-routes -g $env:USER-workshop-sdwan -
     az network vwan create --name sdwan-${USER}-workshop-vwan --resource-group  ${USER}-workshop-sdwan --location eastus --type Standard
     ```
 
-    ```PowerShell
-    az network vwan create --name sdwan-$env:USER-workshop-vwan --resource-group  $env:USER-workshop-sdwan --location eastus --type Standard
-    ```
-
     > If you are prompted to install the extension `virtual-wan` answer `Y`
 
     ```bash
     az network vhub create --address-prefix 10.14.0.0/16 --name ${USER}-eastushub --resource-group ${USER}-workshop-sdwan --vwan sdwan-${USER}-workshop-vwan --location eastus --sku Standard
-    ```
-
-    ```PowerShell
-    az network vhub create --address-prefix 10.14.0.0/16 --name $env:USER-eastushub --resource-group $env:USER-workshop-sdwan --vwan sdwan-$env:USER-workshop-vwan --location eastus --sku Standard
     ```
 
     ![vwan1](images/vwan1.jpg)

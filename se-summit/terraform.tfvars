@@ -48,7 +48,7 @@ az_ilbip = ["10.10.2.10"] // Hub1 Internal LB Listner
 
 az_lbprob = "3422"
 
-az_fgt_vmsize    = "Standard_D8_v3"
+az_fgt_vmsize    = "Standard_F8s"
 az_FGT_IMAGE_SKU = "fortinet_fg-vm_payg_2022"
 az_FGT_VERSION   = "7.0.4"
 az_FGT_OFFER     = "fortinet_fortigate-vm_v5"
