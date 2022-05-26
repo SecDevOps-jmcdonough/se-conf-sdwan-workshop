@@ -471,7 +471,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 ### Task 2 - Routing and VNET connection Configuration
 
 * Go to your resource Group and then click on the Hub VNET - **studentXX-workshop-sdwan-hub1**
-* Delete the Hub to Spoke VNET peerings (Please delete both Spoke11 and Spoke12 peerings)
+* Delete the Hub to Spoke VNET peerings, delete both Spoke11 and Spoke12 peerings
 
     ![peeringdelete.jpg](images/peeringdelete.jpg)
 
@@ -564,16 +564,18 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
       * Add Spoke11 and Spoke12 to the list of networks under BGP configuration
 
         ```bash
-        config network
-            edit 1
-                set prefix 10.10.255.1 255.255.255.255
-            next
-            edit 2
-                set prefix 10.11.0.0 255.255.0.0
-            next
-            edit 3
-                set prefix 10.12.0.0 255.255.0.0
-            next
+        config router bgp
+          config network
+              edit 1
+                  set prefix 10.10.255.1 255.255.255.255
+              next
+              edit 2
+                  set prefix 10.11.0.0 255.255.0.0
+              next
+              edit 3
+                  set prefix 10.12.0.0 255.255.0.0
+              next
+          end
         end
         ```
 
@@ -586,7 +588,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
       * Traffic is egressing the Hub FGT on port2, but you don't see any reply?... What is missing?  
         * Check FGT Hub port2 **effective routes**?
-        * Do you see spoke11 and spoke12 CIDRs? Why the vWAN is not propagating them to the Route Table attached to the FGT private subnet ?  
+        * Do you see spoke11 and spoke12 CIDRs? Why the vWAN is not propagating them to the Route Table attached to the FGT private subnet, **sdwan-studentXX-workshop-hub1_fgt-priv_rt**?  
         * Check the Route Table **configuration** settings
 
         ![bgp2](images/bgp2.jpg)
