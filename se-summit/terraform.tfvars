@@ -5,11 +5,11 @@ TAG      = "sdwan"
 #username = "student01"
 password = "fortinet123!"
 
-hubrglocation = "eastus"
+hubrglocation = "centralus"
 
 //////////////////////////////////////////////////////////Hub Sites////////////////////////////////////////////////////////////////
 az_hubs = {
-  "hub1" = { name = "hub1", cidr = "10.10.0.0/16", location = "eastus" },
+  "hub1" = { name = "hub1", cidr = "10.10.0.0/16", location = "centralus" },
 }
 
 az_hubsubnetscidrs = {
@@ -48,7 +48,7 @@ az_ilbip = ["10.10.2.10"] // Hub1 Internal LB Listner
 
 az_lbprob = "3422"
 
-az_fgt_vmsize    = "Standard_F4s"
+az_fgt_vmsize    = "Standard_D8_v3"
 az_FGT_IMAGE_SKU = "fortinet_fg-vm_payg_2022"
 az_FGT_VERSION   = "7.0.4"
 az_FGT_OFFER     = "fortinet_fortigate-vm_v5"
@@ -97,8 +97,8 @@ hublbpools = {
 //####################################Spoke Vnets#############################
 
 az_spokevnet = {
-  "spoke11" = { name = "spoke11", cidr = "10.11.0.0/16", location = "eastus", peerto = "hub1" },
-  "spoke12" = { name = "spoke12", cidr = "10.12.0.0/16", location = "eastus", peerto = "hub1" }
+  "spoke11" = { name = "spoke11", cidr = "10.11.0.0/16", location = "centralus", peerto = "hub1" },
+  "spoke12" = { name = "spoke12", cidr = "10.12.0.0/16", location = "centralus", peerto = "hub1" }
 }
 
 az_spokevnetsubnet = {
@@ -111,8 +111,8 @@ az_lnx_vmsize = "Standard_D2_v3"
 //////////////////////////////////////////////////////////Branch Sites////////////////////////////////////////////////////////////////
 
 az_branches = {
-  "branch1" = { name = "branch1", cidr = "172.16.0.0/16", location = "eastus" },
-  "branch2" = { name = "branch2", cidr = "172.17.0.0/16", location = "eastus" },
+  "branch1" = { name = "branch1", cidr = "172.16.0.0/16", location = "centralus" },
+  "branch2" = { name = "branch2", cidr = "172.17.0.0/16", location = "centralus" },
   "branch3" = { name = "branch3", cidr = "172.18.0.0/16", location = "southcentralus" },
 }
 
