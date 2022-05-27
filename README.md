@@ -84,6 +84,8 @@
 * FortiGates in the Hub do not have public IPs, how are they accessible via the Web UI?
 * Why the VPN connections are still down?
 
+[Quiz Answers](/QUIZ-Answers.md#chapter-1)
+
 </details>
 
 ***
@@ -135,6 +137,8 @@
 * Why is one FortiGate depicted as unhealthy by the Azure Hub External Load Balancer?
 * Why is NAT used to access the FortiGates, but for IPSEC VPN traffic Load balancing rules are used?
 * Do FortiGates in the Branches learn Spoke11 and Spoke12 CIDRs?
+
+[Quiz Answers](/QUIZ-Answers.md#chapter-2)
 
 </details>
 
@@ -277,6 +281,8 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 * Why is the Branch FortiGate able to reach the remote Spoke VNETs VMs (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch1 FortiGate cannot?
 * FortiGates at Branch1 and Branch2 site are both behind Azure Load Balancers (behind NAT). Will Branch1 to Branch2 traffic successfully establish an ADVPN shortcut?
 
+[Quiz Answers](/QUIZ-Answers.md#chapter-4)
+
 </details>
 
 ***
@@ -361,6 +367,8 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 * Why has the Azure Route Server (ARS) injected Branch site CIDRs to the Spoke VNET protected subnet but not the FortiGate private subnet?
 * The Branch external load balancer has two front end public IP. How do we ensure that traffic egressing Branch1 on port1 (isp1) always has the same public IP applied? Same for traffic egressing Branch1 on port3 (isp2)
 
+[Quiz Answers](/QUIZ-Answers.md#chapter-5)
+
 </details>
 
 ***
@@ -416,6 +424,8 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 * How long was your failover time?
 * Why did we lose the SSH (TCP) session with a "short" failover time?
+
+[Quiz Answers](/QUIZ-Answers.md#chapter-6)
 
 </details>
 
@@ -602,5 +612,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 * The above setting is normally set to "yes", why did we set it to "no" ? Hint: We had Azure Route Server before
 
 * In the Spoke-VNETS vWAN Route Table, the next-hop is the Primary FortiGate IP. What should we add/do to handle failover?
+
+[Quiz Answers](/QUIZ-Answers.md#chapter-8)
 
 </details>

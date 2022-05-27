@@ -10,7 +10,6 @@
 * Why the VPN connections are still down?
   * The external load balancer for the Hub FortiGates needs load balancing rules for UDP 500 and UDP 4500.
 
-[Quiz Answers](/QUIZ-Answers.md#chapter-1)
 </details>
 
 ## Chapter 2
