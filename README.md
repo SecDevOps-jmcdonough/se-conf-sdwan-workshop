@@ -359,7 +359,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 ### Chapter 5 - QUIZ
 
 * Why has the Azure Route Server (ARS) injected Branch site CIDRs to the Spoke VNET protected subnet but not the FortiGate private subnet?
-* The Branch external Load balancer has two front end public ip. How do we ensure that traffic egressing Branch1 on port1 (isp1)  has always the same public ip applied? Same for traffic egressing Branch1 on port3 (isp2)
+* The Branch external load balancer has two front end public IP. How do we ensure that traffic egressing Branch1 on port1 (isp1) always has the same public IP applied? Same for traffic egressing Branch1 on port3 (isp2)
 
 </details>
 
@@ -601,6 +601,6 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 * The above setting is normally set to "yes", why did we set it to "no" ? Hint: We had Azure Route Server before
 
-* In the Spokes-VNET vWAN Route Table, the next-hop is the Primary FortiGate IP. What should we add/do to handle failover ?
+* In the Spoke-VNETS vWAN Route Table, the next-hop is the Primary FortiGate IP. What should we add/do to handle failover?
 
 </details>
