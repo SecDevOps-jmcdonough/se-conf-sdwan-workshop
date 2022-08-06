@@ -1,8 +1,3 @@
-locals {
-
-  lb_probes = merge(local.hub_lb_probes, local.branch_lb_probes)
-}
-
 module "module_azurerm_lb_probe" {
   for_each = local.lb_probes
 

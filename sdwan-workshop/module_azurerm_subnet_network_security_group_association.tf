@@ -1,7 +1,3 @@
-locals {
-  subnet_network_security_group_associations = merge(local.hub_subnet_network_security_group_associations, local.branch_subnet_network_security_group_associations)
-}
-
 module "module_azurerm_subnet_network_security_group_association" {
   for_each = local.subnet_network_security_group_associations
 

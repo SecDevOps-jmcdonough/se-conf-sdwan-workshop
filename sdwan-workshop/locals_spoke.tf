@@ -67,7 +67,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["spoke11_subnet1"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["spoke11_subnet1"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["spoke11_subnet1"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -84,7 +84,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["spoke12_subnet1"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["spoke12_subnet1"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["spoke12_subnet1"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -108,24 +108,25 @@ locals {
     }
   }
 
+  spoke_linux_virtual_machine_size = "Standard_D2_v3"
   spoke_linux_virtual_machines = {
     "vm_spoke11_lnx_1" = {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_spoke11"].virtual_network.location
 
-      name = "${local.tag_project}-vm-spoke11-lnx-1"
-      size = "Standard_D2_v3"
+      name = "vm-spoke11-lnx-1"
+      size = local.spoke_linux_virtual_machine_size
 
       availability_set_id   = null
       network_interface_ids = [for nic in ["nic_spoke11_lnx_1_1"] : module.module_azurerm_network_interface[nic].network_interface.id]
 
       admin_username = var.username
       admin_password = var.password
-      computer_name  = "${local.tag_project}-vm-spoke11-lnx-1"
+      computer_name  = "vm-spoke11-lnx-1"
 
       disable_password_authentication = false
 
-      os_disk_name                 = "${local.tag_project}-disk-spoke11-lnx-1-OS"
+      os_disk_name                 = "disk-spoke11-lnx-1-OS"
       os_disk_caching              = "ReadWrite"
       os_disk_storage_account_type = "Standard_LRS"
 
@@ -144,27 +145,26 @@ locals {
 
       zone = null
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
     }
+
     "vm_spoke12_lnx_1" = {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_spoke12"].virtual_network.location
 
-      name = "${local.tag_project}-vm-spoke12-lnx-1"
-      size = "Standard_D2_v3"
+      name = "vm-spoke12-lnx-1"
+      size = local.spoke_linux_virtual_machine_size
 
       availability_set_id   = null
       network_interface_ids = [for nic in ["nic_spoke12_lnx_1_1"] : module.module_azurerm_network_interface[nic].network_interface.id]
 
       admin_username = var.username
       admin_password = var.password
-      computer_name  = "${local.tag_project}-vm-spoke12-lnx-1"
+      computer_name  = "vm-spoke12-lnx-1"
 
       disable_password_authentication = false
 
-      os_disk_name                 = "${local.tag_project}-disk-spoke12-lnx-1-OS"
+      os_disk_name                 = "disk-spoke12-lnx-1-OS"
       os_disk_caching              = "ReadWrite"
       os_disk_storage_account_type = "Standard_LRS"
 
@@ -183,9 +183,7 @@ locals {
 
       zone = null
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
     }
   }
 }

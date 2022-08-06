@@ -1,8 +1,3 @@
-locals {
-
-  lbs = merge(local.hub_lbs, local.branch_lbs)
-}
-
 module "module_azurerm_lb" {
   for_each = local.lbs
 
@@ -14,9 +9,7 @@ module "module_azurerm_lb" {
   sku                        = each.value.sku
   frontend_ip_configurations = each.value.frontend_ip_configurations
 
-  tags = {
-    Project = local.project
-  }
+  tags = local.tags
 }
 
 output "lbs" {

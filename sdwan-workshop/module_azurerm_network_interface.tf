@@ -1,7 +1,3 @@
-locals {
-  network_interfaces = merge(local.hub_network_interfaces, local.branch_network_interfaces, local.spoke_network_interfaces)
-}
-
 module "module_azurerm_network_interface" {
   for_each = local.network_interfaces
 

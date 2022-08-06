@@ -1,7 +1,3 @@
-locals {
-  network_security_rules = merge(local.hub_network_security_rules, local.branch_network_security_rules)
-}
-
 module "module_azurerm_network_security_rule" {
   for_each = local.network_security_rules
 

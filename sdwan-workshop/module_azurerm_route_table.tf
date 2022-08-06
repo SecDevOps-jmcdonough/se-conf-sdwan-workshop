@@ -1,7 +1,3 @@
-locals {
-  route_tables = merge(local.hub_route_tables, local.branch_route_tables)
-}
-
 module "module_azurerm_route_table" {
   for_each = local.route_tables
 
@@ -13,9 +9,7 @@ module "module_azurerm_route_table" {
   name                          = each.value.name
   disable_bgp_route_propagation = each.value.disable_bgp_route_propagation
 
-  tags = {
-    Project = local.project
-  }
+  tags = local.tags
 }
 
 output "route_tables" {

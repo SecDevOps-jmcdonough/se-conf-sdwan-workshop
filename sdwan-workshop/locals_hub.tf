@@ -1,11 +1,23 @@
 locals {
-  project_tag = "${var.username}-workshop-${var.tag}"
-  tag_project = "${var.tag}-${var.username}-workshop"
-  project     = "${var.username}-workshop"
-  tag         = var.tag
 
-  resource_group_name = "${var.username}-workshop-${var.tag}"
-  location            = var.location
+  hub_public_ips = {
+    # Hub
+    "pip_hub_elb_01" = {
+      resource_group_name = local.resource_group_name
+      location            = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
+      name                = "pip_hub_elb_01"
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    # Azure Route Server
+    "pip_ars" = {
+      resource_group_name = local.resource_group_name
+      location            = local.resource_group_location
+      name                = "pip_ars"
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+  }
 
   hub_virtual_networks = {
     "vnet_hub1" = {
@@ -87,7 +99,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["hub1_fgt_public"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_public"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_public"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -104,7 +116,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["hub1_fgt_private"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_private"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_private"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -121,7 +133,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["hub1_fgt_ha"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_ha"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_ha"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -138,7 +150,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -155,7 +167,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["hub1_fgt_public"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_public"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_public"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -172,7 +184,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["hub1_fgt_private"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_private"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_private"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -189,7 +201,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["hub1_fgt_ha"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_ha"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_ha"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -206,29 +218,10 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
-    }
-  }
-
-  hub_pblic_ips = {
-    # Hub
-    "pip_hub_elb_01" = {
-      resource_group_name = local.resource_group_name
-      location            = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
-      name                = "pip_hub_elb_01"
-      allocation_method   = "Static"
-      sku                 = "Standard"
-    }
-    # Azure Route Server
-    "pip_${local.tag_project}_ars" = {
-      resource_group_name = local.resource_group_name
-      location            = local.location
-      name                = "pip_${local.tag_project}_ars_pip"
-      allocation_method   = "Static"
-      sku                 = "Standard"
     }
   }
 
@@ -244,12 +237,22 @@ locals {
     }
   }
 
+  hub_storage_accounts = {
+    "sthub1" = {
+      resource_group_name      = local.resource_group_name
+      location                 = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
+      name                     = format("%s%s", "sthub1", "${random_id.random_id.hex}")
+      account_replication_type = "LRS"
+      account_tier             = "Standard"
+    }
+  }
+
   hub_lbs = {
     "lb_hub1_ext_01" = {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
       name                = "lb_hub1_ext_01"
-      sku                 = "standard"
+      sku                 = "Standard"
       frontend_ip_configurations = [
         {
           name                 = "pip_hub_elb_01"
@@ -270,7 +273,7 @@ locals {
   hub_lb_nat_rules = {
     # Hub 1
     "hub1_fgt1_https" = {
-      resource_group_name = local.resource_group_name
+      resource_group_name            = local.resource_group_name
       name                           = "hub1_fgt1_https"
       loadbalancer_id                = module.module_azurerm_lb["lb_hub1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -279,7 +282,7 @@ locals {
       frontend_ip_configuration_name = "pip_hub_elb_01"
     }
     "hub1_fgt2_https" = {
-      resource_group_name = local.resource_group_name
+      resource_group_name            = local.resource_group_name
       name                           = "hub1_fgt2_https"
       loadbalancer_id                = module.module_azurerm_lb["lb_hub1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -288,7 +291,7 @@ locals {
       frontend_ip_configuration_name = "pip_hub_elb_01"
     }
     "hub1_fgt1_ssh" = {
-      resource_group_name = local.resource_group_name
+      resource_group_name            = local.resource_group_name
       name                           = "hub1_fgt1_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_hub1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -297,7 +300,7 @@ locals {
       frontend_ip_configuration_name = "pip_hub_elb_01"
     }
     "hub1_fgt2_ssh" = {
-      resource_group_name = local.resource_group_name
+      resource_group_name            = local.resource_group_name
       name                           = "hub1_fgt2_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_hub1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -347,9 +350,6 @@ locals {
     "hub1_priv_all_outbound" = { resource_group_name = local.resource_group_name, name = "hub1_priv_all_outbound", network_security_group_name = module.module_azurerm_network_security_group["nsg_priv"].network_security_group.name, priority = "100", direction = "Outbound", access = "Allow", protocol = "*" }
   }
 
-  hub_network_interface_security_group_associations = {
-  }
-
   hub_subnet_network_security_group_associations = {
     "hub1_fgt_public" = {
       subnet_id                 = module.module_azurerm_subnet["hub1_fgt_public"].subnet.id
@@ -366,16 +366,6 @@ locals {
     "hub1_fgt_mgmt" = {
       subnet_id                 = module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.id
       network_security_group_id = module.module_azurerm_network_security_group["nsg_pub"].network_security_group.id
-    }
-  }
-
-  hub_storage_accounts = {
-    "sthub1" = {
-      resource_group_name      = local.resource_group_name
-      location                 = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
-      name                     = format("%s%s", "sthub1", "${random_id.random_id.hex}")
-      account_replication_type = "LRS"
-      account_tier             = "Standard"
     }
   }
 
@@ -422,19 +412,6 @@ locals {
     "hub1_fgt_mgmt" = {
       subnet_id      = module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.id
       route_table_id = module.module_azurerm_route_table["rt_hub1_fgt_mgmt"].route_table.id
-    }
-  }
-
-  hub_linux_virtual_machines = {
-    # Add Linux virtual machines
-  }
-
-  vm_image = {
-    "fortinet" = {
-      publisher = "fortinet"
-      offer     = "fortinet_fortigate-vm_v5"
-      sku       = "fortinet_fg-vm_payg_2022"
-      version   = "7.0.5"
     }
   }
 
@@ -489,9 +466,7 @@ locals {
         }
       ]
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
 
       # FortiGate Configuration
       config_data = templatefile("./assets/fgt-hub-userdata.tpl", {
@@ -516,12 +491,12 @@ locals {
         Port4IP              = module.module_azurerm_network_interface["nic_hub1_fortigate_1_4"].network_interface.private_ip_address
         Port4Alias           = "mgmt"
 
-        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["hub1_fgt_ha"].subnet.address_prefix)
-        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefix)
+        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["hub1_fgt_ha"].subnet.address_prefixes[0])
+        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefixes[0])
 
-        fgt_external_gw = cidrhost(module.module_azurerm_subnet["hub1_fgt_public"].subnet.address_prefix, 1)
-        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["hub1_fgt_private"].subnet.address_prefix, 1)
-        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefix, 1)
+        fgt_external_gw = cidrhost(module.module_azurerm_subnet["hub1_fgt_public"].subnet.address_prefixes[0], 1)
+        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["hub1_fgt_private"].subnet.address_prefixes[0], 1)
+        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefixes[0], 1)
 
         fgt_ha_peerip   = module.module_azurerm_network_interface["nic_hub1_fortigate_2_3"].network_interface.private_ip_address
         fgt_ha_priority = "100"
@@ -532,8 +507,8 @@ locals {
 
         fgt_config_bgp = true
         fgt_as         = "64622"
-        peer1          = cidrhost(module.module_azurerm_subnet["RouteServerSubnet"].subnet.address_prefix, 4)
-        peer2          = cidrhost(module.module_azurerm_subnet["RouteServerSubnet"].subnet.address_prefix, 5)
+        peer1          = cidrhost(module.module_azurerm_subnet["RouteServerSubnet"].subnet.address_prefixes[0], 4)
+        peer2          = cidrhost(module.module_azurerm_subnet["RouteServerSubnet"].subnet.address_prefixes[0], 5)
         peer_as        = "65515"
 
         fgt_config_sdwan = true
@@ -590,9 +565,7 @@ locals {
         }
       ]
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
 
       # FortiGate Configuration
       config_data = templatefile("./assets/fgt-hub-userdata.tpl", {
@@ -617,12 +590,12 @@ locals {
         Port4IP              = module.module_azurerm_network_interface["nic_hub1_fortigate_2_4"].network_interface.private_ip_address,
         Port4Alias           = "mgmt",
 
-        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["hub1_fgt_ha"].subnet.address_prefix),
-        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefix),
+        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["hub1_fgt_ha"].subnet.address_prefixes[0]),
+        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefixes[0]),
 
-        fgt_external_gw = cidrhost(module.module_azurerm_subnet["hub1_fgt_public"].subnet.address_prefix, 1),
-        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["hub1_fgt_private"].subnet.address_prefix, 1),
-        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefix, 1),
+        fgt_external_gw = cidrhost(module.module_azurerm_subnet["hub1_fgt_public"].subnet.address_prefixes[0], 1),
+        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["hub1_fgt_private"].subnet.address_prefixes[0], 1),
+        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["hub1_fgt_mgmt"].subnet.address_prefixes[0], 1),
 
         fgt_ha_peerip   = module.module_azurerm_network_interface["nic_hub1_fortigate_1_3"].network_interface.private_ip_address,
         fgt_ha_priority = "50",
@@ -633,8 +606,8 @@ locals {
 
         fgt_config_bgp = true,
         fgt_as         = "64622",
-        peer1          = cidrhost(module.module_azurerm_subnet["RouteServerSubnet"].subnet.address_prefix, 4),
-        peer2          = cidrhost(module.module_azurerm_subnet["RouteServerSubnet"].subnet.address_prefix, 5),
+        peer1          = cidrhost(module.module_azurerm_subnet["RouteServerSubnet"].subnet.address_prefixes[0], 4),
+        peer2          = cidrhost(module.module_azurerm_subnet["RouteServerSubnet"].subnet.address_prefixes[0], 5),
         peer_as        = "65515",
 
         fgt_config_sdwan = true
@@ -642,7 +615,7 @@ locals {
       )
     }
   }
-
+  /*
   hub_role_assignments = {
     "vm_hub_fgt_1" = {
       scope                = data.azurerm_resource_group.resource_group.id
@@ -655,4 +628,5 @@ locals {
       principal_id         = module.module_azurerm_virtual_machine["vm_hub_fgt_2"].virtual_machine.identity[0].principal_id
     }
   }
+  */
 }

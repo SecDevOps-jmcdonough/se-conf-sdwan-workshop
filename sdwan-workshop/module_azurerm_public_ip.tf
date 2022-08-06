@@ -1,7 +1,3 @@
-locals {
-  public_ips = merge(local.hub_pblic_ips, local.branch_public_ips)
-}
-
 module "module_azurerm_public_ip" {
   for_each = local.public_ips
 
@@ -9,13 +5,12 @@ module "module_azurerm_public_ip" {
 
   resource_group_name = each.value.resource_group_name
   location            = each.value.location
-  name                = each.value.name
-  allocation_method   = each.value.allocation_method
-  sku                 = each.value.sku
 
-  tags = {
-    Project = local.project
-  }
+  name              = each.value.name
+  allocation_method = each.value.allocation_method
+  sku               = each.value.sku
+
+  tags = local.tags
 }
 
 output "public_ips" {

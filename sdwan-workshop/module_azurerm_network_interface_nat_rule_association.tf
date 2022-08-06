@@ -1,7 +1,3 @@
-locals {
-  network_interface_nat_rule_associations = merge(local.hub_network_interface_nat_rule_associations, local.branch_network_interface_nat_rule_associations)
-}
-
 module "module_azurerm_network_interface_nat_rule_association" {
   for_each = local.network_interface_nat_rule_associations
 

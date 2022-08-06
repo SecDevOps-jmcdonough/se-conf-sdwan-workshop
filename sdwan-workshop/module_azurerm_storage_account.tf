@@ -1,7 +1,3 @@
-locals {
-  storage_accounts = merge(local.hub_storage_accounts, local.branch_storage_accounts, local.spoke_storage_accounts)
-}
-
 module "module_azurerm_storage_account" {
   for_each = local.storage_accounts
 

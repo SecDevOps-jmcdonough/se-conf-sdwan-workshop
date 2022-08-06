@@ -1,4 +1,51 @@
 locals {
+
+  branch_public_ips = {
+    # Branch 1
+    "pip_br1_elb_01" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br1_elb_01"
+      location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    "pip_br1_elb_02" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br1_elb_02"
+      location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    "pip_br2_elb_01" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br2_elb_01"
+      location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    "pip_br2_elb_02" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br2_elb_02"
+      location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    "pip_br3_01" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br3_01"
+      location            = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+    "pip_br3_02" = {
+      resource_group_name = local.resource_group_name
+      name                = "pip_br3_02"
+      location            = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
+      allocation_method   = "Static"
+      sku                 = "Standard"
+    }
+  }
+
   branch_virtual_networks = {
     "vnet_branch1" = {
       resource_group_name = local.resource_group_name
@@ -124,10 +171,6 @@ locals {
     }
   }
 
-  branch_virtual_network_peerings = {
-    # Add Virtual network peerings
-  }
-
   branch_network_interfaces = {
     # Branch 1
     "nic_br1_fortigate_1_1" = {
@@ -142,7 +185,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_pub1"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -159,7 +202,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_priv"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -176,7 +219,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_pub2"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefix, 14)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefixes[0], 14)
           public_ip_address_id          = null
         }
       ]
@@ -193,7 +236,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_ha"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_ha"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_ha"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -210,7 +253,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -227,7 +270,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_pub1"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -244,7 +287,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_priv"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -261,7 +304,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_pub2"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefix, 15)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefixes[0], 15)
           public_ip_address_id          = null
         }
       ]
@@ -278,7 +321,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_ha"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_ha"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_ha"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -295,7 +338,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -313,7 +356,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_pub1"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -330,7 +373,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_priv"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -347,7 +390,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_pub2"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefix, 14)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefixes[0], 14)
           public_ip_address_id          = null
         }
       ]
@@ -364,7 +407,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_ha"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_ha"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_ha"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -381,7 +424,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -398,7 +441,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_pub1"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -415,7 +458,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_priv"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -432,7 +475,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_pub2"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefix, 15)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefixes[0], 15)
           public_ip_address_id          = null
         }
       ]
@@ -449,7 +492,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_ha"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_ha"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_ha"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -466,7 +509,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.address_prefix, 5)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.address_prefixes[0], 5)
           public_ip_address_id          = null
         }
       ]
@@ -484,7 +527,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br3_fgt_pub1"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br3_fgt_pub1"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br3_fgt_pub1"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -501,7 +544,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br3_fgt_priv"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br3_fgt_priv"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br3_fgt_priv"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -518,7 +561,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br3_fgt_pub2"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br3_fgt_pub2"].subnet.address_prefix, 14)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br3_fgt_pub2"].subnet.address_prefixes[0], 14)
           public_ip_address_id          = null
         }
       ]
@@ -536,7 +579,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br1_protected"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_protected"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_protected"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -553,7 +596,7 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br2_protected"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_protected"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_protected"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
@@ -570,56 +613,10 @@ locals {
           name                          = "ipconfig1"
           subnet_id                     = module.module_azurerm_subnet["br3_protected"].subnet.id
           private_ip_address_allocation = "Static"
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br3_protected"].subnet.address_prefix, 4)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br3_protected"].subnet.address_prefixes[0], 4)
           public_ip_address_id          = null
         }
       ]
-    }
-  }
-
-  branch_public_ips = {
-    # Branch 1
-    "pip_br1_elb_01" = {
-      resource_group_name = local.resource_group_name
-      name                = "pip_br1_elb_01"
-      location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
-      allocation_method   = "Static"
-      sku                 = "Standard"
-    }
-    "pip_br1_elb_02" = {
-      resource_group_name = local.resource_group_name
-      name                = "pip_br1_elb_02"
-      location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
-      allocation_method   = "Static"
-      sku                 = "Standard"
-    }
-    "pip_br2_elb_01" = {
-      resource_group_name = local.resource_group_name
-      name                = "pip_br2_elb_01"
-      location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
-      allocation_method   = "Static"
-      sku                 = "Standard"
-    }
-    "pip_br2_elb_02" = {
-      resource_group_name = local.resource_group_name
-      name                = "pip_br2_elb_02"
-      location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
-      allocation_method   = "Static"
-      sku                 = "Standard"
-    }
-    "pip_br3_01" = {
-      resource_group_name = local.resource_group_name
-      name                = "pip_br3_01"
-      location            = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
-      allocation_method   = "Static"
-      sku                 = "Standard"
-    }
-    "pip_br3_02" = {
-      resource_group_name = local.resource_group_name
-      name                = "pip_br3_02"
-      location            = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
-      allocation_method   = "Static"
-      sku                 = "Standard"
     }
   }
 
@@ -644,12 +641,37 @@ locals {
     }
   }
 
+  branch_storage_accounts = {
+    "stbr1" = {
+      resource_group_name      = local.resource_group_name
+      location                 = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
+      name                     = format("%s%s", "stbr1", "${random_id.random_id.hex}")
+      account_replication_type = "LRS"
+      account_tier             = "Standard"
+    }
+    "stbr2" = {
+      resource_group_name      = local.resource_group_name
+      location                 = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
+      name                     = format("%s%s", "stbr2", "${random_id.random_id.hex}")
+      account_replication_type = "LRS"
+      account_tier             = "Standard"
+    }
+    "stbr3" = {
+      resource_group_name      = local.resource_group_name
+      location                 = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
+      name                     = format("%s%s", "stbr3", "${random_id.random_id.hex}")
+      account_replication_type = "LRS"
+      account_tier             = "Standard"
+    }
+  }
+
+
   branch_lbs = {
     "lb_branch1_ext_01" = {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
       name                = "lb_branch1_ext_01"
-      sku                 = "standard"
+      sku                 = "Standard"
       frontend_ip_configurations = [
         {
           name                 = "pip_br1_elb_01"
@@ -665,7 +687,7 @@ locals {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
       name                = "lb_branch2_ext_01"
-      sku                 = "standard"
+      sku                 = "Standard"
       frontend_ip_configurations = [
         {
           name                 = "pip_br2_elb_01"
@@ -681,13 +703,13 @@ locals {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
       name                = "lb_branch1_int_01"
-      sku                 = "standard"
+      sku                 = "Standard"
       frontend_ip_configurations = [
         {
           name                          = "lb_branch1_int_fe_ip_01"
           subnet_id                     = module.module_azurerm_subnet["br1_fgt_priv"].subnet.id
           vnet_name                     = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.name
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefix, 10)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefixes[0], 10)
           private_ip_address_allocation = "Static"
           private_ip_address_version    = "IPv4"
         }
@@ -697,13 +719,13 @@ locals {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
       name                = "lb_branch2_int_01"
-      sku                 = "standard"
+      sku                 = "Standard"
       frontend_ip_configurations = [
         {
           name                          = "lb_branch2_int_fe_ip_01"
           subnet_id                     = module.module_azurerm_subnet["br2_fgt_priv"].subnet.id
           vnet_name                     = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.name
-          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefix, 10)
+          private_ip_address            = cidrhost(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefixes[0], 10)
           private_ip_address_allocation = "Static"
           private_ip_address_version    = "IPv4"
         }
@@ -741,7 +763,7 @@ locals {
   branch_lb_nat_rules = {
     # Branch 1
     "br1_fgt1_https" = {
-      resource_group_name = local.resource_group_name
+      resource_group_name            = local.resource_group_name
       name                           = "br1_fgt1_https"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -750,7 +772,7 @@ locals {
       frontend_ip_configuration_name = "pip_br1_elb_01"
     }
     "br1_fgt2_https" = {
-      resource_group_name = local.resource_group_name
+      resource_group_name            = local.resource_group_name
       name                           = "br1_fgt2_https"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -759,7 +781,7 @@ locals {
       frontend_ip_configuration_name = "pip_br1_elb_01"
     }
     "br1_fgt1_ssh" = {
-      resource_group_name = local.resource_group_name
+      resource_group_name            = local.resource_group_name
       name                           = "br1_fgt1_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -768,7 +790,7 @@ locals {
       frontend_ip_configuration_name = "pip_br1_elb_01"
     }
     "br1_fgt2_ssh" = {
-      resource_group_name = local.resource_group_name
+      resource_group_name            = local.resource_group_name
       name                           = "br1_fgt2_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch1_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -779,25 +801,25 @@ locals {
 
     # Branch 2
     "br2_fgt1_https" = {
-      resource_group_name = local.resource_group_name
-      name                          = "br2_fgt1_https"
-      loadbalancer_id               = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
-      protocol                      = "Tcp"
-      frontend_port                 = "1443"
-      backend_port                  = "34443",
+      resource_group_name            = local.resource_group_name
+      name                           = "br2_fgt1_https"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      protocol                       = "Tcp"
+      frontend_port                  = "1443"
+      backend_port                   = "34443",
       frontend_ip_configuration_name = "pip_br2_elb_01"
     }
     "br2_fgt2_https" = {
-      resource_group_name = local.resource_group_name
-      name                          = "br2_fgt2_https"
-      loadbalancer_id               = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
-      protocol                      = "Tcp"
-      frontend_port                 = "2443"
-      backend_port                  = "34443",
+      resource_group_name            = local.resource_group_name
+      name                           = "br2_fgt2_https"
+      loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
+      protocol                       = "Tcp"
+      frontend_port                  = "2443"
+      backend_port                   = "34443",
       frontend_ip_configuration_name = "pip_br2_elb_01"
     }
     "br2_fgt1_ssh" = {
-      resource_group_name = local.resource_group_name
+      resource_group_name            = local.resource_group_name
       name                           = "br2_fgt1_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -806,7 +828,7 @@ locals {
       frontend_ip_configuration_name = "pip_br2_elb_01"
     }
     "br2_fgt2_ssh" = {
-      resource_group_name = local.resource_group_name
+      resource_group_name            = local.resource_group_name
       name                           = "br2_fgt2_ssh"
       loadbalancer_id                = module.module_azurerm_lb["lb_branch2_ext_01"].lb.id
       protocol                       = "Tcp"
@@ -1209,9 +1231,6 @@ locals {
     }
   }
 
-  branch_network_interface_security_group_associations = {
-  }
-
   branch_subnet_network_security_group_associations = {
     "br1_fgt_pub1" = {
       subnet_id                 = module.module_azurerm_subnet["br1_fgt_pub1"].subnet.id
@@ -1279,30 +1298,6 @@ locals {
     }
   }
 
-  branch_storage_accounts = {
-    "stbr1" = {
-      resource_group_name      = local.resource_group_name
-      location                 = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
-      name                     = format("%s%s", "stbr1", "${random_id.random_id.hex}")
-      account_replication_type = "LRS"
-      account_tier             = "Standard"
-    }
-    "stbr2" = {
-      resource_group_name      = local.resource_group_name
-      location                 = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
-      name                     = format("%s%s", "stbr2", "${random_id.random_id.hex}")
-      account_replication_type = "LRS"
-      account_tier             = "Standard"
-    }
-    "stbr3" = {
-      resource_group_name      = local.resource_group_name
-      location                 = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
-      name                     = format("%s%s", "stbr3", "${random_id.random_id.hex}")
-      account_replication_type = "LRS"
-      account_tier             = "Standard"
-    }
-  }
-
   branch_route_tables = {
     "rt_br1_protected" = {
       resource_group_name           = local.resource_group_name
@@ -1339,34 +1334,25 @@ locals {
     }
   }
 
-  # Only define in one locals_XXX.tf file
-  vm_linux_image = {
-    "Canonical" = {
-      publisher = "Canonical"
-      offer     = "UbuntuServer"
-      sku       = "18.04-LTS"
-      version   = "latest"
-    }
-  }
-
+  branch_linux_virtual_machine_size = "Standard_D2_v3"
   branch_linux_virtual_machines = {
     "vm_br1_lnx_1" = {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch1"].virtual_network.location
 
-      name = "${local.tag_project}-vm-br1-lnx-1"
-      size = "Standard_D2_v3"
+      name = "vm-br1-lnx-1"
+      size = local.branch_linux_virtual_machine_size
 
       availability_set_id   = null
       network_interface_ids = [for nic in ["nic_br1_lnx_1_1"] : module.module_azurerm_network_interface[nic].network_interface.id]
 
       admin_username = var.username
       admin_password = var.password
-      computer_name  = "${local.tag_project}-vm-br1-lnx-1"
+      computer_name  = "vm-br1-lnx-1"
 
       disable_password_authentication = false
 
-      os_disk_name                 = "${local.tag_project}-disk-br1-lnx-1-OS"
+      os_disk_name                 = "disk-br1-lnx-1-OS"
       os_disk_caching              = "ReadWrite"
       os_disk_storage_account_type = "Standard_LRS"
 
@@ -1385,27 +1371,26 @@ locals {
 
       zone = null
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
     }
+
     "vm_br2_lnx_1" = {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch2"].virtual_network.location
 
-      name = "${local.tag_project}-vm-br2-lnx-1"
-      size = "Standard_D2_v3"
+      name = "vm-br2-lnx-1"
+      size = local.branch_linux_virtual_machine_size
 
       availability_set_id   = null
       network_interface_ids = [for nic in ["nic_br2_lnx_1_1"] : module.module_azurerm_network_interface[nic].network_interface.id]
 
       admin_username = var.username
       admin_password = var.password
-      computer_name  = "${local.tag_project}-vm-br2-lnx-1"
+      computer_name  = "vm-br2-lnx-1"
 
       disable_password_authentication = false
 
-      os_disk_name                 = "${local.tag_project}-disk-br2-lnx-1-OS"
+      os_disk_name                 = "disk-br2-lnx-1-OS"
       os_disk_caching              = "ReadWrite"
       os_disk_storage_account_type = "Standard_LRS"
 
@@ -1424,27 +1409,26 @@ locals {
 
       zone = null
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
     }
+
     "vm_br3_lnx_1" = {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_branch3"].virtual_network.location
 
-      name = "${local.tag_project}-vm-br3-lnx-1"
-      size = "Standard_D2_v3"
+      name = "vm-br3-lnx-1"
+      size = local.branch_linux_virtual_machine_size
 
       availability_set_id   = null
       network_interface_ids = [for nic in ["nic_br3_lnx_1_1"] : module.module_azurerm_network_interface[nic].network_interface.id]
 
       admin_username = var.username
       admin_password = var.password
-      computer_name  = "${local.tag_project}-vm-br3-lnx-1"
+      computer_name  = "vm-br3-lnx-1"
 
       disable_password_authentication = false
 
-      os_disk_name                 = "${local.tag_project}-disk-br3-lnx-1-OS"
+      os_disk_name                 = "disk-br3-lnx-1-OS"
       os_disk_caching              = "ReadWrite"
       os_disk_storage_account_type = "Standard_LRS"
 
@@ -1463,9 +1447,7 @@ locals {
 
       zone = null
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
     }
   }
 
@@ -1520,9 +1502,7 @@ locals {
         }
       ]
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
 
       # FortiGate Configuration
       config_data = templatefile("./assets/fgt-br-userdata.tpl", {
@@ -1548,16 +1528,16 @@ locals {
         Port4Alias           = "ha"
         Port5Alias           = "mgmt"
 
-        port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefix)
-        port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefix)
-        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefix)
-        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_ha"].subnet.address_prefix)
+        port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefixes[0])
+        port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefixes[0])
+        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefixes[0])
+        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_ha"].subnet.address_prefixes[0])
 
-        fgt_external_gw1 = cidrhost(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefix, 1)
-        fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefix, 1)
+        fgt_external_gw1 = cidrhost(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefixes[0], 1)
+        fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefixes[0], 1)
 
-        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefix, 1)
-        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.address_prefix, 1)
+        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefixes[0], 1)
+        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.address_prefixes[0], 1)
 
         isp2 = module.module_azurerm_network_interface["nic_br1_fortigate_1_3"].network_interface.name
 
@@ -1631,9 +1611,7 @@ locals {
         }
       ]
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
 
       # FortiGate Configuration
       config_data = templatefile("./assets/fgt-br-userdata.tpl", {
@@ -1659,16 +1637,16 @@ locals {
         Port4Alias           = "ha"
         Port5Alias           = "mgmt"
 
-        port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefix)
-        port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefix)
-        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefix)
-        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_ha"].subnet.address_prefix)
+        port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefixes[0])
+        port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefixes[0])
+        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefixes[0])
+        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["br1_fgt_ha"].subnet.address_prefixes[0])
 
-        fgt_external_gw1 = cidrhost(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefix, 1)
-        fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefix, 1)
+        fgt_external_gw1 = cidrhost(module.module_azurerm_subnet["br1_fgt_pub1"].subnet.address_prefixes[0], 1)
+        fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br1_fgt_pub2"].subnet.address_prefixes[0], 1)
 
-        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefix, 1)
-        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.address_prefix, 1)
+        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br1_fgt_priv"].subnet.address_prefixes[0], 1)
+        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["br1_fgt_mgmt"].subnet.address_prefixes[0], 1)
 
         isp2 = module.module_azurerm_network_interface["nic_br1_fortigate_2_3"].network_interface.name
 
@@ -1742,9 +1720,7 @@ locals {
         }
       ]
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
 
       # FortiGate Configuration
       config_data = templatefile("./assets/fgt-br-userdata.tpl", {
@@ -1770,16 +1746,16 @@ locals {
         Port4Alias           = "ha"
         Port5Alias           = "mgmt"
 
-        port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefix)
-        port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefix)
-        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefix)
-        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_ha"].subnet.address_prefix)
+        port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefixes[0])
+        port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefixes[0])
+        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefixes[0])
+        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_ha"].subnet.address_prefixes[0])
 
-        fgt_external_gw1 = cidrhost(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefix, 1)
-        fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefix, 1)
+        fgt_external_gw1 = cidrhost(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefixes[0], 1)
+        fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefixes[0], 1)
 
-        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefix, 1)
-        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.address_prefix, 1)
+        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefixes[0], 1)
+        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.address_prefixes[0], 1)
 
         isp2 = module.module_azurerm_network_interface["nic_br2_fortigate_1_3"].network_interface.name
 
@@ -1853,9 +1829,7 @@ locals {
         }
       ]
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
 
       # FortiGate Configuration
       config_data = templatefile("./assets/fgt-br-userdata.tpl", {
@@ -1881,16 +1855,16 @@ locals {
         Port4Alias           = "ha"
         Port5Alias           = "mgmt"
 
-        port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefix)
-        port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefix)
-        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefix)
-        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_ha"].subnet.address_prefix)
+        port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefixes[0])
+        port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefixes[0])
+        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefixes[0])
+        port4subnetmask = cidrnetmask(module.module_azurerm_subnet["br2_fgt_ha"].subnet.address_prefixes[0])
 
-        fgt_external_gw1 = cidrhost(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefix, 1)
-        fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefix, 1)
+        fgt_external_gw1 = cidrhost(module.module_azurerm_subnet["br2_fgt_pub1"].subnet.address_prefixes[0], 1)
+        fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br2_fgt_pub2"].subnet.address_prefixes[0], 1)
 
-        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefix, 1)
-        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.address_prefix, 1)
+        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br2_fgt_priv"].subnet.address_prefixes[0], 1)
+        fgt_mgmt_gw     = cidrhost(module.module_azurerm_subnet["br2_fgt_mgmt"].subnet.address_prefixes[0], 1)
 
         isp2 = module.module_azurerm_network_interface["nic_br2_fortigate_2_3"].network_interface.name
 
@@ -1964,9 +1938,7 @@ locals {
         }
       ]
 
-      tags = {
-        Project = local.project
-      }
+      tags = local.tags
 
       # FortiGate Configuration
       config_data = templatefile("./assets/fgt-br-userdata.tpl", {
@@ -1993,16 +1965,16 @@ locals {
         Port5Alias           = ""
 
 
-        port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br3_fgt_pub1"].subnet.address_prefix)
-        port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br3_fgt_priv"].subnet.address_prefix)
-        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br3_fgt_pub2"].subnet.address_prefix)
+        port1subnetmask = cidrnetmask(module.module_azurerm_subnet["br3_fgt_pub1"].subnet.address_prefixes[0])
+        port2subnetmask = cidrnetmask(module.module_azurerm_subnet["br3_fgt_priv"].subnet.address_prefixes[0])
+        port3subnetmask = cidrnetmask(module.module_azurerm_subnet["br3_fgt_pub2"].subnet.address_prefixes[0])
         port4subnetmask = ""
         port5subnetmask = ""
 
-        fgt_external_gw1 = cidrhost(module.module_azurerm_subnet["br3_fgt_pub1"].subnet.address_prefix, 1)
-        fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br3_fgt_pub2"].subnet.address_prefix, 1)
+        fgt_external_gw1 = cidrhost(module.module_azurerm_subnet["br3_fgt_pub1"].subnet.address_prefixes[0], 1)
+        fgt_external_gw2 = cidrhost(module.module_azurerm_subnet["br3_fgt_pub2"].subnet.address_prefixes[0], 1)
 
-        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br3_fgt_priv"].subnet.address_prefix, 1)
+        fgt_internal_gw = cidrhost(module.module_azurerm_subnet["br3_fgt_priv"].subnet.address_prefixes[0], 1)
         fgt_mgmt_gw     = ""
         port_ha         = ""
         port_mgmt       = ""
@@ -2029,6 +2001,7 @@ locals {
     }
   }
 
+  /*
   branch_role_assignments = {
     "vm_br1_fgt_1" = {
       scope                = data.azurerm_resource_group.resource_group.id
@@ -2056,4 +2029,5 @@ locals {
       principal_id         = module.module_azurerm_virtual_machine["vm_br3_fgt_1"].virtual_machine.identity[0].principal_id
     }
   }
+  */
 }

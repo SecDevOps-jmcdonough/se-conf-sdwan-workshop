@@ -1,7 +1,3 @@
-locals {
-  lb_backend_address_pools = merge(local.hub_lb_backend_address_pools, local.branch_lb_backend_address_pools)
-}
-
 module "module_azurerm_lb_backend_address_pool" {
   for_each = local.lb_backend_address_pools
 

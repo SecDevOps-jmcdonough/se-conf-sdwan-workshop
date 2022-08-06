@@ -1,7 +1,3 @@
-locals {
-  lb_outbound_rules = merge(local.hub_lb_outbound_rules, local.branch_lb_outbound_rules)
-}
-
 module "module_azurerm_lb_outbound_rule" {
   for_each = local.lb_outbound_rules
 

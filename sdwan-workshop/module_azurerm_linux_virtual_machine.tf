@@ -1,7 +1,3 @@
-locals {
-  linux_virtual_machines = merge(local.branch_linux_virtual_machines, local.spoke_linux_virtual_machines)
-}
-
 module "module_azurerm_linux_virtual_machine" {
   for_each = local.linux_virtual_machines
 
@@ -40,12 +36,10 @@ module "module_azurerm_linux_virtual_machine" {
 
   zone = each.value.zone
 
-  tags = {
-    Project = local.project
-  }
+  tags = local.tags
 }
 
 output "virtual_linux_machines" {
-  value     = var.enable_module_output ? module.module_azurerm_virtual_machine[*] : null
+  value     = var.enable_module_output ? module.module_azurerm_linux_virtual_machine[*] : null
   sensitive = true
 }

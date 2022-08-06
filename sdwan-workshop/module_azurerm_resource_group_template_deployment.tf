@@ -11,7 +11,7 @@ locals {
             value = local.project
           },
           "tag" = {
-            value = local.project
+            value = local.event
           },
           "location" = {
             value = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
@@ -29,7 +29,7 @@ locals {
             value = "64622"
           },
           "RouteServerPIPID" = {
-            value = module.module_azurerm_public_ip["pip_${local.tag_project}_ars"].public_ip.id
+            value = module.module_azurerm_public_ip["pip_ars"].public_ip.id
           }
         }
       )
@@ -47,7 +47,7 @@ locals {
               "tag": {
                   "type": "string",
                   "metadata": {
-                      "description": "Prefix"
+                      "description": "Suffix"
                   }
               },
               "location": {
@@ -89,8 +89,8 @@ locals {
           },
           "variables": {
               "fgRouteServerName": "[concat(parameters('project'),'-',parameters('tag'),'-RouteServer')]",
-              "ARSpeer1": "[concat(parameters('tag'),'-fgt-1')]",
-              "ARSpeer2": "[concat(parameters('tag'),'-fgt-2')]"
+              "ARSpeer1": "[concat(parameters('project'),'-fgt-1')]",
+              "ARSpeer2": "[concat(parameters('project'),'-fgt-2')]"
           },
           "resources": [
               {
@@ -164,10 +164,7 @@ module "module_azurerm_resource_group_template_deployment" {
   template_content   = each.value.template_content
   debug_level        = each.value.debug_level
 
-  tags = {
-    Project = local.project
-  }
-
+  tags = local.tags
 }
 
 output "resource_group_template_deployments" {

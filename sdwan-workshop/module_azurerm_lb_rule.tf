@@ -1,7 +1,3 @@
-locals {
-  lb_rules = merge(local.hub_lb_rules, local.branch_lb_rules)
-}
-
 module "module_azurerm_lb_rule" {
   for_each = local.lb_rules
 

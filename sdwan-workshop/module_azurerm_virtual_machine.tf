@@ -1,7 +1,3 @@
-locals {
-  virtual_machines = merge(local.hub_virtual_machines, local.branch_virtual_machines)
-}
-
 module "module_azurerm_virtual_machine" {
   for_each = local.virtual_machines
 
@@ -37,7 +33,6 @@ module "module_azurerm_virtual_machine" {
   os_profile_admin_password = each.value.os_profile_admin_password
   os_profile_custom_data    = each.value.config_data
 
-
   storage_os_disk_name              = each.value.storage_os_disk_name
   storage_os_disk_caching           = each.value.storage_os_disk_caching
   storage_os_disk_managed_disk_type = each.value.storage_os_disk_managed_disk_type
@@ -52,9 +47,7 @@ module "module_azurerm_virtual_machine" {
 
   zones = each.value.zones
 
-  tags = {
-    Project = local.project
-  }
+  tags = local.tags
 }
 
 resource "random_string" "random_string" {

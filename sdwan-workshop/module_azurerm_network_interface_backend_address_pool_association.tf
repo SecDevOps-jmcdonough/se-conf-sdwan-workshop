@@ -1,7 +1,3 @@
-locals {
-  network_interface_backend_address_pool_associations = merge(local.hub_network_interface_backend_address_pool_associations, local.branch_network_interface_backend_address_pool_associations)
-}
-
 module "module_azurerm_network_interface_backend_address_pool_association" {
   for_each = local.network_interface_backend_address_pool_associations
 

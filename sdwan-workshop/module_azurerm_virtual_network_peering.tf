@@ -1,7 +1,3 @@
-locals {
-  virtual_network_peerings = merge(local.hub_virtual_network_peerings, local.spoke_virtual_network_peerings)
-}
-
 module "module_azurerm_virtual_network_peering" {
   for_each = local.virtual_network_peerings
 

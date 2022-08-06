@@ -1,7 +1,3 @@
-locals {
-  subnet_route_table_associations = merge(local.hub_subnet_route_table_associations, local.branch_subnet_route_table_associations)
-}
-
 module "module_azurerm_subnet_route_table_association" {
   for_each = local.subnet_route_table_associations
 

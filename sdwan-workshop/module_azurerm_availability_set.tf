@@ -1,7 +1,3 @@
-locals {
-  availability_sets = merge(local.hub_availability_sets, local.branch_availability_sets)
-}
-
 module "module_azurerm_availability_set" {
   for_each = local.availability_sets
 

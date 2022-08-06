@@ -1,7 +1,3 @@
-locals {
-  network_security_groups = merge(local.hub_network_security_groups, local.branch_network_security_groups)
-}
-
 module "module_azurerm_network_security_group" {
   for_each = local.network_security_groups
 
