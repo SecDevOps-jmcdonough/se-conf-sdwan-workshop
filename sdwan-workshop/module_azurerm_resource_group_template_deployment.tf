@@ -2,9 +2,10 @@ locals {
   resource_group_template_deployments = {
     "sdwan_workshop_ars" = {
       resource_group_name = local.resource_group_name
-      name                = "sdwan_workshop_ars"
-      deployment_mode     = "Incremental"
-      debug_level         = "requestContent, responseContent"
+
+      name            = "sdwan_workshop_ars"
+      deployment_mode = "Incremental"
+      debug_level     = "requestContent, responseContent"
       parameters_content = jsonencode(
         {
           "project" = {
@@ -157,8 +158,7 @@ module "module_azurerm_resource_group_template_deployment" {
 
   resource_group_name = each.value.resource_group_name
 
-  name = each.value.name
-
+  name               = each.value.name
   deployment_mode    = each.value.deployment_mode
   parameters_content = each.value.parameters_content
   template_content   = each.value.template_content

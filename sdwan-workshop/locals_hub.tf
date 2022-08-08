@@ -415,24 +415,28 @@ locals {
     }
   }
 
+  hub_virtual_machine_size = "Standard_F8s"
   hub_virtual_machines = {
     "vm_hub_fgt_1" = {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
 
-      name              = "vm-hub-fgt-1"
-      identity_identity = "SystemAssigned"
+      name = "vm-hub-fgt-1"
 
       availability_set_id = module.module_azurerm_availability_set["as_hub"].availability_set.id
       zones               = null
 
+      network_interface_ids        = [for nic in ["nic_hub1_fortigate_1_1", "nic_hub1_fortigate_1_2", "nic_hub1_fortigate_1_3", "nic_hub1_fortigate_1_4"] : module.module_azurerm_network_interface[nic].network_interface.id]
+      primary_network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_1_1"].network_interface.id
+      vm_size                      = local.hub_virtual_machine_size
+
       delete_os_disk_on_termination    = true
       delete_data_disks_on_termination = true
 
-      network_interface_ids        = [for nic in ["nic_hub1_fortigate_1_1", "nic_hub1_fortigate_1_2", "nic_hub1_fortigate_1_3", "nic_hub1_fortigate_1_4"] : module.module_azurerm_network_interface[nic].network_interface.id]
-      primary_network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_1_1"].network_interface.id
+      boot_diagnostics_enabled     = true
+      boot_diagnostics_storage_uri = module.module_azurerm_storage_account["sthub1"].storage_account.primary_blob_endpoint
 
-      vm_size = "Standard_F8s"
+      identity_identity = "SystemAssigned"
 
       storage_image_reference_publisher = local.vm_image["fortinet"].publisher
       storage_image_reference_offer     = local.vm_image["fortinet"].offer
@@ -442,14 +446,6 @@ locals {
       plan_publisher = local.vm_image["fortinet"].publisher
       plan_product   = local.vm_image["fortinet"].offer
       plan_name      = local.vm_image["fortinet"].sku
-
-      os_profile_admin_username = var.username
-      os_profile_admin_password = var.password
-
-      os_profile_linux_config_disable_password_authentication = false
-
-      boot_diagnostics_enabled     = true
-      boot_diagnostics_storage_uri = module.module_azurerm_storage_account["sthub1"].storage_account.primary_blob_endpoint
 
       storage_os_disk_name              = "disk_os_hub_fgt_1"
       storage_os_disk_caching           = "ReadWrite"
@@ -466,10 +462,13 @@ locals {
         }
       ]
 
-      tags = local.tags
+      os_profile_linux_config_disable_password_authentication = false
+
+      os_profile_admin_username = var.username
+      os_profile_admin_password = var.password
 
       # FortiGate Configuration
-      config_data = templatefile("./assets/fgt-hub-userdata.tpl", {
+      os_profile_custom_data = templatefile("./assets/fgt-hub-userdata.tpl", {
         fgt_id               = "vm-hub-fgt-1"
         role                 = ""
         sync-port            = ""
@@ -514,24 +513,29 @@ locals {
         fgt_config_sdwan = true
         }
       )
+      tags = local.tags
     }
+
     "vm_hub_fgt_2" = {
       resource_group_name = local.resource_group_name
       location            = module.module_azurerm_virtual_network["vnet_hub1"].virtual_network.location
 
-      name              = "vm-hub-fgt-2"
-      identity_identity = "SystemAssigned"
+      name = "vm-hub-fgt-2"
 
       availability_set_id = module.module_azurerm_availability_set["as_hub"].availability_set.id
       zones               = null
 
+      network_interface_ids        = [for nic in ["nic_hub1_fortigate_2_1", "nic_hub1_fortigate_2_2", "nic_hub1_fortigate_2_3", "nic_hub1_fortigate_2_4"] : module.module_azurerm_network_interface[nic].network_interface.id]
+      primary_network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_1"].network_interface.id
+      vm_size                      = local.hub_virtual_machine_size
+
       delete_os_disk_on_termination    = true
       delete_data_disks_on_termination = true
 
-      network_interface_ids        = [for nic in ["nic_hub1_fortigate_2_1", "nic_hub1_fortigate_2_2", "nic_hub1_fortigate_2_3", "nic_hub1_fortigate_2_4"] : module.module_azurerm_network_interface[nic].network_interface.id]
-      primary_network_interface_id = module.module_azurerm_network_interface["nic_hub1_fortigate_2_1"].network_interface.id
+      boot_diagnostics_enabled     = true
+      boot_diagnostics_storage_uri = module.module_azurerm_storage_account["sthub1"].storage_account.primary_blob_endpoint
 
-      vm_size = "Standard_F8s"
+      identity_identity = "SystemAssigned"
 
       storage_image_reference_publisher = local.vm_image["fortinet"].publisher
       storage_image_reference_offer     = local.vm_image["fortinet"].offer
@@ -541,14 +545,6 @@ locals {
       plan_publisher = local.vm_image["fortinet"].publisher
       plan_product   = local.vm_image["fortinet"].offer
       plan_name      = local.vm_image["fortinet"].sku
-
-      os_profile_admin_username = var.username
-      os_profile_admin_password = var.password
-
-      os_profile_linux_config_disable_password_authentication = false
-
-      boot_diagnostics_enabled     = true
-      boot_diagnostics_storage_uri = module.module_azurerm_storage_account["sthub1"].storage_account.primary_blob_endpoint
 
       storage_os_disk_name              = "disk_os_hub_fgt_2"
       storage_os_disk_caching           = "ReadWrite"
@@ -565,10 +561,13 @@ locals {
         }
       ]
 
-      tags = local.tags
+      os_profile_linux_config_disable_password_authentication = false
+
+      os_profile_admin_username = var.username
+      os_profile_admin_password = var.password
 
       # FortiGate Configuration
-      config_data = templatefile("./assets/fgt-hub-userdata.tpl", {
+      os_profile_custom_data = templatefile("./assets/fgt-hub-userdata.tpl", {
         fgt_id               = "vm-hub-fgt-2",
         role                 = ""
         sync-port            = ""
@@ -613,20 +612,21 @@ locals {
         fgt_config_sdwan = true
         }
       )
+      tags = local.tags
     }
   }
-  /*
+
   hub_role_assignments = {
     "vm_hub_fgt_1" = {
-      scope                = data.azurerm_resource_group.resource_group.id
+      scope                = local.resource_group_data_id
       role_definition_name = "Reader"
       principal_id         = module.module_azurerm_virtual_machine["vm_hub_fgt_1"].virtual_machine.identity[0].principal_id
     }
     "vm_hub_fgt_2" = {
-      scope                = data.azurerm_resource_group.resource_group.id
+      scope                = local.resource_group_data_id
       role_definition_name = "Reader"
       principal_id         = module.module_azurerm_virtual_machine["vm_hub_fgt_2"].virtual_machine.identity[0].principal_id
     }
   }
-  */
+
 }

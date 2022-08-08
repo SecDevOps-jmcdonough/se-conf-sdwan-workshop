@@ -48,6 +48,7 @@ locals {
   subnet_route_table_associations                     = merge(local.hub_subnet_route_table_associations, local.branch_subnet_route_table_associations)
   linux_virtual_machines                              = merge(local.branch_linux_virtual_machines, local.spoke_linux_virtual_machines)
   virtual_machines                                    = merge(local.hub_virtual_machines, local.branch_virtual_machines)
+  role_assignments                                    = merge(local.hub_role_assignments, local.branch_role_assignments)
 
   vm_linux_image = {
     "Canonical" = {

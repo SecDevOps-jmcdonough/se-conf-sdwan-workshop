@@ -5,7 +5,8 @@ module "module_azurerm_virtual_machine" {
 
   resource_group_name = each.value.resource_group_name
   location            = each.value.location
-  name                = each.value.name
+
+  name = each.value.name
 
   availability_set_id = each.value.availability_set_id
 
@@ -31,7 +32,7 @@ module "module_azurerm_virtual_machine" {
   os_profile_computer_name  = each.value.name
   os_profile_admin_username = each.value.os_profile_admin_username
   os_profile_admin_password = each.value.os_profile_admin_password
-  os_profile_custom_data    = each.value.config_data
+  os_profile_custom_data    = each.value.os_profile_custom_data
 
   storage_os_disk_name              = each.value.storage_os_disk_name
   storage_os_disk_caching           = each.value.storage_os_disk_caching
