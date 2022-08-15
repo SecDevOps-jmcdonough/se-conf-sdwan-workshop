@@ -85,6 +85,15 @@
 * Why the VPN connections are still down?
 
 [Quiz Answers](/QUIZ-Answers.md#chapter-1)
+ <details>
+
+* FortiGates in the Hub do not have public IPs, how are they accessible via the Web UI?
+  * The Public IPs on the external load balancers for the Hub, Branch1 and Branch2 FortiGates have inbound NAT rules setup.
+
+* Why the VPN connections are still down?
+  * The external load balancer for the Hub FortiGates needs load balancing rules for UDP 500 and UDP 4500.
+
+</details>
 
 </details>
 
