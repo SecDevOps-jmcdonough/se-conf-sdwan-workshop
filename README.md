@@ -83,17 +83,19 @@
 
 1. FortiGates in the Hub do not have public IPs, how are they accessible via the Web UI?
 
-2. Why the VPN connections are still down?
+1. Why the VPN connections are still down?
 
   <details>
 
   <summary>Quiz 1 Answers</summary>
 
-  1. **FortiGates in the Hub do not have public IPs, how are they accessible via the Web UI?**
-  The Public IPs on the external load balancers for the Hub, Branch1 and Branch2 FortiGates have inbound NAT rules setup.
+1. **FortiGates in the Hub do not have public IPs, how are they accessible via the Web UI?**
 
-  2. **Why the VPN connections are still down?**
-  The external load balancer for the Hub FortiGates needs load balancing rules for UDP 500 and UDP 4500.
+    * The Public IPs on the external load balancers for the Hub, Branch1 and Branch2 FortiGates have inbound NAT rules setup.
+
+1. **Why the VPN connections are still down?**
+
+    * The external load balancer for the Hub FortiGates needs load balancing rules for UDP 500 and UDP 4500.
 
   </details>
   
@@ -147,22 +149,25 @@
 
 1. Why is one FortiGate depicted as unhealthy by the Azure Hub External Load Balancer?
 
-2. Why is NAT used to access the FortiGates, but for IPSEC VPN traffic Load balancing rules are used?
+1. Why is NAT used to access the FortiGates, but for IPSEC VPN traffic Load balancing rules are used?
 
-3. Do FortiGates in the Branches learn Spoke11 and Spoke12 CIDRs?
+1. Do FortiGates in the Branches learn Spoke11 and Spoke12 CIDRs?
 
   <details>
 
   <summary>Quiz 2 Answers</summary>
 
-  1. **Why is one FortiGate depicted as unhealthy by the Azure Hub External Load Balancer?**
-  The passive FortiGate does not respond to the load balancer health probes. Only after a failover event will the newly active FortiGate start responding to health probes.
+1. **Why is one FortiGate depicted as unhealthy by the Azure Hub External Load Balancer?**
 
-  2. **Why is NAT used to access the FortiGates, but for IPSEC VPN traffic Load balancing rules are used?**
-  NAT allows each individual FortiGate to be accessed via the Public IP of the load balancer. A load balancer rule would only allow access to the Active FortiGate.
+    * The passive FortiGate does not respond to the load balancer health probes. Only after a failover event will the newly active FortiGate start responding to health probes.
 
-  3. **Do FortiGates in the Branches learn Spoke11 and Spoke12 CIDRs?**
-  Spoke11 and Spoke12 CIDRs are not yet know to the FortiGate so the Branches will not learn them yet.
+1. **Why is NAT used to access the FortiGates, but for IPSEC VPN traffic Load balancing rules are used?**
+
+    * NAT allows each individual FortiGate to be accessed via the Public IP of the load balancer. A load balancer rule would only allow access to the Active FortiGate.
+
+1. **Do FortiGates in the Branches learn Spoke11 and Spoke12 CIDRs?**
+
+    * Spoke11 and Spoke12 CIDRs are not yet know to the FortiGate so the Branches will not learn them yet.
 
   </details>
 
@@ -304,27 +309,31 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 1. What was missing to allow the FortiGates to retrieve SDN connector filters?
 
-2. Why is the FortiGate only able to retrieve the SDN connector filters in its own Resource Group?
+1. Why is the FortiGate only able to retrieve the SDN connector filters in its own Resource Group?
 
-3. Why is the Branch FortiGate able to reach the remote Spoke VNETs VMs (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch1 FortiGate cannot?
+1. Why is the Branch FortiGate able to reach the remote Spoke VNETs VMs (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch1 FortiGate cannot?
 
-4.  FortiGates at Branch1 and Branch2 site are both behind Azure Load Balancers (behind NAT). Will Branch1 to Branch2 traffic successfully establish an ADVPN shortcut?
+1. FortiGates at Branch1 and Branch2 site are both behind Azure Load Balancers (behind NAT). Will Branch1 to Branch2 traffic successfully establish an ADVPN shortcut?
 
   <details>
 
   <summary>Quiz 4 Answers</summary>
 
-  1. **What was missing to allow the FortiGates to retrieve SDN connector filters?**
-  The FortiGate's management interfaces need access to the Azure APIs via a public IP address. This required adding a backend pool for the FortiGate management interfaces and a TCP load balancing rule to let the API response to an internal request back through the external load balancer.
+1. **What was missing to allow the FortiGates to retrieve SDN connector filters?**
 
-  2. **Why is the FortiGate only able to retrieve the SDN connector filters in its own Resource Group?**
-  The FortiGate VM Azure Identity was given the "Reader" role with the scope of the Resource Group.
+    * The FortiGate's management interfaces need access to the Azure APIs via a public IP address. This required adding a backend pool for the FortiGate management interfaces and a TCP load balancing rule to let the API response to an internal request back through the external load balancer.
 
-  3. **Why is the Branch FortiGate able to reach the remote Spoke VNETs VMs (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch1 FortiGate cannot?**
-  The Linux VM does not know how to get to the FortiGate because no default route was defined for the route table which controls the subnet the Linux VM is in.
+1. **Why is the FortiGate only able to retrieve the SDN connector filters in its own Resource Group?**
 
-  4. **FortiGates at Branch1 and Branch2 site are both behind Azure Load Balancers (behind NAT). Will Branch1 to Branch2 traffic successfully establish an ADVPN shortcut?**
-  Yes
+    * The FortiGate VM Azure Identity was given the "Reader" role with the scope of the Resource Group.
+
+1. **Why is the Branch FortiGate able to reach the remote Spoke VNETs VMs (10.11.1.4 and 10.12.1.4) but the Linux VM behind the Branch1 FortiGate cannot?**
+
+    * The Linux VM does not know how to get to the FortiGate because no default route was defined for the route table which controls the subnet the Linux VM is in.
+
+1. **FortiGates at Branch1 and Branch2 site are both behind Azure Load Balancers (behind NAT). Will Branch1 to Branch2 traffic successfully establish an ADVPN shortcut?**
+
+    * Yes
 
   </details>
 
@@ -411,17 +420,19 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 1. Why has the Azure Route Server (ARS) injected Branch site CIDRs to the Spoke VNET protected subnet but not the FortiGate private subnet?
 
-2. The Branch external load balancer has two front end public IP. How do we ensure that traffic egressing Branch1 on port1 (isp1) always has the same public IP applied? Same for traffic egressing Branch1 on port3 (isp2)
+1. The Branch external load balancer has two front end public IP. How do we ensure that traffic egressing Branch1 on port1 (isp1) always has the same public IP applied? Same for traffic egressing Branch1 on port3 (isp2)
 
   <details>
 
   <summary>Quiz 5 Answers</summary>
 
-  1. **Why has the Azure Route Server (ARS) injected Branch site CIDRs to the Spoke VNET protected subnet but not the FortiGate private subnet?**
-  Route propagation into the FortiGate private subnet is set to no.
+1. **Why has the Azure Route Server (ARS) injected Branch site CIDRs to the Spoke VNET protected subnet but not the FortiGate private subnet?**
 
-  2. **The Branch external load balancer has two front end public IP. How do we ensure that traffic egressing Branch1 on port1 (isp1) always has the same public IP applied? Same for traffic egressing Branch1 on port3 (isp2)?**
-  By using outbound rules associated to backend pools connected to those ports on each FortiGate.
+    * Route propagation into the FortiGate private subnet is set to no.
+
+1. **The Branch external load balancer has two front end public IP. How do we ensure that traffic egressing Branch1 on port1 (isp1) always has the same public IP applied? Same for traffic egressing Branch1 on port3 (isp2)?**
+
+    * By using outbound rules associated to backend pools connected to those ports on each FortiGate.
 
   </details>
 
@@ -480,17 +491,19 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 1. How long was your failover time?
 
-2. Why did we lose the SSH (TCP) session with a "short" failover time?
+1. Why did we lose the SSH (TCP) session with a "short" failover time?
 
   <details>
 
   <summary>Quiz 6 Answers</summary>
 
-  1. **How long was your failover time?**
-  It should have been between 15 - 25 seconds.
+1. **How long was your failover time?**
 
-  2. **Why did we lose the SSH (TCP) session with a "short" failover time?**
-  TCP sessions are not maintained by the Azure load balancer.
+    * It should have been between 15 - 25 seconds.
+
+1. **Why did we lose the SSH (TCP) session with a "short" failover time?**
+
+    * TCP sessions are not maintained by the Azure load balancer.
 
   </details>
 
@@ -674,27 +687,31 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 1. Why were we not able to attach the Hub FortiGate VNET to vWAN until we deleted Azure Route Server?
 
-2. Why was the vWAN not able to inject Spoke11 and Spoke12 VNETs CIDRs to FortiGate Private UDR?
+1. Why was the vWAN not able to inject Spoke11 and Spoke12 VNETs CIDRs to FortiGate Private UDR?
 
-3. The above setting is normally set to "yes", why did we set it to "no" ? Hint: We had Azure Route Server before
+1. The above setting is normally set to "yes", why did we set it to "no" ? Hint: We had Azure Route Server before
 
-4. In the Spoke-VNETS vWAN Route Table, the next-hop is the Primary FortiGate IP. What should we add/do to handle failover?
+1. In the Spoke-VNETS vWAN Route Table, the next-hop is the Primary FortiGate IP. What should we add/do to handle failover?
 
   <details>
 
   <summary>Quiz 8 Answers</summary>
 
-  1. **Why were we not able to attach the Hub FortiGate VNET to vWAN until we deleted Azure Route Server?**
-  An Azure VNET cannot receive routes from more than the vWAN and the RouteServer at the same time.
+1. **Why were we not able to attach the Hub FortiGate VNET to vWAN until we deleted Azure Route Server?**
 
-  2. **Why was the vWAN not able to inject Spoke11 and Spoke12 VNETs CIDRs to FortiGate Private UDR?**
-  Route propagation for the FortiGate route table sdwan-studentXX-workshop-hub1_fgt-priv_rt was set to no.
+    * An Azure VNET cannot receive routes from more than the vWAN and the RouteServer at the same time.
 
-  3. **The above setting is normally set to "yes", why did we set it to "no"?**
-  Azure RouteServer provided the routes
+1. **Why was the vWAN not able to inject Spoke11 and Spoke12 VNETs CIDRs to FortiGate Private UDR?**
 
-  4. **In the Spoke-VNETS vWAN Route Table, the next-hop is the Primary FortiGate IP. What should we add/do to handle failover?**
-  An internal load balancer could be added and use that IP as the next hop or an automation stich could be run at failover to update the Spoke-VNETS vWAN Route Table to point to the newly active FortiGate private interface.
+    * Route propagation for the FortiGate route table sdwan-studentXX-workshop-hub1_fgt-priv_rt was set to no.
+
+1. **The above setting is normally set to "yes", why did we set it to "no"?**
+
+    * Azure RouteServer provided the routes
+
+1. **In the Spoke-VNETS vWAN Route Table, the next-hop is the Primary FortiGate IP. What should we add/do to handle failover?**
+
+    * An internal load balancer could be added and use that IP as the next hop or an automation stich could be run at failover to update the Spoke-VNETS vWAN Route Table to point to the newly active FortiGate private interface.
 
   </details>
 
