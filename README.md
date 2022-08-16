@@ -63,11 +63,11 @@ Perform the following step in your Cloudshell console to create your environment
 > The terraform variable `username` will be populated with the value of the environment variable `USER` 
 
 ```sh
-  git clone https://github.com/FortinetSecDevOps/se-conf-sdwan-workshop.git
-  cd ./se-conf-sdwan-workshop/se-summit/
-  terraform init
-  terraform plan -var="username=${USER}"
-  terraform apply -var="username=${USER}"
+git clone https://github.com/FortinetSecDevOps/se-conf-sdwan-workshop.git
+cd ./se-conf-sdwan-workshop/se-summit/
+terraform init
+terraform plan -var="username=${USER}"
+terraform apply -var="username=${USER}"
 ```
 
   ![gitclone](images/git-clone.jpg)
@@ -120,7 +120,7 @@ Perform the following step in your Cloudshell console to create your environment
 
 ### Task 1 - Add the FortiGates to the Hub Load Balancer Backend Pool
 
-* Go to the Hub External Load Balancer **sdwan-studentXX-workshop-hub1-elb1**
+* Go to the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
 * Click on Backend pools
 * Add FortiGate1 and FortiGate2 **port1 interfaces** and then click on Save
 
@@ -128,7 +128,7 @@ Perform the following step in your Cloudshell console to create your environment
 
 ### Task 2 - Create load balancing rules for IPSEC VPN Traffic
 
-* Click on the Hub External Load balancer **sdwan-studentXX-workshop-hub1-elb1**
+* Click on the Hub External Load balancer **sdwan-USERqXX-workshop-hub1-elb1**
 * Click on Load balancing rules
 * Create Load balancing rules for UDP 500 and UDP 4500 - ***one rule for each***
 
@@ -198,11 +198,11 @@ Perform the following step in your Cloudshell console to create your environment
 
 * Create a VNET peering between the Spoke11 VNET and the Hub VNET
 
-  * Go to the Spoke VNET, **studentXX-workshop-sdwan-spoke11** - (replace studentXX with your username)
+  * Go to the Spoke VNET, **USERXX-workshop-sdwan-spoke11** - (replace USERXX with your username)
     * Click on Peerings
-    * Add peering to Hub VNET, **studentXX-workshop-sdwan-hub1**
+    * Add peering to Hub VNET, **USERXX-workshop-sdwan-hub1**
 
-  * Repeat the above between Spoke12 VNET, **studentXX-workshop-sdwan-spoke12** and the Hub VNET
+  * Repeat the above between Spoke12 VNET, **USERXX-workshop-sdwan-spoke12** and the Hub VNET
 
     ![vnetpeering1](images/spoke11-to-Hub-peering.jpg)
 
@@ -211,7 +211,7 @@ Perform the following step in your Cloudshell console to create your environment
 ### Task 2 - Check Azure Route Server Configuration and Learned Routes
 
 * Go to Azure Route Server
-  * **studentXX-workshop-sdwan-RouteServer** contained within your Resource Group.
+  * **USERXX-workshop-sdwan-RouteServer** contained within your Resource Group.
 
     ![routeserver](images/routeserver.jpg)
 
@@ -287,9 +287,9 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 * Generate Traffic from Branch1 Linux VM:  
     1. Enable serial console access on Branch1 Linux VM
-        * Click on the VM **studentXX-sdwan-workshop-br1lnx1**
+        * Click on the VM **USERXX-sdwan-workshop-br1lnx1**
         * Go to Boot diagnostics -> Settings ->  Select **Enable with custom storage account**
-        * From the dropdown list, select the storage account that is assigned to your username - **setrainstudentXX#######**
+        * From the dropdown list, select the storage account that is assigned to your username - **trainUSERXX#######**
         * Click Save
 
             ![console1](images/ssh-br-lnx-console1.jpg)
@@ -360,7 +360,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 #### Task 1 - Create a route in the UDR
 
-* Click on the Branch1 private route table **studentXX-sdwan-workshop-branch1_rt**
+* Click on the Branch1 private route table **USERXX-sdwan-workshop-branch1_rt**
 * Add a default route for `0.0.0.0/0` that points to the Branch1 **Internal Load balancer listener IP**
 * Repeat the previous step for the **Branch2** and **Branch3** Route Tables
   * Be sure to use the correct IP as the next hop, that is the correct Internal Load balancer listener IP or FortiGate internal interface. Hint: is the next hop a load balancer or a stand-alone FortiGate
@@ -413,7 +413,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 #### Task 4 - Generate traffic between Branches
 
-* Connect to the Branch1 Linux Host via the serial console - **studentXX-sdwan-workshop-br1lnx1**
+* Connect to the Branch1 Linux Host via the serial console - **USERXX-sdwan-workshop-br1lnx1**
 * Generate traffic to Branch2 Linux Host
 
    ```bash
@@ -457,8 +457,8 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 ### Task 1 - Generate ICMP traffic
 
-* Connect to the Branch1 Linux Host via the serial console - **studentXX-sdwan-workshop-br1lnx1**
-* Ping a resource in a remote branch site - **sdwan-studentXX-workshop-spoke11-subnet1-lnx**
+* Connect to the Branch1 Linux Host via the serial console - **USERXX-sdwan-workshop-br1lnx1**
+* Ping a resource in a remote branch site - **sdwan-USERXX-workshop-spoke11-subnet1-lnx**
   * `ping 10.11.1.4`
   * Let the ping run
 
@@ -477,11 +477,11 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 ### Task 3 - Generate TCP traffic
 
 * Ensure that both Branch1 FortiGates in the cluster are up and running
-* Connect to the Branch1 Linux Host via the serial console - **studentXX-sdwan-workshop-br1lnx1**
-* Generate an SSH session to the Spoke Linux VM - **sdwan-studentXX-workshop-spoke11-subnet1-lnx**
+* Connect to the Branch1 Linux Host via the serial console - **USERXX-sdwan-workshop-br1lnx1**
+* Generate an SSH session to the Spoke Linux VM - **sdwan-USERXX-workshop-spoke11-subnet1-lnx**
 
    ```bash
-   ssh studentXX@10.11.1.4
+   ssh USERXX@10.11.1.4
    ```
 
 * From Spoke Linux VM SSH session generate a continuous stream of connections to track the failover event
@@ -568,7 +568,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 ### Task 2 - Routing and VNET connection Configuration
 
-* Go to your resource Group and then click on the Hub VNET - **studentXX-workshop-sdwan-hub1**
+* Go to your resource Group and then click on the Hub VNET - **USERXX-workshop-sdwan-hub1**
 * Delete the Hub to Spoke VNET peerings, delete both Spoke11 and Spoke12 peerings
 
     ![peeringdelete.jpg](images/peeringdelete.jpg)
@@ -593,7 +593,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
     ![vwanconnection1](images/vnetconnection1.jpg)
 
-    * Create a VNET connection for Spoke11, attach it to the Spoke-VNETS Route Table and propagate it to FGT-VNET Route Table - select **your resource group and VNET** - studentXX
+    * Create a VNET connection for Spoke11, attach it to the Spoke-VNETS Route Table and propagate it to FGT-VNET Route Table - select **your resource group and VNET** - USERXX
 
       ![vwanconnection2](images/vnetconnection2.jpg)
 
@@ -686,7 +686,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
       * Traffic is egressing the Hub FGT on port2, but you don't see any reply?... What is missing?  
         * Check FGT Hub port2 **effective routes**?
-        * Do you see spoke11 and spoke12 CIDRs? Why the vWAN is not propagating them to the Route Table attached to the FGT private subnet, **sdwan-studentXX-workshop-hub1_fgt-priv_rt**?  
+        * Do you see spoke11 and spoke12 CIDRs? Why the vWAN is not propagating them to the Route Table attached to the FGT private subnet, **sdwan-USERXX-workshop-hub1_fgt-priv_rt**?  
         * Check the Route Table **configuration** settings
 
         ![bgp2](images/bgp2.jpg)
@@ -711,7 +711,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 1. **Why was the vWAN not able to inject Spoke11 and Spoke12 VNETs CIDRs to FortiGate Private UDR?**
 
-    * Route propagation for the FortiGate route table sdwan-studentXX-workshop-hub1_fgt-priv_rt was set to no.
+    * Route propagation for the FortiGate route table sdwan-USERXX-workshop-hub1_fgt-priv_rt was set to no.
 
 1. **The above setting is normally set to "yes", why did we set it to "no"?**
 
