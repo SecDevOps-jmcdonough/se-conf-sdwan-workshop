@@ -30,18 +30,18 @@
 
     ![cloudshell4](images/cloudshell-04.jpg)
 
-* Select Bash
+* Select **Bash**
 
     ![cloudshell5](images/cloudshell-05.jpg)
 
-* Click on **show advanced settings**
+* Click on **Show advanced settings**
 
     ![cloudshell6](images/cloudshell-06.jpg)
 * Select
-  * Use existing Resource Group  - it ***should*** auto populate with studentXX-workshop-sdwan
-  * Use existing Storage account - it ***should*** auto populate with setrainstudentXX######## (######## is a random string)
+  * Use existing Resource Group  - it ***should*** auto populate with USERXX-workshop-sdwan (USERXX is your Username)
+  * Use existing Storage account - it ***should*** auto populate with trainUSERXX######## (######## is a random string)
   * Use existing File Share  - type **cloudshell**
-  * Click "Attach Storage"
+* Click "Attach Storage"
 
     ![cloudshell7](images/cloudshell-07.jpg)
 
@@ -51,19 +51,25 @@
 
 ### Task 2 - Run the Terraform Code
 
-* Clone the Github repo `git clone https://github.com/FortinetSecDevOps/se-conf-sdwan-workshop.git`
+Run the following commands to create your environment
+
+* Clone the Github repo - `git clone https://github.com/FortinetSecDevOps/se-conf-sdwan-workshop.git`
+* Change to the se-summit folder - `cd ./se-conf-sdwan-workshop/se-summit/`
+* Initialize Terraform - `terraform init`
+* Create Terraform Plan - `terraform plan -var="username=${USER}"`
+* Apply Terraform Plan
+  * Run `terraform apply -var="username=${USER}"` and answer `yes`
+  * This command can also be run as `terraform apply -var="username=${USER}" -auto-approve` which removes the need to type `yes`
+
+  ```sh
+    git clone https://github.com/FortinetSecDevOps/se-conf-sdwan-workshop.git
+    cd ./se-conf-sdwan-workshop/se-summit/
+    terraform init
+    terraform plan -var="username=${USER}"
+    terraform apply -var="username=${USER}"
+  ```
 
     ![gitclone](images/git-clone.jpg)
-
-* Change to the se-summit folder `cd ./se-conf-sdwan-workshop/se-summit/`
-* Initialize Terraform
-  * Run `terraform init`
-* Create Terraform Plan
-  * Run `terraform plan -var="username=${USER}"`
-
-* Apply Terraform Plan
-  * bash run `terraform apply -var="username=${USER}"` and then answer `yes`
-    * This command can also be run as `terraform apply -var="username=${USER}" -auto-approve` which removes the need to type yes
 
 * At the end of this step you should have the following architecture
 
