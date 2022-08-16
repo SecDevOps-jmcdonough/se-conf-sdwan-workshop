@@ -873,7 +873,7 @@ resource "azurerm_virtual_machine" "br3fgt1" {
   resource_group_name          = data.azurerm_resource_group.hubrg.name
   network_interface_ids        = [for nic in azurerm_network_interface.branch3fgt1nic : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.branch3fgt1nic)[*].id, 0)
-  vm_size                      = "Standard_F8s"
+  vm_size                      = "Standard_D4as_v4"
 
   identity {
     type = "SystemAssigned"
