@@ -41,6 +41,7 @@
   * Use existing Resource Group  - it ***should*** auto populate with studentXX-workshop-sdwan
   * Use existing Storage account - it ***should*** auto populate with setrainstudentXX######## (######## is a random string)
   * Use existing File Share  - type **cloudshell**
+  * Click "Attach Storage"
 
     ![cloudshell7](images/cloudshell-07.jpg)
 
