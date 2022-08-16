@@ -416,6 +416,10 @@ resource "azurerm_virtual_machine" "br1fgt1" {
   primary_network_interface_id = element(values(azurerm_network_interface.branch1fgt1nic)[*].id, 0)
   vm_size                      = "Standard_F8s"
 
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
+
+
   identity {
     type = "SystemAssigned"
   }
@@ -532,6 +536,9 @@ resource "azurerm_virtual_machine" "br1fgt2" {
   network_interface_ids        = [for nic in azurerm_network_interface.branch1fgt2nic : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.branch1fgt2nic)[*].id, 0)
   vm_size                      = "Standard_F8s"
+
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
 
   identity {
     type = "SystemAssigned"
@@ -650,6 +657,9 @@ resource "azurerm_virtual_machine" "br2fgt1" {
   primary_network_interface_id = element(values(azurerm_network_interface.branch2fgt1nic)[*].id, 0)
   vm_size                      = "Standard_F8s"
 
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
+
   identity {
     type = "SystemAssigned"
   }
@@ -764,6 +774,9 @@ resource "azurerm_virtual_machine" "br2fgt2" {
   primary_network_interface_id = element(values(azurerm_network_interface.branch2fgt2nic)[*].id, 0)
   vm_size                      = "Standard_F8s"
 
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
+
   identity {
     type = "SystemAssigned"
   }
@@ -875,6 +888,9 @@ resource "azurerm_virtual_machine" "br3fgt1" {
   primary_network_interface_id = element(values(azurerm_network_interface.branch3fgt1nic)[*].id, 0)
   vm_size                      = "Standard_D8as_v4"
 
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
+
   identity {
     type = "SystemAssigned"
   }
@@ -977,6 +993,9 @@ resource "azurerm_virtual_machine" "branchlnx" {
 
   network_interface_ids = [azurerm_network_interface.branchvmnics[each.key].id]
   vm_size               = var.az_lnx_vmsize
+  
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
 
   storage_image_reference {
     publisher = "Canonical"

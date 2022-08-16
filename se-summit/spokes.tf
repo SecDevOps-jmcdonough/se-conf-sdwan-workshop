@@ -101,6 +101,9 @@ resource "azurerm_virtual_machine" "spokelnx" {
   network_interface_ids = [azurerm_network_interface.spokenics[each.key].id]
   vm_size               = var.az_lnx_vmsize
 
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
+
   storage_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"

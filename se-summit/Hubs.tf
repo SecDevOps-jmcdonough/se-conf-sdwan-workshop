@@ -211,6 +211,9 @@ resource "azurerm_virtual_machine" "hub1fgt1" {
   primary_network_interface_id = element(values(azurerm_network_interface.hub1fgt1nics)[*].id, 0)
   vm_size                      = var.az_fgt_vmsize
 
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
+
   identity {
     type = "SystemAssigned"
   }
@@ -324,6 +327,9 @@ resource "azurerm_virtual_machine" "hub1fgt2" {
   network_interface_ids        = [for nic in azurerm_network_interface.hub1fgt2nics : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.hub1fgt2nics)[*].id, 0)
   vm_size                      = var.az_fgt_vmsize
+
+  delete_os_disk_on_termination    = true
+  delete_data_disks_on_termination = true
 
   identity {
     type = "SystemAssigned"
