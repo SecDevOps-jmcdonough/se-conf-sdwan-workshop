@@ -51,25 +51,26 @@
 
 ### Task 2 - Run the Terraform Code
 
-Run the following commands to create your environment
+Perform the following step in your Cloudshell console to create your environment.
 
-* Clone the Github repo - `git clone https://github.com/FortinetSecDevOps/se-conf-sdwan-workshop.git`
-* Change to the se-summit folder - `cd ./se-conf-sdwan-workshop/se-summit/`
-* Initialize Terraform - `terraform init`
-* Create Terraform Plan - `terraform plan -var="username=${USER}"`
-* Apply Terraform Plan
-  * Run `terraform apply -var="username=${USER}"` and answer `yes`
-  * This command can also be run as `terraform apply -var="username=${USER}" -auto-approve` which removes the need to type `yes`
+1. Clone the Github repo
+1. Change to the se-summit folder
+1. Initialize Terraform
+1. Create Terraform Plan
+1. Apply Terraform Plan
 
-  ```sh
-    git clone https://github.com/FortinetSecDevOps/se-conf-sdwan-workshop.git
-    cd ./se-conf-sdwan-workshop/se-summit/
-    terraform init
-    terraform plan -var="username=${USER}"
-    terraform apply -var="username=${USER}"
-  ```
+> **Copy and paste these commands into your Cloudshell console.**
+> The terraform variable `username` will be populated with the value of the environment variable `USER` 
 
-    ![gitclone](images/git-clone.jpg)
+```sh
+  git clone https://github.com/FortinetSecDevOps/se-conf-sdwan-workshop.git
+  cd ./se-conf-sdwan-workshop/se-summit/
+  terraform init
+  terraform plan -var="username=${USER}"
+  terraform apply -var="username=${USER}"
+```
+
+  ![gitclone](images/git-clone.jpg)
 
 * At the end of this step you should have the following architecture
 
