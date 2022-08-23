@@ -97,8 +97,8 @@ hublbpools = {
 //####################################Spoke Vnets#############################
 
 az_spokevnet = {
-  "spoke11" = { name = "spoke11", cidr = "10.11.0.0/16", location = "eastus", peerto = "hub1" },
-  "spoke12" = { name = "spoke12", cidr = "10.12.0.0/16", location = "eastus", peerto = "hub1" }
+  "spoke11" = { name = "spoke11", cidr = "10.11.0.0/16", location = "centralus", peerto = "hub1" },
+  "spoke12" = { name = "spoke12", cidr = "10.12.0.0/16", location = "centralus", peerto = "hub1" }
 }
 
 az_spokevnetsubnet = {
@@ -112,8 +112,8 @@ az_lnx_vmsize = "Standard_D2as_v4"
 
 az_branches = {
   "branch1" = { name = "branch1", cidr = "172.16.0.0/16", location = "centralus" },
-  "branch2" = { name = "branch2", cidr = "172.17.0.0/16", location = "centralus" },
-  "branch3" = { name = "branch3", cidr = "172.18.0.0/16", location = "eastus2" },
+  "branch2" = { name = "branch2", cidr = "172.17.0.0/16", location = "southcentralus" },
+  "branch3" = { name = "branch3", cidr = "172.18.0.0/16", location = "centralus" },
 }
 
 az_branchsubnetscidrs = {
