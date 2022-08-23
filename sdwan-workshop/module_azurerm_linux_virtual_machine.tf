@@ -39,7 +39,7 @@ module "module_azurerm_linux_virtual_machine" {
   tags = local.tags
 }
 
-output "virtual_linux_machines" {
+output "linux_virtual_machines" {
   value     = var.enable_module_output ? module.module_azurerm_linux_virtual_machine[*] : null
   sensitive = true
 }
