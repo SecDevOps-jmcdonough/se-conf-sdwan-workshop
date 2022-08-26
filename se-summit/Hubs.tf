@@ -1,5 +1,5 @@
 locals {
-  project = "${var.username}-workshop"
+  project   = "${var.username}-workshop"
   create_rg = false
 }
 
