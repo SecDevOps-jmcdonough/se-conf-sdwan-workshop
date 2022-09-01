@@ -86,7 +86,7 @@ terraform apply -var="username=${USER}"
   * `terraform output`
 
   ```sh
-  cd /se-conf-sdwan-workshop/se-summit
+  cd /se-conf-sdwan-workshop/se-summit/
   terraform output
   ```
 
