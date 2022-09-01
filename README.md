@@ -585,7 +585,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
     ![peeringdelete.jpg](images/peeringdelete.jpg)
 
 * Create Virtual WAN Route Tables
-  * Click on your virtual Hub and then click on Routing
+  * Click on your virtual Hub and then click on Route Tables
 
     ![vwan3](images/vwan3.jpg)
     ![vwan-rtb1](images/vwan-rtb1.jpg)
