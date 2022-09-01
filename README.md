@@ -295,7 +295,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 * Generate Traffic from Branch1 Linux VM:  
     1. Enable serial console access on Branch1 Linux VM
-        * Click on the VM **USERXX-sdwan-workshop-br1lnx1**
+        * Click on the VM **sdwan-USERXX-workshop-br1lnx1**
         * Go to Boot diagnostics -> Settings ->  Select **Enable with custom storage account**
         * Click "Create new"
         * Enter a unique name for the storage account
@@ -369,12 +369,12 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 ### Branch to Cloud
 
-#### Task 1 - Create a route in the UDR
+#### Task 1 - Create a User Defined Route (UDR) in the Branch1 route table
 
-* Click on the Branch1 private route table **USERXX-sdwan-workshop-branch1_rt**
+* Click on the Branch1 private route table **sdwan-USERXX-workshop-branch1_rt**
 * Add a default route for `0.0.0.0/0` that points to the Branch1 **Internal Load balancer listener IP**
 * Repeat the previous step for the **Branch2** and **Branch3** Route Tables
-  * Be sure to use the correct IP as the next hop, that is the correct Internal Load balancer listener IP or FortiGate internal interface. Hint: is the next hop a load balancer or a stand-alone FortiGate
+  * Be sure to use the correct IP as the next hop, that is the correct Internal Load balancer listener IP or FortiGate internal interface. Hint: Is the next hop a load balancer or a stand-alone FortiGate?
 
     ![add udr](images/add-defaultroutebranch1.jpg)
 
@@ -424,7 +424,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 #### Task 4 - Generate traffic between Branches
 
-* Connect to the Branch1 Linux Host via the serial console - **USERXX-sdwan-workshop-br1lnx1**
+* Connect to the Branch1 Linux Host via the serial console - **sdwan-USERXX-workshop-br1lnx1**
 * Generate traffic to Branch2 Linux Host
 
    ```bash
@@ -468,7 +468,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 ### Task 1 - Generate ICMP traffic
 
-* Connect to the Branch1 Linux Host via the serial console - **USERXX-sdwan-workshop-br1lnx1**
+* Connect to the Branch1 Linux Host via the serial console - **sdwan-USERXX-workshop-br1lnx1**
 * Ping a resource in a remote branch site - **sdwan-USERXX-workshop-spoke11-subnet1-lnx**
   * `ping 10.11.1.4`
   * Let the ping run
@@ -488,7 +488,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 ### Task 3 - Generate TCP traffic
 
 * Ensure that both Branch1 FortiGates in the cluster are up and running
-* Connect to the Branch1 Linux Host via the serial console - **USERXX-sdwan-workshop-br1lnx1**
+* Connect to the Branch1 Linux Host via the serial console - **sdwan-USERXX-workshop-br1lnx1**
 * Generate an SSH session to the Spoke Linux VM - **sdwan-USERXX-workshop-spoke11-subnet1-lnx**
 
    ```bash
