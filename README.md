@@ -136,7 +136,7 @@ terraform apply -var="username=${USER}"
 
 ### Task 2 - Create load balancing rules for IPSEC VPN Traffic
 
-* Click on the Hub External Load balancer **sdwan-USERqXX-workshop-hub1-elb1**
+* Select the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
 * Click on Load balancing rules
 * Create Load balancing rules for UDP 500 and UDP 4500 - ***one rule for each***
 
@@ -146,12 +146,12 @@ terraform apply -var="username=${USER}"
 ### Task 3 - Hub and Branch VPN Connectivity Verifications
 
 * Verify that the FortiGates are responding to Azure Load Balancer Health Checks
-  * Click on the Hub External Load balancer
+  * Select the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
   * Click on Insights - Click the "Refresh" button a few times, eventually (~30 seconds) the FortiGate reachability will be indicated.
 
     ![hub-lb-insights](images/externallbinsights.jpg)
 
-* Verify that the VPN to the Hub are UP  (You may have to reboot the Branch FortiGate one time if the VPN does not come up)
+* Verify that the VPN connections from the Branch to the Hub are UP
 
     ![vpn](images/vpnup.jpg)
 
@@ -183,7 +183,7 @@ terraform apply -var="username=${USER}"
 
 1. **Do FortiGates in the Branches learn Spoke11 and Spoke12 CIDRs?**
 
-    * Spoke11 and Spoke12 CIDRs are not yet know to the FortiGate so the Branches will not learn them yet.
+    * Spoke11 and Spoke12 CIDRs are not yet known to the Hub FortiGate so the Branches will not learn them yet.
 
   </details>
 
@@ -206,7 +206,7 @@ terraform apply -var="username=${USER}"
 
 * Create a VNET peering between the Spoke11 VNET and the Hub VNET
 
-  * Go to the Spoke VNET, **USERXX-workshop-sdwan-spoke11** - (replace USERXX with your username)
+  * Select the Spoke VNET, **USERXX-workshop-sdwan-spoke11** - (replace USERXX with your username)
     * Click on Peerings
     * Add peering to Hub VNET, **USERXX-workshop-sdwan-hub1**
 
@@ -218,7 +218,7 @@ terraform apply -var="username=${USER}"
 
 ### Task 2 - Check Azure Route Server Configuration and Learned Routes
 
-* Go to Azure Route Server
+* Select the Azure Route Server
   * **USERXX-workshop-sdwan-RouteServer** contained within your Resource Group.
 
     ![routeserver](images/routeserver.jpg)
@@ -244,7 +244,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 ### Task 3 - Create a Dynamic SDN object [troubleshooting required]
 
-* Is your Hub FortiGate able to see the Dynamic filters ?
+* Can the Hub FortiGate Azure SDN Connector read the Azure environment?
   * **Troubleshoot and Make the required changes to allow the FortiGate to retrieve the SDN filters.**
 
     * Hub FortiGate debug the Azure SDN Connector
@@ -259,8 +259,8 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
     ***
 
     * FGT Branch3 is able to retrieve the filters, why that is not the case for the FortiGates behind Load Balancers?
-    * FGT Branch3 is standalone, all other FortiGates are in A-P HA, how does that affect traffic to retrieve SDN filters?
-    * Hub External Load Balancer needs a management nic backend pool and a TCP rule any port suffices. This rule is about letting TCP traffic out. The External Load Balancer will let the response traffic back in because the traffic originated internally.
+    * FGT Branch3 is standalone, all other FortiGates are in A-P HA, how does that affect traffic to retrieve SDN information?
+    * Hub External Load Balancer needs a management nic backend pool and a TCP rule, any port suffices. This rule is about letting TCP traffic out. The External Load Balancer will let the response traffic back in because the traffic originated internally.
 
     ![sdn fail](images/sdn-fail.jpg)
 
@@ -297,11 +297,15 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
     1. Enable serial console access on Branch1 Linux VM
         * Click on the VM **USERXX-sdwan-workshop-br1lnx1**
         * Go to Boot diagnostics -> Settings ->  Select **Enable with custom storage account**
-        * From the dropdown list, select the storage account that is assigned to your username - **trainUSERXX#######**
+        * Click "Create new"
+        * Enter a unique name for the storage account
+          * The field can contain only lowercase letters and numbers. Name must be between 3 and 24 characters.
+        * Click OK
         * Click Save
 
-            ![console1](images/ssh-br-lnx-console1.jpg)
-            ![console2](images/ssh-br-lnx-console2.jpg)
+            ![console1](images/custom-storage.jpg)
+            ![console2](images/ssh-br-lnx-console1.jpg)
+            ![console3](images/ssh-br-lnx-console2.jpg)
 
     2. Go to the VM Serial Console
         ![console3](images/ssh-br-lnx-console3.jpg)
