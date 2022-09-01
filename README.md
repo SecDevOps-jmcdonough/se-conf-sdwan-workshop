@@ -303,9 +303,8 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
         * Click OK
         * Click Save
 
-            ![console1](images/custom-storage.jpg)
-            ![console2](images/ssh-br-lnx-console1.jpg)
-            ![console3](images/ssh-br-lnx-console2.jpg)
+            ![console1](images/ssh-br-lnx-console1.jpg)
+            ![console2](images/custom-storage.jpg)
 
     2. Go to the VM Serial Console
         ![console3](images/ssh-br-lnx-console3.jpg)
