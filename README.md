@@ -91,13 +91,13 @@ terraform apply -var="username=${USER}"
   terraform output
   ```
 
-* Connect to the Branch sites FortiGates and check the VPN status. If they are down try to bring them UP.
+* Connect to the Branch sites FortiGates and check the VPN status.
 
 ### Chapter 1 - QUIZ
 
 1. FortiGates in the Hub do not have public IPs, how are they accessible via the Web UI?
 
-1. Why the VPN connections are still down?
+1. Why are the VPN connections down?
 
   <details>
 
@@ -107,7 +107,7 @@ terraform apply -var="username=${USER}"
 
     * The Public IPs on the external load balancers for the Hub, Branch1 and Branch2 FortiGates have inbound NAT rules setup.
 
-1. **Why the VPN connections are still down?**
+1. **Why are the VPN connections down?**
 
     * The external load balancer for the Hub FortiGates needs load balancing rules for UDP 500 and UDP 4500.
 
@@ -126,9 +126,11 @@ terraform apply -var="username=${USER}"
 
 ### Task 1 - Add the FortiGates to the Hub Load Balancer Backend Pool
 
-* Go to the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
+* Select the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
 * Click on Backend pools
 * Add FortiGate1 and FortiGate2 **port1 interfaces** and then click on Save
+  * 10.10.0.4
+  * 10.10.0.5
 
     ![hub-lb-backend](images/externallbbackend.jpg)
 
