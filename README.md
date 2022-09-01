@@ -669,7 +669,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
     * FGT Branch1 does it learn routes to spokes from the Hub?
     * Configure the Hub FGT to advertise Spoke11 and Spoke12 CIDRs to the Branches
-      * On the Hub FGT, add Static Routes to Spoke11 and Spoke12. **What would be the next-hop ?**
+      * On the Hub FGT, add Static Routes to Spoke11 and Spoke12. **What would be the next-hop?**
       * Add Spoke11 and Spoke12 to the list of networks under BGP configuration
 
         ```bash
@@ -697,7 +697,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
       * Traffic is egressing the Hub FGT on port2, but you don't see any reply?... What is missing?  
         * Check FGT Hub port2 **effective routes**?
-        * Do you see spoke11 and spoke12 CIDRs? Why the vWAN is not propagating them to the Route Table attached to the FGT private subnet, **sdwan-USERXX-workshop-hub1_fgt-priv_rt**?  
+        * Do you see spoke11 and spoke12 CIDRs? Why is the vWAN not propagating them to the Route Table attached to the FGT private subnet, **sdwan-USERXX-workshop-hub1_fgt-priv_rt**?  
         * Check the Route Table **configuration** settings
 
         ![bgp2](images/bgp2.jpg)
@@ -718,7 +718,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 1. **Why were we not able to attach the Hub FortiGate VNET to vWAN until we deleted Azure Route Server?**
 
-    * An Azure VNET cannot receive routes from more than the vWAN and the RouteServer at the same time.
+    * An Azure VNET cannot receive routes from the vWAN and the RouteServer at the same time.
 
 1. **Why was the vWAN not able to inject Spoke11 and Spoke12 VNETs CIDRs to FortiGate Private UDR?**
 
