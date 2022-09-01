@@ -39,7 +39,7 @@
     ![cloudshell6](images/cloudshell-06.jpg)
 * Select
   * Use existing Resource Group  - it ***should*** auto populate with USERXX-workshop-sdwan (USERXX is your Username)
-  * Use existing Storage account - it ***should*** auto populate with trainUSERXX######## (######## is a random string)
+  * Use existing Storage account - it ***should*** auto populate with USERXX##########workshopsdwa (########## is a random string)
   * Use existing File Share  - type **cloudshell**
 * Click "Attach Storage"
 
@@ -54,13 +54,13 @@
 Perform the following step in your Cloudshell console to create your environment.
 
 1. Clone the Github repo
-1. Change to the se-summit folder
+1. Change directory to the se-conf-sdwan-workshop/se-summit folder
 1. Initialize Terraform
 1. Create Terraform Plan
 1. Apply Terraform Plan
 
 > **Copy and paste these commands into your Cloudshell console.**
-> The terraform variable `username` will be populated with the value of the environment variable `USER` 
+> The terraform variable `username` will be populated with the value of the environment variable `USER`
 
 ```sh
 git clone https://github.com/FortinetSecDevOps/se-conf-sdwan-workshop.git
@@ -84,6 +84,11 @@ terraform apply -var="username=${USER}"
 
 * Terraform output can be redisplayed at any point as long as you are in the `./se-conf-sdwan-workshop/se-summit/` directory, by using the command
   * `terraform output`
+
+  ```sh
+  cd /se-conf-sdwan-workshop/se-summit
+  terraform output
+  ```
 
 * Connect to the Branch sites FortiGates and check the VPN status. If they are down try to bring them UP.
 
