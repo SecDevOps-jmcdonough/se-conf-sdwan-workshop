@@ -1,8 +1,4 @@
-#azsubscriptionid = "use your own"
-
-#project  = "student01-workshop"
-TAG = "sdwan"
-#username = "student01"
+TAG      = "sdwan"
 password = "fortinet123!"
 
 hubrglocation = "centralus"

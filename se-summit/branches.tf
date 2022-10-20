@@ -5,7 +5,7 @@ resource "azurerm_virtual_network" "branches" {
 
   name                = "${local.project}-${var.TAG}-${each.value.name}"
   location            = each.value.location
-  resource_group_name = data.azurerm_resource_group.hubrg.name
+  resource_group_name = local.resource_group_hub_name
   address_space       = [each.value.cidr]
 
   tags = {
@@ -20,7 +20,7 @@ resource "azurerm_subnet" "brsubnets" {
   for_each = var.az_branchsubnetscidrs
 
   name                 = each.value.name == "RouteServerSubnet" ? "${each.value.name}" : "${var.TAG}-${local.project}-subnet-${each.value.name}"
-  resource_group_name  = data.azurerm_resource_group.hubrg.name
+  resource_group_name  = local.resource_group_hub_name
   address_prefixes     = [each.value.cidr]
   virtual_network_name = azurerm_virtual_network.branches[each.value.vnet].name
 
@@ -32,7 +32,7 @@ resource "azurerm_route_table" "branchvnet_route_tables" {
 
   name                = "${var.TAG}-${local.project}-${each.value.name}"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name = data.azurerm_resource_group.hubrg.name
+  resource_group_name = local.resource_group_hub_name
   //disable_bgp_route_propagation = false
   tags = {
     Project = "${local.project}"
@@ -59,7 +59,7 @@ resource "azurerm_public_ip" "branchpip" {
   for_each            = var.branchpublicip
   name                = "${var.TAG}-${local.project}-${each.value.name}"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name = data.azurerm_resource_group.hubrg.name
+  resource_group_name = local.resource_group_hub_name
   allocation_method   = "Static"
   sku                 = "Standard"
 
@@ -76,7 +76,7 @@ resource "azurerm_lb" "branchlb" {
 
   name                = "${var.TAG}-${local.project}-${each.value.name}"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name = data.azurerm_resource_group.hubrg.name
+  resource_group_name = local.resource_group_hub_name
   sku                 = "Standard"
 
   dynamic "frontend_ip_configuration" {
@@ -118,7 +118,7 @@ resource "azurerm_lb_backend_address_pool" "brlbbackend" {
 resource "azurerm_lb_probe" "brilbprobe" {
   for_each = var.branchlbprobes
 
-  resource_group_name = data.azurerm_resource_group.hubrg.name
+  resource_group_name = local.resource_group_hub_name
   loadbalancer_id     = azurerm_lb.branchlb[each.value.lb].id
   name                = each.value.name
   port                = each.value.port
@@ -127,7 +127,7 @@ resource "azurerm_lb_probe" "brilbprobe" {
 resource "azurerm_lb_rule" "brilbrules" {
   for_each = var.branchlbrules
 
-  resource_group_name = data.azurerm_resource_group.hubrg.name
+  resource_group_name = local.resource_group_hub_name
   loadbalancer_id     = azurerm_lb.branchlb[each.value.lb].id
 
   name          = each.value.name
@@ -149,7 +149,7 @@ resource "azurerm_network_interface" "branch1fgt1nic" {
   for_each                      = var.branch1fgt1
   name                          = "${each.value.vnet}-${each.value.vmname}-${each.value.name}"
   location                      = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name           = data.azurerm_resource_group.hubrg.name
+  resource_group_name           = local.resource_group_hub_name
   enable_ip_forwarding          = true
   enable_accelerated_networking = false
 
@@ -166,7 +166,7 @@ resource "azurerm_network_interface" "branch1fgt2nic" {
   for_each                      = var.branch1fgt2
   name                          = "${each.value.vnet}-${each.value.vmname}-${each.value.name}"
   location                      = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name           = data.azurerm_resource_group.hubrg.name
+  resource_group_name           = local.resource_group_hub_name
   enable_ip_forwarding          = true
   enable_accelerated_networking = false
 
@@ -183,7 +183,7 @@ resource "azurerm_network_interface" "branch2fgt1nic" {
   for_each                      = var.branch2fgt1
   name                          = "${each.value.vnet}-${each.value.vmname}-${each.value.name}"
   location                      = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name           = data.azurerm_resource_group.hubrg.name
+  resource_group_name           = local.resource_group_hub_name
   enable_ip_forwarding          = true
   enable_accelerated_networking = false
 
@@ -200,7 +200,7 @@ resource "azurerm_network_interface" "branch2fgt2nic" {
   for_each                      = var.branch2fgt2
   name                          = "${each.value.vnet}-${each.value.vmname}-${each.value.name}"
   location                      = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name           = data.azurerm_resource_group.hubrg.name
+  resource_group_name           = local.resource_group_hub_name
   enable_ip_forwarding          = true
   enable_accelerated_networking = false
 
@@ -218,7 +218,7 @@ resource "azurerm_network_interface" "branch3fgt1nic" {
   for_each                      = var.branch3fgt1
   name                          = "${each.value.vnet}-${each.value.vmname}-${each.value.name}"
   location                      = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name           = data.azurerm_resource_group.hubrg.name
+  resource_group_name           = local.resource_group_hub_name
   enable_ip_forwarding          = true
   enable_accelerated_networking = false
 
@@ -268,7 +268,7 @@ resource "azurerm_network_interface_backend_address_pool_association" "branch2fg
 resource "azurerm_lb_nat_rule" "fgtbraccess" {
   for_each = var.branchlbnatrules
 
-  resource_group_name            = data.azurerm_resource_group.hubrg.name
+  resource_group_name            = local.resource_group_hub_name
   loadbalancer_id                = azurerm_lb.branchlb[each.value.lb].id
   name                           = each.value.name
   protocol                       = each.value.protocol
@@ -288,7 +288,7 @@ resource "azurerm_network_interface_nat_rule_association" "fgtbraccessnic" {
 resource "azurerm_lb_outbound_rule" "fgtbroutbound" {
   for_each = var.branchlboutboundrules
 
-  resource_group_name     = data.azurerm_resource_group.hubrg.name
+  resource_group_name     = local.resource_group_hub_name
   loadbalancer_id         = azurerm_lb.branchlb[each.value.lb].id
   name                    = each.value.name
   protocol                = each.value.protocol
@@ -305,14 +305,14 @@ resource "azurerm_network_security_group" "fgtbr_nsgs" {
 
   name                = "${var.TAG}-${local.project}-${each.value.name}"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name = data.azurerm_resource_group.hubrg.name
+  resource_group_name = local.resource_group_hub_name
 }
 
 resource "azurerm_network_security_rule" "fgtbr_nsg_rules" {
   for_each = var.brnsgsrules
 
   name                        = each.value.rulename
-  resource_group_name         = data.azurerm_resource_group.hubrg.name
+  resource_group_name         = local.resource_group_hub_name
   network_security_group_name = azurerm_network_security_group.fgtbr_nsgs[each.value.nsgname].name
   priority                    = each.value.priority
   direction                   = each.value.direction
@@ -411,7 +411,7 @@ data "template_file" "br1fgt1_customdata" {
 resource "azurerm_virtual_machine" "br1fgt1" {
   name                         = "${var.TAG}-${local.project}-br1-fgt1"
   location                     = azurerm_virtual_network.branches["branch1"].location
-  resource_group_name          = data.azurerm_resource_group.hubrg.name
+  resource_group_name          = local.resource_group_hub_name
   network_interface_ids        = [for nic in azurerm_network_interface.branch1fgt1nic : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.branch1fgt1nic)[*].id, 0)
   vm_size                      = "Standard_F8s"
@@ -470,7 +470,7 @@ resource "azurerm_virtual_machine" "br1fgt1" {
 
 ///////////////IAM////////////////
 resource "azurerm_role_assignment" "br1fgt1_reader" {
-  scope                = data.azurerm_resource_group.hubrg.id
+  scope                = local.resource_group_hub_id
   role_definition_name = "Reader"
   principal_id         = azurerm_virtual_machine.br1fgt1.identity[0].principal_id
   depends_on = [
@@ -532,7 +532,7 @@ data "template_file" "br1fgt2_customdata" {
 resource "azurerm_virtual_machine" "br1fgt2" {
   name                         = "${var.TAG}-${local.project}-br1-fgt2"
   location                     = azurerm_virtual_network.branches["branch1"].location
-  resource_group_name          = data.azurerm_resource_group.hubrg.name
+  resource_group_name          = local.resource_group_hub_name
   network_interface_ids        = [for nic in azurerm_network_interface.branch1fgt2nic : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.branch1fgt2nic)[*].id, 0)
   vm_size                      = "Standard_F8s"
@@ -590,7 +590,7 @@ resource "azurerm_virtual_machine" "br1fgt2" {
 
 ///////////////IAM////////////////
 resource "azurerm_role_assignment" "br1fgt2_reader" {
-  scope                = data.azurerm_resource_group.hubrg.id
+  scope                = local.resource_group_hub_id
   role_definition_name = "Reader"
   principal_id         = azurerm_virtual_machine.br1fgt2.identity[0].principal_id
   depends_on = [
@@ -652,7 +652,7 @@ data "template_file" "br2fgt1_customdata" {
 resource "azurerm_virtual_machine" "br2fgt1" {
   name                         = "${var.TAG}-${local.project}-br2-fgt1"
   location                     = azurerm_virtual_network.branches["branch2"].location
-  resource_group_name          = data.azurerm_resource_group.hubrg.name
+  resource_group_name          = local.resource_group_hub_name
   network_interface_ids        = [for nic in azurerm_network_interface.branch2fgt1nic : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.branch2fgt1nic)[*].id, 0)
   vm_size                      = "Standard_F8s"
@@ -707,7 +707,7 @@ resource "azurerm_virtual_machine" "br2fgt1" {
 
 ///////////////IAM////////////////
 resource "azurerm_role_assignment" "br2fgt1_reader" {
-  scope                = data.azurerm_resource_group.hubrg.id
+  scope                = local.resource_group_hub_id
   role_definition_name = "Reader"
   principal_id         = azurerm_virtual_machine.br2fgt1.identity[0].principal_id
   depends_on = [
@@ -769,7 +769,7 @@ data "template_file" "br2fgt2_customdata" {
 resource "azurerm_virtual_machine" "br2fgt2" {
   name                         = "${var.TAG}-${local.project}-br2-fgt2"
   location                     = azurerm_virtual_network.branches["branch2"].location
-  resource_group_name          = data.azurerm_resource_group.hubrg.name
+  resource_group_name          = local.resource_group_hub_name
   network_interface_ids        = [for nic in azurerm_network_interface.branch2fgt2nic : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.branch2fgt2nic)[*].id, 0)
   vm_size                      = "Standard_F8s"
@@ -827,7 +827,7 @@ resource "azurerm_virtual_machine" "br2fgt2" {
 
 ///////////////IAM////////////////
 resource "azurerm_role_assignment" "br2fgt2_reader" {
-  scope                = data.azurerm_resource_group.hubrg.id
+  scope                = local.resource_group_hub_id
   role_definition_name = "Reader"
   principal_id         = azurerm_virtual_machine.br2fgt2.identity[0].principal_id
   depends_on = [
@@ -883,7 +883,7 @@ data "template_file" "br3fgt1_customdata" {
 resource "azurerm_virtual_machine" "br3fgt1" {
   name                         = "${var.TAG}-${local.project}-br3-fgt1"
   location                     = azurerm_virtual_network.branches["branch3"].location
-  resource_group_name          = data.azurerm_resource_group.hubrg.name
+  resource_group_name          = local.resource_group_hub_name
   network_interface_ids        = [for nic in azurerm_network_interface.branch3fgt1nic : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.branch3fgt1nic)[*].id, 0)
   vm_size                      = "Standard_D8as_v4"
@@ -941,7 +941,7 @@ resource "azurerm_virtual_machine" "br3fgt1" {
 
 ///////////////IAM////////////////
 resource "azurerm_role_assignment" "br3fgt1_reader" {
-  scope                = data.azurerm_resource_group.hubrg.id
+  scope                = local.resource_group_hub_id
   role_definition_name = "Reader"
   principal_id         = azurerm_virtual_machine.br3fgt1.identity[0].principal_id
   depends_on = [
@@ -958,7 +958,7 @@ resource "azurerm_network_interface" "branchvmnics" {
 
   name                = "${var.TAG}-${local.project}-${each.value.vmname}-nic"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name = data.azurerm_resource_group.hubrg.name
+  resource_group_name = local.resource_group_hub_name
 
   enable_ip_forwarding          = false
   enable_accelerated_networking = false
@@ -989,7 +989,7 @@ resource "azurerm_virtual_machine" "branchlnx" {
 
   name                = "${var.TAG}-${local.project}-${each.value.vmname}"
   location            = azurerm_virtual_network.branches[each.value.vnet].location
-  resource_group_name = data.azurerm_resource_group.hubrg.name
+  resource_group_name = local.resource_group_hub_name
 
   network_interface_ids = [azurerm_network_interface.branchvmnics[each.key].id]
   vm_size               = var.az_lnx_vmsize
