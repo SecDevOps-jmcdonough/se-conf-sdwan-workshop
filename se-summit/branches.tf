@@ -655,7 +655,7 @@ resource "azurerm_virtual_machine" "br2fgt1" {
   resource_group_name          = local.resource_group_hub_name
   network_interface_ids        = [for nic in azurerm_network_interface.branch2fgt1nic : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.branch2fgt1nic)[*].id, 0)
-  vm_size                      = "Standard_D8as_v4"
+  vm_size                      = "Standard_F8s"
 
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
@@ -772,7 +772,7 @@ resource "azurerm_virtual_machine" "br2fgt2" {
   resource_group_name          = local.resource_group_hub_name
   network_interface_ids        = [for nic in azurerm_network_interface.branch2fgt2nic : nic.id]
   primary_network_interface_id = element(values(azurerm_network_interface.branch2fgt2nic)[*].id, 0)
-  vm_size                      = "Standard_D8as_v4"
+  vm_size                      = "Standard_F8s"
 
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
