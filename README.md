@@ -287,7 +287,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 1. **Use** the object in an existing Policy named `Branch to Cloud` to restrict traffic coming from the Branches to only VMs in the Spoke VNETs.
 
-  ![Branch to Cloud Policy](images/policy3.jpg)
+    ![Branch to Cloud Policy](images/policy3.jpg)
 
 ### Task 4 - Traffic generation
 
@@ -307,11 +307,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 * Generate Traffic from Branch1 Linux VM:  
     1. Enable serial console access on Branch1 Linux VM
         * Click on the VM **sdwan-USERXX-workshop-br1lnx1**
-        * Go to Boot diagnostics -> Settings ->  Select **Enable with custom storage account**
-        * Click "Create new"
-        * Enter a unique name for the storage account
-          * The field can contain only lowercase letters and numbers. Name must be between 3 and 24 characters.
-        * Click OK
+        * Go to Boot diagnostics -> Settings ->  Select **Enable with managed storage account (recommended)**
         * Click Save
 
             ![console1](images/ssh-br-lnx-console1.jpg)
