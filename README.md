@@ -393,15 +393,15 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 #### Task 2 - Generate traffic to the Hub
 
-* Connect to the Branch1 Linux Host via the serial console
-* Generate traffic to Hub
+1. **Connect** to the Branch1 Linux Host via the serial console
+1. **Generate** traffic to Hub
 
     ```bash
      ping 10.11.1.4
      ping 10.12.1.4 
     ```
 
-* Does it work now?
+1. Does it work now?
 
 #### Task 3 - Check effective routes
 
@@ -446,7 +446,7 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 1. **Check** if an ADVPN shortcut has been created. Run the command `get router info routing-table bgp`
 
-  ![advpn check](images/advpn-check.jpg)
+    ![advpn check](images/advpn-check.jpg)
 
 ### Chapter 5 - QUIZ
 
