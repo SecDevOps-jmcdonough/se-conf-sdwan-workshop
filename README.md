@@ -224,7 +224,7 @@ Create a VNET peering between the Spoke11 VNET and the Hub VNET
 
 1. **Select** the Azure Route Server **USERXX-workshop-sdwan-RouteServer** contained within your Resource Group.
 
-  ![routeserver](images/routeserver.jpg)
+    ![routeserver](images/routeserver.jpg)
 
 1. **Click** on Peers on the left side of the menu, verify the connection to the Hub FortiGates
 1. **List** the routes learned by Azure Route Server, run the commands below from your Azure Cloud Shell
@@ -270,22 +270,22 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 1. **Create** a backend pool on the Hub load balancer using the Hub FortiGate Management Interfaces
 
-* 10.10.4.4
-* 10.10.4.5
+    * 10.10.4.4
+    * 10.10.4.5
 
-  ![mgmt be pool](images/mgmt-backend-pool.jpg)
+    ![mgmt be pool](images/mgmt-backend-pool.jpg)
 
-  ![mgmt be pool list](images/mgmt-backend-pool-list.jpg)
+    ![mgmt be pool list](images/mgmt-backend-pool-list.jpg)
 
 1. Create a TCP Load Balancer Rule, any port will do, e.g. 13000. This rule will allow TCP response traffic back through the load balancer, when to a TCP request originated from a device in a backend pool associated to the load balancer.
 
-  ![tcp rule](images/tcp-rule.jpg)
+    ![tcp rule](images/tcp-rule.jpg)
 
 1. **Create** a dynamic address object on the Hub FortiGate, named `Spoke_VNETs` that resolves to the Spoke VNETs VMs
 
-  ![Dynamic Address Object](images/dynamic-address-object.jpg)
+    ![Dynamic Address Object](images/dynamic-address-object.jpg)
 
-* **Use** the object in an existing Policy named `Branch to Cloud` to restrict traffic coming from the Branches to only VMs in the Spoke VNETs.
+1. **Use** the object in an existing Policy named `Branch to Cloud` to restrict traffic coming from the Branches to only VMs in the Spoke VNETs.
 
   ![Branch to Cloud Policy](images/policy3.jpg)
 
