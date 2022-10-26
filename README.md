@@ -576,6 +576,8 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
     az network vhub create --address-prefix 10.14.0.0/16 --name ${USER}-vwanhub --resource-group ${USER}-workshop-sdwan --vwan sdwan-${USER}-workshop-vwan --location your-hub-location --sku Standard
     ```
 
+    > The second command can take several minutes to run, do not Ctrl-C to break out or stop the command. If your Cloudshell session disconnects, reconnects and run `ps -ef` to determine if `az network vhub create...` command is still running. Once the command is no longer seen in the `ps` output the VWAN should be created. Use the command `az network vhub list` to view your VWAN hub.
+
     ![vwan1](images/vwan1.jpg)
 
 * Navigate to your Resource Group and verify that you see your vWAN
