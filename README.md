@@ -214,19 +214,21 @@ Create a VNET peering between the Spoke11 VNET and the Hub VNET
 
 1. **Repeat** the above between Spoke12 VNET, **USERXX-workshop-sdwan-spoke12** and the Hub VNET
 
-    ![vnetpeering1](images/spoke11-to-Hub-peering.jpg)
+>You will see errors until all the correct selections are made.
 
-1. **Verify** that the Branch FortiGates have learned the Spoke11 VNET and Spoke12 VNET CIDRs
+  ![vnetpeering1](images/spoke11-to-Hub-peering.jpg)
+
+1. **Verify** that the Branch FortiGates have learned the Spoke11 VNET and Spoke12 VNET CIDRs. Run the Command get router info routing-table all on all the Branch FortiGates.
 
 ### Task 2 - Check Azure Route Server Configuration and Learned Routes
 
-* Select the Azure Route Server
-  * **USERXX-workshop-sdwan-RouteServer** contained within your Resource Group.
+1. **Select** the Azure Route Server **USERXX-workshop-sdwan-RouteServer** contained within your Resource Group.
 
-    ![routeserver](images/routeserver.jpg)
+  ![routeserver](images/routeserver.jpg)
 
-* Click on Peers on the left side of the menu, verify the connection to the Hub FortiGates
-* List the routes learned by Azure Route Server, run the commands below from your Azure Cloud Shell
+1. **Click** on Peers on the left side of the menu, verify the connection to the Hub FortiGates
+1. **List** the routes learned by Azure Route Server, run the commands below from your Azure Cloud Shell
+
 * The variable `${USER}` in the commands reads your username from the environment
 
 ```bash
@@ -266,19 +268,26 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
     ![sdn fail](images/sdn-fail.jpg)
 
-    ![mgmt be pool](images/mgmt-backend-pool.jpg)
+1. **Create** a backend pool on the Hub load balancer using the Hub FortiGate Management Interfaces
 
-    ![mgmt be pool list](images/mgmt-backend-pool-list.jpg)
+* 10.10.4.4
+* 10.10.4.5
 
-    ![tcp rule](images/tcp-rule.jpg)
+  ![mgmt be pool](images/mgmt-backend-pool.jpg)
 
-* On the Hub FortiGate, create a dynamic address object named `Spoke_VNETs` that resolves to the Spoke VNETs VMs
+  ![mgmt be pool list](images/mgmt-backend-pool-list.jpg)
 
-    ![Dynamic Address Object](images/dynamic-address-object.jpg)
+1. Create a TCP Load Balancer Rule, any port will do, e.g. 13000. This rule will allow TCP response traffic back through the load balancer, when to a TCP request originated from a device in a backend pool associated to the load balancer.
 
-* On the Hub FortiGate, use the object created above on the `Branch to Cloud` policy to restrict traffic coming from the Branches
+  ![tcp rule](images/tcp-rule.jpg)
 
-    ![Branch to Cloud Policy](images/policy3.jpg)
+1. **Create** a dynamic address object on the Hub FortiGate, named `Spoke_VNETs` that resolves to the Spoke VNETs VMs
+
+  ![Dynamic Address Object](images/dynamic-address-object.jpg)
+
+* **Use** the object in an existing Policy named `Branch to Cloud` to restrict traffic coming from the Branches to only VMs in the Spoke VNETs.
+
+  ![Branch to Cloud Policy](images/policy3.jpg)
 
 ### Task 4 - Traffic generation
 
