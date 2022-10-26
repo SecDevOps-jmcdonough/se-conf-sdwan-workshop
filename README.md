@@ -378,10 +378,14 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 #### Task 1 - Create a User Defined Route (UDR) in the Branch1 route table
 
-* Click on the Branch1 private route table **sdwan-USERXX-workshop-branch1_rt**
-* Add a default route for `0.0.0.0/0` that points to the Branch1 **Internal Load balancer listener IP**
-* Repeat the previous step for the **Branch2** and **Branch3** Route Tables
-  * Be sure to use the correct IP as the next hop, that is the correct Internal Load balancer listener IP or FortiGate internal interface. Hint: Is the next hop a load balancer or a stand-alone FortiGate?
+1. **Click** on the Branch1 private route table **sdwan-USERXX-workshop-branch1_rt**
+1. **Click** Routes
+1. **Add** a default route for `0.0.0.0/0` that points to the Branch1 **Internal Load balancer listener IP**
+1. **Repeat** the previous step for the **Branch2** and **Branch3** Route Tables
+  
+    * Be sure to use the correct IP as the next hop, that is the correct Internal Load balancer listener IP or FortiGate internal interface.
+
+    Hint: The next hop is a load balancer or a stand-alone FortiGate.
 
     ![add udr](images/add-defaultroutebranch1.jpg)
 
@@ -397,32 +401,34 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
      ping 10.12.1.4 
     ```
 
-* Does it work now ?
+* Does it work now?
 
 #### Task 3 - Check effective routes
 
-* Go to your resource group and click on Spoke11 Linux VM
-* Click on Networking in the Navigation Menu
+1. **Click** on Spoke11 Linux VM sdwan-USERXX-workshop-spoke11-subnet1-lnx
+1. **Click** on Networking in the Navigation Menu
 
     ![effectiveroutes1](images/effectiveroutes-lnx-1.jpg)
 
-* Click on the VM nic
+1. **Click** on the VM nic
+
     ![effectiveroutes2](images/effectiveroutes-lnx-2.jpg)
 
-* Click on **Effective routes**
+1. **Click** on **Effective routes**
+
     ![effectiveroutes3](images/effectiveroutes-lnx-3.jpg)
 
-* Check that Azure Route Server has injected the Branch sites CIDRs learnt from the FGT
+1. **Check** that Azure Route Server has injected the Branch sites CIDRs learnt from the FGT
 
-* Go to your resource group and click on the Hub FGT VM
-* Click on Networking in the Navigation Menu
+1. **Click** on the Hub FGT VM sdwan-USERXX-workshop-hub1-fgt1
+1. **Click** on Networking in the Navigation Menu
 
     ![effectiveroutes4](images/effectiveroutes-lnx-4.jpg)
 
-* Click on the VM port2 nic
+1. **Click** on the VM port2 nic
     ![effectiveroutes5](images/effectiveroutes-lnx-5.jpg)
 
-* Click on **Effective routes**
+1. **Click** on **Effective routes**
     ![effectiveroutes6](images/effectiveroutes-lnx-6.jpg)
 
 * Has Azure Route Server injected the Branch sites CIDRs learnt from the FGT?  Why ?
@@ -431,16 +437,16 @@ az network routeserver peering list-learned-routes -g ${USER}-workshop-sdwan --r
 
 #### Task 4 - Generate traffic between Branches
 
-* Connect to the Branch1 Linux Host via the serial console - **sdwan-USERXX-workshop-br1lnx1**
-* Generate traffic to Branch2 Linux Host
+1. **Connect** to the Branch1 Linux Host via the serial console - **sdwan-USERXX-workshop-br1lnx1**
+1. **Generate** traffic to Branch2 Linux Host
 
    ```bash
      ping 172.17.5.4
     ```
 
-* Check if an ADVPN shortcut has been created
+1. **Check** if an ADVPN shortcut has been created. Run the command `get router info routing-table bgp`
 
-![advpn check](images/advpn-check.jpg)
+  ![advpn check](images/advpn-check.jpg)
 
 ### Chapter 5 - QUIZ
 
