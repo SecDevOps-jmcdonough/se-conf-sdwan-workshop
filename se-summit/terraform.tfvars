@@ -102,7 +102,7 @@ az_spokevnetsubnet = {
   "spoke12_subnet" = { name = "spoke12-subnet1", cidr = "10.12.1.0/24", vnet = "spoke12" }
 }
 
-az_lnx_vmsize = "Standard_D2as_v4"
+az_lnx_vmsize = "Standard_F2s"
 
 //////////////////////////////////////////////////////////Branch Sites////////////////////////////////////////////////////////////////
 
