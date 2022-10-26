@@ -78,20 +78,20 @@ terraform apply -var="username=${USER}"
 
 ### Task 3 - Terraform Verifications
 
-* Using the Terraform output, verify that you have Web and SSH access to the FortiGates.
+  1. Using the Terraform output, verify that you have Web and SSH access to the FortiGates.
 
-    ![output](images/output.jpg)
+      ![output](images/output.jpg)
 
-* Terraform output can be redisplayed at any point as long as you are in the `./se-conf-sdwan-workshop/se-summit/` directory, by using the command
-  * `terraform output`
+      * Terraform output can be redisplayed at any point as long as you are in the `./se-conf-sdwan-workshop/se-summit/` directory, by using the command `terraform output`
 
-  ```sh
-  cd
-  cd se-conf-sdwan-workshop/se-summit/
-  terraform output
-  ```
+        ```sh
+        cd
+        cd se-conf-sdwan-workshop/se-summit/
+        terraform output
+        ````
 
-* Connect to the Branch sites FortiGates and check the VPN status.
+  1. Connect to the Branch sites FortiGates and check the VPN status.
+  1. Connect to the Hub FortiGates and check the WAN IP
 
 ### Chapter 1 - QUIZ
 
@@ -126,38 +126,40 @@ terraform apply -var="username=${USER}"
 
 ### Task 1 - Add the FortiGates to the Hub Load Balancer Backend Pool
 
-* Select the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
-* Click on Backend pools
-* Add FortiGate1 and FortiGate2 **port1 interfaces** and then click on Save
-  * 10.10.0.4
-  * 10.10.0.5
+1. **Select** the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
+1. **Click** on Backend pools
+1. **Add** FortiGate1 and FortiGate2 **port1 interfaces** and then click on Save
 
-    ![hub-lb-backend](images/externallbbackend.jpg)
+* 10.10.0.4
+* 10.10.0.5
+
+  ![hub-lb-backend](images/externallbbackend.jpg)
 
 ### Task 2 - Create load balancing rules for IPSEC VPN Traffic
 
-* Select the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
-* Click on Load balancing rules
-* Create Load balancing rules for UDP 500 and UDP 4500 - ***one rule for each***
+1. **Select** the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
+1. **Click** on Load balancing rules
+1. **Create** Load balancing rules for UDP 500 and UDP 4500 - ***one rule for each***
 
     ![hub-lb-rule1](images/externallbrule1.jpg)
     ![hub-lb-rule2](images/externallbrule2.jpg)
 
 ### Task 3 - Hub and Branch VPN Connectivity Verifications
 
-* Verify that the FortiGates are responding to Azure Load Balancer Health Checks
-  * Select the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
-  * Click on Insights - Click the "Refresh" button a few times, eventually (~30 seconds) the FortiGate reachability will be indicated.
+Verify that the FortiGates are responding to Azure Load Balancer Health Checks
+
+1. **Select** the Hub External Load Balancer **sdwan-USERXX-workshop-hub1-elb1**
+1. **Click** on Insights - Click the "Refresh" button a few times, eventually (~30 seconds) the FortiGate reachability will be indicated.
 
     ![hub-lb-insights](images/externallbinsights.jpg)
 
-* Verify that the VPN connections from the Branch to the Hub are UP
+1. **Verify** that the VPN connections from the Branch to the Hub are UP
 
     ![vpn](images/vpnup.jpg)
 
-* Verify that the BGP peering with the hub is UP and that the Branch FortiGate learned the Hub and other Branches' CIDRs `get router info routing-table all`
+1. **Verify** that the BGP peering with the Hub is UP and that the Branch FortiGate learned the Hub and other Branches' CIDRs. Run the Command `get router info routing-table all` on all the Branch FortiGates.
 
-* At the end of this step you should have the following architecture
+* At the end of this step you should have the following architecture.
 
     ![global-step2](images/SDWAN_Workshop_global2.jpg)
 
@@ -204,17 +206,17 @@ terraform apply -var="username=${USER}"
 
 ### Task 1 - Create the VNET peering
 
-* Create a VNET peering between the Spoke11 VNET and the Hub VNET
+Create a VNET peering between the Spoke11 VNET and the Hub VNET
 
-  * Select the Spoke VNET, **USERXX-workshop-sdwan-spoke11** - (replace USERXX with your username)
-    * Click on Peerings
-    * Add peering to Hub VNET, **USERXX-workshop-sdwan-hub1**
+1. **Select** the Spoke VNET, **USERXX-workshop-sdwan-spoke11** - (replace USERXX with your username)
+1. **Click** on Peerings
+1. **Add** peering to Hub VNET, **USERXX-workshop-sdwan-hub1**
 
-  * Repeat the above between Spoke12 VNET, **USERXX-workshop-sdwan-spoke12** and the Hub VNET
+1. **Repeat** the above between Spoke12 VNET, **USERXX-workshop-sdwan-spoke12** and the Hub VNET
 
     ![vnetpeering1](images/spoke11-to-Hub-peering.jpg)
 
-* Verify that the Branch FortiGates have learned the Spoke11 VNET and Spoke12 VNET CIDRs
+1. **Verify** that the Branch FortiGates have learned the Spoke11 VNET and Spoke12 VNET CIDRs
 
 ### Task 2 - Check Azure Route Server Configuration and Learned Routes
 
