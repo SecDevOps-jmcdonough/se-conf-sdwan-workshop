@@ -62,6 +62,7 @@ resource "azurerm_public_ip" "branchpip" {
   resource_group_name = local.resource_group_hub_name
   allocation_method   = "Static"
   sku                 = "Standard"
+  availability_zone   = "No-Zone"
 
   tags = {
     Project = "${local.project}"
@@ -87,6 +88,7 @@ resource "azurerm_lb" "branchlb" {
     content {
       name                 = frontend_ip_configuration.value.name
       public_ip_address_id = azurerm_public_ip.branchpip[frontend_ip_configuration.value.frontendip].id
+      availability_zone    = "No-Zone"
     }
   }
 
@@ -100,6 +102,7 @@ resource "azurerm_lb" "branchlb" {
       subnet_id                     = azurerm_subnet.brsubnets[frontend_ip_configuration.value.subnet].id
       private_ip_address            = frontend_ip_configuration.value.frontendip
       private_ip_address_allocation = "Static"
+      availability_zone    = "No-Zone"
     }
   }
 
